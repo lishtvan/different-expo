@@ -1,53 +1,85 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable, useColorScheme } from 'react-native';
-
-import Colors from '../../constants/Colors';
-
-/**
- * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
- */
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import FontAwesome from "@expo/vector-icons/FontAwesome";
+import { Tabs } from "expo-router";
+import Colors from "../../constants/Colors";
+import { Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-      }}>
+        tabBarActiveTintColor: Colors["light"].tint,
+        headerShadowVisible: false,
+        headerShown: false,
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: "Головна",
+          tabBarIcon: ({ color }) => (
+            <Entypo
+              size={31}
+              name="home"
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="sell"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: "Продати",
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons
+              size={32}
+              name="add-circle-outline"
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="orders"
+        options={{
+          title: "Замовлення",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome
+              size={31}
+              name="handshake-o"
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="messages"
+        options={{
+          title: "Повідомлення",
+          tabBarIcon: ({ color }) => (
+            <Feather
+              size={32}
+              name="message-circle"
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="profile"
+        options={{
+          title: "Профіль",
+          tabBarIcon: ({ color }) => (
+            <MaterialIcons
+              size={34}
+              name="account-circle"
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
+          ),
         }}
       />
     </Tabs>
