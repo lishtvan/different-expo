@@ -40,6 +40,14 @@ function RootLayoutNav() {
     <ThemeProvider value={DefaultTheme}>
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="auth"
+          options={{
+            headerBackTitleVisible: false,
+            headerTitle: "",
+            headerShadowVisible: false,
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );
