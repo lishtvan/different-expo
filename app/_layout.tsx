@@ -4,6 +4,14 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
+import { AppStateStatus, Platform } from "react-native";
+import {
+  QueryClient,
+  QueryClientProvider,
+  focusManager,
+} from "@tanstack/react-query";
+import { useAppState } from "./hooks/useAppState";
+import { useOnlineManager } from "./hooks/useOnlineManager";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -35,20 +43,35 @@ export default function RootLayout() {
   return <RootLayoutNav />;
 }
 
+function onAppStateChange(status: AppStateStatus) {
+  // React Query already supports in web browser refetch on window focus by default
+  if (Platform.OS !== "web") {
+    focusManager.setFocused(status === "active");
+  }
+}
+
+const queryClient = new QueryClient();
+
 function RootLayoutNav() {
+  useOnlineManager();
+
+  useAppState(onAppStateChange);
+
   return (
-    <ThemeProvider value={DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="auth"
-          options={{
-            headerBackTitleVisible: false,
-            headerTitle: "",
-            headerShadowVisible: false,
-          }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider value={DefaultTheme}>
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="auth"
+            options={{
+              headerBackTitleVisible: false,
+              headerTitle: "",
+              headerShadowVisible: false,
+            }}
+          />
+        </Stack>
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }

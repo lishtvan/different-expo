@@ -12,11 +12,15 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.lishtvan.expodifferent",
-      "config": { "usesNonExemptEncryption": false },
+      "config": {
+        "usesNonExemptEncryption": false
+      },
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -31,7 +35,10 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -56,7 +63,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "0b459284-a873-427f-b416-b97c233178e5"
+        "projectId": "076ec3e2-8937-4a99-ab11-63b0f5719371"
       }
     }
   }
