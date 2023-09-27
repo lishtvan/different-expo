@@ -1,17 +1,11 @@
 import React from "react";
-import { View, Text } from "react-native";
-import { useQuery } from "@tanstack/react-query";
-import { fetcher } from "../utils/fetcher";
+import { Redirect, useLocalSearchParams } from "expo-router";
+import User from "../components/user/User";
 
 export default function ProfileScreen() {
-  const { data: user, isLoading } = useQuery({
-    queryKey: ["user"],
-    queryFn: () => fetcher({ route: "/auth/check", method: "GET" }),
-  });
-
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-      <Text>profile</Text>
-    </View>
-  );
+  const params = useLocalSearchParams();
+  if (!params?.nickname) {
+    return <Redirect href="/auth" />;
+  }
+  return <User />;
 }

@@ -1,10 +1,10 @@
 import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "tamagui";
 
 export default function SellScreen() {
   return (
-    <SafeAreaView>
+    <View>
       <Text>Sell tab</Text>
-    </SafeAreaView>
+    </View>
   );
 }

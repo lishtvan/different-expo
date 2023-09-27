@@ -5,19 +5,18 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "different",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
+      "associatedDomains": ["applinks:different-marketplace.com"],
       "supportsTablet": true,
-      "bundleIdentifier": "com.lishtvan.expodifferent",
+      "bundleIdentifier": "different",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -25,6 +24,7 @@
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
+              "different",
               "com.googleusercontent.apps.24434242390-l4r82unf87hh643nmssogggm3grvqcvq"
             ]
           }
@@ -36,9 +36,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "permissions": [
-        "android.permission.RECORD_AUDIO"
-      ]
+      "permissions": ["android.permission.RECORD_AUDIO"]
     },
     "web": {
       "bundler": "metro",

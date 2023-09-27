@@ -1,5 +1,5 @@
 import { getSession } from "./secureStorage";
-import { router } from "expo-router";
+import NetInfo from "@react-native-community/netinfo";
 
 interface Fetcher {
   (input: {
@@ -16,18 +16,16 @@ export const fetcher: Fetcher = async ({
   method = "POST",
   domain = process.env.EXPO_PUBLIC_API_URL,
 }) => {
-  console.log("fetch is happening");
+  console.log("fetch is happening", route);
   const headers = new Headers();
-  headers.append("Content-type", "application/json");
 
-  const session = await getSession();
-  if (session) {
-    const { token, userId } = JSON.parse(session);
-    headers.append("Cookie", `token=${token}; userId=${userId}`);
-  }
+  const token = await getSession();
+  if (token) headers.append("Cookie", `token=${token}`);
 
   let response;
+
   if (body) {
+    headers.append("Content-type", "application/json");
     response = await fetch(`${domain}${route}`, {
       method,
       headers,
@@ -37,14 +35,19 @@ export const fetcher: Fetcher = async ({
     response = await fetch(`${domain}${route}`, { method, headers });
   }
 
-  if (response.status <= 400) {
+  if (response.status === 200) {
     const json = await response.json();
     return json;
   }
-  if (response.status === 401) router.replace("/auth");
-  if (response.status === 404) router.replace("/404");
-  if (response.status === 500) throw new Error("Something went wrong");
-  // if (response.headers.get('bill') && !request.url.includes('/bill')) {
-  //   throw redirect('/bill');
-  // }
+  if (response.status === 401) {
+    if (route === "/auth/check") return null;
+    else throw new Error("Not authorized", { cause: 401 });
+  }
+  if (response.status === 404) throw new Error("Not found", { cause: 404 });
+  if (response.status >= 500) {
+    throw new Error("Something went wrong", { cause: 500 });
+  }
+
+  const json = await response.json();
+  return json;
 };

@@ -5,10 +5,10 @@ export default function NotFoundScreen() {
   return (
     <>
       <Stack.Screen
-        options={{ title: "Помилка 404", headerShadowVisible: false }}
+        options={{ title: "Помилка 500", headerShadowVisible: false }}
       />
       <View style={styles.container}>
-        <Text style={styles.title}>Сторінку не знайдено</Text>
+        <Text style={styles.title}>Щось пішло не так</Text>
         <Link href="/" style={styles.link}>
           <Text className="text-main" style={styles.linkText}>
             Перейти на головну сторінку

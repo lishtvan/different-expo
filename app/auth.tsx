@@ -4,7 +4,7 @@ import { Button, Text, View } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { fetcher } from "./utils/fetcher";
 import { saveSession } from "./utils/secureStorage";
-import { router } from "expo-router";
+import { Link, router } from "expo-router";
 
 const AuthScreen = () => {
   const queryClient = useQueryClient();
@@ -16,9 +16,9 @@ const AuthScreen = () => {
         method: "POST",
         body: { accessToken },
       }),
-    onSuccess: async ({ token, userId }) => {
-      await saveSession(token, userId);
-      await queryClient.invalidateQueries({ queryKey: ["user"] });
+    onSuccess: async ({ token }) => {
+      await saveSession(token);
+      await queryClient.invalidateQueries({ queryKey: ["auth_check"] });
       router.replace("/");
     },
   });
@@ -39,6 +39,9 @@ const AuthScreen = () => {
     <View className="flex-1 justify-center items-center mb-20">
       <Text>Auth</Text>
       <Button title={"Sign in with Google"} onPress={signIn} />
+      <Link href="/" replace>
+        <Text className="text-main">Повернутись на головну сторінку</Text>
+      </Link>
     </View>
   );
 };

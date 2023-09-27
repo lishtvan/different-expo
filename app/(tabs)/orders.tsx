@@ -1,10 +1,18 @@
+import { useQuery } from "@tanstack/react-query";
 import { Text } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { View } from "tamagui";
+import { fetcher } from "../utils/fetcher";
 
 export default function OrdersScreen() {
+  const { data, isLoading } = useQuery({
+    queryKey: ["orders"],
+    queryFn: () => fetcher({ route: "/order/getMany" }),
+  });
+  if (isLoading) return null;
+  if (!data) return null;
   return (
-    <SafeAreaView>
-      <Text>Orders tab</Text>
-    </SafeAreaView>
+    <View>
+      <Text>order tab</Text>
+    </View>
   );
 }

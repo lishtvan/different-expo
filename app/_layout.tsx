@@ -1,17 +1,18 @@
-import FontAwesome from "@expo/vector-icons/FontAwesome";
-import { DefaultTheme, ThemeProvider } from "@react-navigation/native";
 import { useFonts } from "expo-font";
-import { SplashScreen, Stack } from "expo-router";
+import { SplashScreen, Stack, router } from "expo-router";
 import { useEffect } from "react";
 import "../global.css";
 import { AppStateStatus, Platform } from "react-native";
 import {
+  QueryCache,
   QueryClient,
   QueryClientProvider,
   focusManager,
 } from "@tanstack/react-query";
 import { useAppState } from "./hooks/useAppState";
 import { useOnlineManager } from "./hooks/useOnlineManager";
+import config from "./../tamagui.config";
+import { TamaguiProvider, Theme } from "tamagui";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -21,8 +22,8 @@ SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
-    SpaceMono: require("../assets/fonts/SpaceMono-Regular.ttf"),
-    ...FontAwesome.font,
+    Inter: require("@tamagui/font-inter/otf/Inter-Medium.otf"),
+    InterBold: require("@tamagui/font-inter/otf/Inter-Bold.otf"),
   });
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
@@ -50,7 +51,18 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  queryCache: new QueryCache({
+    onError: (err) => {
+      if (err instanceof Error) {
+        if (err.cause === 404) router.replace("/404");
+        if (err.cause === 500) router.replace("/500");
+        if (err.cause === 401) router.replace("/auth");
+      }
+    },
+  }),
+  defaultOptions: { queries: { retry: false } },
+});
 
 function RootLayoutNav() {
   useOnlineManager();
@@ -59,19 +71,27 @@ function RootLayoutNav() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider value={DefaultTheme}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="auth"
-            options={{
-              headerBackTitleVisible: false,
-              headerTitle: "",
-              headerShadowVisible: false,
-            }}
-          />
-        </Stack>
-      </ThemeProvider>
+      <TamaguiProvider config={config}>
+        <Theme name={"light"}>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="auth"
+              options={{
+                headerTitle: "",
+                headerShadowVisible: false,
+              }}
+            />
+            <Stack.Screen
+              name="listing/[listingId]"
+              options={{
+                headerTitle: "",
+                headerShadowVisible: false,
+              }}
+            />
+          </Stack>
+        </Theme>
+      </TamaguiProvider>
     </QueryClientProvider>
   );
 }
