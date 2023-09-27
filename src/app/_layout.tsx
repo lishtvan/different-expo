@@ -53,25 +53,23 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
+const erorrActions = {
+  404: () => router.replace('/404'),
+  500: () => router.replace('/500'),
+  401: () => router.replace('/auth'),
+};
+
+const globalErrorHandler = (err: unknown) => {
+  if (err instanceof Error) {
+    const errAction = erorrActions[err.cause as keyof typeof erorrActions];
+    if (errAction) errAction();
+    else throw err;
+  }
+};
+
 const queryClient = new QueryClient({
-  queryCache: new QueryCache({
-    onError: (err) => {
-      if (err instanceof Error) {
-        if (err.cause === 404) router.replace('/404');
-        if (err.cause === 500) router.replace('/500');
-        if (err.cause === 401) router.replace('/auth');
-      }
-    },
-  }),
-  mutationCache: new MutationCache({
-    onError: (err) => {
-      if (err instanceof Error) {
-        if (err.cause === 404) router.replace('/404');
-        if (err.cause === 500) router.replace('/500');
-        if (err.cause === 401) router.replace('/auth');
-      }
-    },
-  }),
+  queryCache: new QueryCache({ onError: globalErrorHandler }),
+  mutationCache: new MutationCache({ onError: globalErrorHandler }),
   defaultOptions: { queries: { retry: false } },
 });
 
