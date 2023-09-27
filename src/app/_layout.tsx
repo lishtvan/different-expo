@@ -1,4 +1,10 @@
-import { QueryCache, QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
+import {
+  MutationCache,
+  QueryCache,
+  QueryClient,
+  QueryClientProvider,
+  focusManager,
+} from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, router } from 'expo-router';
 import { useEffect } from 'react';
@@ -49,6 +55,15 @@ function onAppStateChange(status: AppStateStatus) {
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({
+    onError: (err) => {
+      if (err instanceof Error) {
+        if (err.cause === 404) router.replace('/404');
+        if (err.cause === 500) router.replace('/500');
+        if (err.cause === 401) router.replace('/auth');
+      }
+    },
+  }),
+  mutationCache: new MutationCache({
     onError: (err) => {
       if (err instanceof Error) {
         if (err.cause === 404) router.replace('/404');
