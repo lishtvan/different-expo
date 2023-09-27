@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useLocalSearchParams } from "expo-router";
 import { Text } from "react-native";
 import { View } from "tamagui";
-import { fetcher } from "../utils/fetcher";
+import { fetcher } from "../../utils/fetcher";
 
 export default function OrdersScreen() {
   const { listingId } = useLocalSearchParams();

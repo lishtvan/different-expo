@@ -44,7 +44,7 @@ const animations = createAnimations({
 const headingFont = createInterFont();
 
 const bodyFont = createInterFont();
-const config = createTamagui({
+const tamaguiConfig = createTamagui({
   animations,
 
   defaultTheme: "light",
@@ -105,7 +105,7 @@ const config = createTamagui({
     pointerCoarse: { pointer: "coarse" },
   }),
 });
-export type AppConfig = typeof config;
+export type AppConfig = typeof tamaguiConfig;
 declare module "tamagui" {
   // overrides TamaguiCustomConfig so your custom types
 
@@ -113,4 +113,4 @@ declare module "tamagui" {
 
   interface TamaguiCustomConfig extends AppConfig {}
 }
-export default config;
+export default tamaguiConfig;

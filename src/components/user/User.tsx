@@ -66,7 +66,7 @@ const User = () => {
       scrollEventThrottle={1000}
     >
       <Stack.Screen options={{ headerTitle: user.nickname }} />
-      <View className="flex flex-row gap-x-4 px-2">
+      <View className="flex flex-row gap-x-4 px-2 ">
         <Avatar circular size="$10">
           <Avatar.Image
             src={

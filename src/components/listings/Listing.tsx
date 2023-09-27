@@ -13,7 +13,7 @@ const Listing: FC<Props> = ({ listing }) => {
     <Link href={`/listing/${listing.id}`}>
       <View>
         <Image
-          className="aspect-[8.5/10] w-full object-cover"
+          className="aspect-[8.5/10] w-full object-cover "
           source={{ uri: `${listing.imageUrls[0]}` }}
           alt="item"
         />

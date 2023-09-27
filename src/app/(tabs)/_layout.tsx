@@ -1,9 +1,9 @@
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { Tabs } from "expo-router";
-import Colors from "../../constants/Colors";
 import { Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
-import { fetcher } from "../utils/fetcher";
 import { useQuery } from "@tanstack/react-query";
+import Colors from "../../constants/Colors";
+import { fetcher } from "../../utils/fetcher";
 
 export default function TabLayout() {
   const { data: user, isLoading } = useQuery({

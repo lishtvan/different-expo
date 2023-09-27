@@ -1,7 +1,7 @@
 import { useFonts } from "expo-font";
 import { SplashScreen, Stack, router } from "expo-router";
 import { useEffect } from "react";
-import "../global.css";
+import "../../global.css";
 import { AppStateStatus, Platform } from "react-native";
 import {
   QueryCache,
@@ -9,10 +9,10 @@ import {
   QueryClientProvider,
   focusManager,
 } from "@tanstack/react-query";
-import { useAppState } from "./hooks/useAppState";
-import { useOnlineManager } from "./hooks/useOnlineManager";
-import config from "./../tamagui.config";
 import { TamaguiProvider, Theme } from "tamagui";
+import { useOnlineManager } from "../hooks/useOnlineManager";
+import { useAppState } from "../hooks/useAppState";
+import tamaguiConfig from "../../tamagui.config";
 
 export { ErrorBoundary } from "expo-router";
 
@@ -71,7 +71,7 @@ function RootLayoutNav() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <TamaguiProvider config={config}>
+      <TamaguiProvider config={tamaguiConfig}>
         <Theme name={"light"}>
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />

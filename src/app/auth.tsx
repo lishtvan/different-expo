@@ -2,9 +2,9 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 import { Button, Text, View } from "react-native";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { fetcher } from "./utils/fetcher";
-import { saveSession } from "./utils/secureStorage";
 import { Link, router } from "expo-router";
+import { saveSession } from "../utils/secureStorage";
+import { fetcher } from "../utils/fetcher";
 
 const AuthScreen = () => {
   const queryClient = useQueryClient();

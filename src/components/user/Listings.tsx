@@ -45,7 +45,7 @@ const UserListings: FC<Props> = ({
 
   return (
     <View>
-      <View className="flex justify-between flex-row flex-wrap gap-y-4">
+      <View className="flex justify-between flex-row flex-wrap gap-y-4 ">
         {hits.map((listing) => (
           <View className={`w-[49.4%]`} key={listing.id}>
             <Listing listing={listing} />
