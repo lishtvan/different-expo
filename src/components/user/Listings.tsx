@@ -1,12 +1,9 @@
-import React, { FC, useEffect } from "react";
-import {
-  useClearRefinements,
-  useInfiniteHits,
-  useRefinementList,
-} from "react-instantsearch-core";
-import { Spinner, Text, View } from "tamagui";
-import { TListing } from "../../types";
-import Listing from "../listings/Listing";
+import React, { FC, useEffect } from 'react';
+import { useClearRefinements, useInfiniteHits, useRefinementList } from 'react-instantsearch-core';
+import { Spinner, Text, View } from 'tamagui';
+
+import { TListing } from '../../types';
+import Listing from '../listings/Listing';
 
 interface Props {
   isViewCloseToBottom: boolean;
@@ -23,14 +20,14 @@ const UserListings: FC<Props> = ({
 }) => {
   const { hits, isLastPage, showMore, results } = useInfiniteHits<TListing>();
 
-  const { refine: refineStatus } = useRefinementList({ attribute: "status" });
-  const { refine: refineSeller } = useRefinementList({ attribute: "sellerId" });
+  const { refine: refineStatus } = useRefinementList({ attribute: 'status' });
+  const { refine: refineSeller } = useRefinementList({ attribute: 'sellerId' });
   const clear = useClearRefinements();
 
   useEffect(() => {
     if (!sellerId) return;
     clear.refine();
-    refineStatus(showSold ? "SOLD" : "AVAILABLE");
+    refineStatus(showSold ? 'SOLD' : 'AVAILABLE');
     refineSeller(sellerId.toString());
   }, [sellerId, showSold]);
 
@@ -47,7 +44,7 @@ const UserListings: FC<Props> = ({
     <View>
       <View className="flex justify-between flex-row flex-wrap gap-y-4 ">
         {hits.map((listing) => (
-          <View className={`w-[49.4%]`} key={listing.id}>
+          <View className="w-[49.4%]" key={listing.id}>
             <Listing listing={listing} />
           </View>
         ))}
@@ -56,7 +53,7 @@ const UserListings: FC<Props> = ({
       {results && !results.nbHits ? (
         <View className="h-full mt-2 flex justify-center items-center">
           <Text className=" text-lg font-semibold">
-            {showSold ? "Ще немає проданих товарів" : "Оголошень ще немає"}
+            {showSold ? 'Ще немає проданих товарів' : 'Оголошень ще немає'}
           </Text>
         </View>
       ) : null}

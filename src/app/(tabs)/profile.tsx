@@ -1,6 +1,7 @@
-import React from "react";
-import { Redirect, useLocalSearchParams } from "expo-router";
-import User from "../../components/user/User";
+import { Redirect, useLocalSearchParams } from 'expo-router';
+import React from 'react';
+
+import User from '../../components/user/User';
 
 export default function ProfileScreen() {
   const params = useLocalSearchParams();

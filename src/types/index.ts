@@ -1,6 +1,6 @@
-import { SHORT_SIZES } from "../constants/listing";
+import { SHORT_SIZES } from '../constants/listing';
 
-export type Env = "local" | "production";
+export type Env = 'local' | 'production';
 
 export interface User {
   id: number;
@@ -44,7 +44,7 @@ export type TListing = {
   size: keyof typeof SHORT_SIZES;
   title: string;
   price: number;
-  status: "AVAILABLE" | "SOLD";
+  status: 'AVAILABLE' | 'SOLD';
   id: string;
 };
 

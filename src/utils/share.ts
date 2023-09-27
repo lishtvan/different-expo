@@ -1,4 +1,4 @@
-import { Alert, Share } from "react-native";
+import { Alert, Share } from 'react-native';
 
 export const shareLink = async (link: string) => {
   try {

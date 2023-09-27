@@ -1,20 +1,15 @@
-import { createAnimations } from "@tamagui/animations-react-native";
+import { createAnimations } from '@tamagui/animations-react-native';
+import { createInterFont } from '@tamagui/font-inter';
+import { createMedia } from '@tamagui/react-native-media-driver';
+import { shorthands } from '@tamagui/shorthands';
+import { themes, tokens } from '@tamagui/themes';
+import { createTamagui } from 'tamagui';
 
-import { createInterFont } from "@tamagui/font-inter";
-
-import { createMedia } from "@tamagui/react-native-media-driver";
-
-import { shorthands } from "@tamagui/shorthands";
-
-import { themes, tokens } from "@tamagui/themes";
-
-import { createTamagui } from "tamagui";
-
-export const mainColor = "#168c94";
+export const mainColor = '#168c94';
 
 const animations = createAnimations({
   bouncy: {
-    type: "spring",
+    type: 'spring',
 
     damping: 10,
 
@@ -24,7 +19,7 @@ const animations = createAnimations({
   },
 
   lazy: {
-    type: "spring",
+    type: 'spring',
 
     damping: 20,
 
@@ -32,7 +27,7 @@ const animations = createAnimations({
   },
 
   quick: {
-    type: "spring",
+    type: 'spring',
 
     damping: 20,
 
@@ -47,7 +42,7 @@ const bodyFont = createInterFont();
 const tamaguiConfig = createTamagui({
   animations,
 
-  defaultTheme: "light",
+  defaultTheme: 'light',
 
   shouldAddPrefersColorThemes: false,
 
@@ -65,8 +60,8 @@ const tamaguiConfig = createTamagui({
     ...themes,
     light_active_Button: {
       background: mainColor,
-      color: "white",
-      backgroundPress: "#167994",
+      color: 'white',
+      backgroundPress: '#167994',
     },
     light_Input: {
       borderColorFocus: mainColor,
@@ -100,13 +95,13 @@ const tamaguiConfig = createTamagui({
 
     tall: { minHeight: 820 },
 
-    hoverNone: { hover: "none" },
+    hoverNone: { hover: 'none' },
 
-    pointerCoarse: { pointer: "coarse" },
+    pointerCoarse: { pointer: 'coarse' },
   }),
 });
 export type AppConfig = typeof tamaguiConfig;
-declare module "tamagui" {
+declare module 'tamagui' {
   // overrides TamaguiCustomConfig so your custom types
 
   // work everywhere you import `tamagui`

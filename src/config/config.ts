@@ -4,31 +4,31 @@ export const config = {
       server: {
         nodes: [
           {
-            host: "127.0.0.1",
+            host: '127.0.0.1',
             port: 8108,
-            protocol: "http",
+            protocol: 'http',
           },
         ],
-        apiKey: "xyz",
+        apiKey: 'xyz',
       },
-      additionalSearchParameters: { query_by: "title,designer" },
+      additionalSearchParameters: { query_by: 'title,designer' },
     },
-    wsDomain: "ws://localhost:8000",
+    wsDomain: 'ws://localhost:8000',
   },
   production: {
     typesense: {
       server: {
         nodes: [
           {
-            host: "o2by0uh958xjn1igp-1.a1.typesense.net",
+            host: 'o2by0uh958xjn1igp-1.a1.typesense.net',
             port: 443,
-            protocol: "https",
+            protocol: 'https',
           },
         ],
-        apiKey: "LStsJHZnSoNFwVXzyfJU3D9xxvvjQcyg",
+        apiKey: 'LStsJHZnSoNFwVXzyfJU3D9xxvvjQcyg',
       },
-      additionalSearchParameters: { query_by: "title,designer" },
+      additionalSearchParameters: { query_by: 'title,designer' },
     },
-    wsDomain: "wss://api.different-marketplace.com",
+    wsDomain: 'wss://api.different-marketplace.com',
   },
 };

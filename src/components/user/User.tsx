@@ -1,45 +1,37 @@
-import { AntDesign } from "@expo/vector-icons";
-import { useScrollToTop } from "@react-navigation/native";
-import TypesenseInstantsearchAdapter from "typesense-instantsearch-adapter";
-import { InstantSearch } from "react-instantsearch-core";
-import { NativeScrollEvent } from "react-native";
-import React, { useCallback, useMemo, useRef, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Avatar, Button, ScrollView, Tabs, Text, View } from "tamagui";
+import { AntDesign } from '@expo/vector-icons';
+import { useScrollToTop } from '@react-navigation/native';
+import { useQuery } from '@tanstack/react-query';
+import { Stack, router, useLocalSearchParams } from 'expo-router';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
+import { InstantSearch } from 'react-instantsearch-core';
+import { NativeScrollEvent } from 'react-native';
+import { Avatar, Button, ScrollView, Tabs, Text, View } from 'tamagui';
+import TypesenseInstantsearchAdapter from 'typesense-instantsearch-adapter';
 
-import { Link, Stack, router, useLocalSearchParams } from "expo-router";
-import { mainColor } from "../../../tamagui.config";
-import UserListings from "./Listings";
-import { fetcher } from "../../utils/fetcher";
-import { config } from "../../config/config";
-import { Env } from "../../types";
-import { shareLink } from "../../utils/share";
-import { LISTINGS_COLLECTION } from "../../constants/listing";
+import UserListings from './Listings';
+import { mainColor } from '../../../tamagui.config';
+import { config } from '../../config/config';
+import { LISTINGS_COLLECTION } from '../../constants/listing';
+import { Env } from '../../types';
+import { fetcher } from '../../utils/fetcher';
+import { shareLink } from '../../utils/share';
 
-const isCloseToBottom = ({
-  layoutMeasurement,
-  contentOffset,
-  contentSize,
-}: NativeScrollEvent) => {
+const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }: NativeScrollEvent) => {
   const paddingToBottom = 20;
-  return (
-    layoutMeasurement.height + contentOffset.y >=
-    contentSize.height - paddingToBottom
-  );
+  return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
 };
 
 const User = () => {
   const params = useLocalSearchParams();
-  const [currentTab, setCurrentTab] = useState("available");
+  const [currentTab, setCurrentTab] = useState('available');
   const [isViewCloseToBottom, setIsViewCloseToBottom] = useState(false);
 
   const scrollRef = useRef(null);
   useScrollToTop(scrollRef);
 
   const { data: user, isLoading } = useQuery({
-    queryKey: ["user", params.nickname],
-    queryFn: () =>
-      fetcher({ body: { nickname: params.nickname }, route: "/user/get" }),
+    queryKey: ['user', params.nickname],
+    queryFn: () => fetcher({ body: { nickname: params.nickname }, route: '/user/get' }),
   });
 
   const { searchClient } = useMemo(() => {
@@ -63,15 +55,14 @@ const User = () => {
           setIsViewCloseToBottom(true);
         }
       }}
-      scrollEventThrottle={1000}
-    >
+      scrollEventThrottle={1000}>
       <Stack.Screen options={{ headerTitle: user.nickname }} />
       <View className="flex flex-row gap-x-4 px-2 ">
         <Avatar circular size="$10">
           <Avatar.Image
             src={
               user.avatarUrl ||
-              "https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg"
+              'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'
             }
           />
           <Avatar.Fallback bc="green" delayMs={5000} />
@@ -96,24 +87,22 @@ const User = () => {
         </View>
       </View>
       <View className="mt-2 px-3">
-        <Text fontSize={"$6"}>{user.description}</Text>
+        <Text fontSize="$6">{user.description}</Text>
       </View>
       <View className="flex-row mt-4 px-2 mb-3 items-center gap-x-4 w-full">
         <Button
-          onPress={() => router.push("/")}
+          onPress={() => router.push('/')}
           theme="active"
           className="w-[47%]"
           fontSize="$5"
-          size="$3"
-        >
-          {user.isOwnAccount ? "Редагувати" : "Повідомлення"}
+          size="$3">
+          {user.isOwnAccount ? 'Редагувати' : 'Повідомлення'}
         </Button>
         <Button
           onPress={() => shareLink(user.nickname)}
           fontSize="$5"
           className="w-[47%]"
-          size="$3"
-        >
+          size="$3">
           Поділитися
         </Button>
       </View>
@@ -125,41 +114,35 @@ const User = () => {
         }}
         orientation="horizontal"
         flexDirection="column"
-        borderRadius="$4"
-      >
+        borderRadius="$4">
         <Tabs.List unstyled>
           <Tabs.Tab
-            borderBottomWidth={currentTab === "available" && "$1"}
+            borderBottomWidth={currentTab === 'available' && '$1'}
             borderColor={mainColor}
-            backgroundColor={"white"}
-            borderRadius={"$0"}
+            backgroundColor="white"
+            borderRadius="$0"
             flex={1}
             value="available"
-            unstyled
-          >
+            unstyled>
             <AntDesign size={25} name="checkcircleo" />
           </Tabs.Tab>
           <Tabs.Tab
             borderColor={mainColor}
-            borderRadius={"$0"}
-            borderBottomWidth={currentTab === "sold" && "$1"}
-            backgroundColor={"white"}
+            borderRadius="$0"
+            borderBottomWidth={currentTab === 'sold' && '$1'}
+            backgroundColor="white"
             flex={1}
             value="sold"
-            unstyled
-          >
+            unstyled>
             <AntDesign size={25} name="closecircleo" />
           </Tabs.Tab>
         </Tabs.List>
       </Tabs>
       <View className="mt-1">
-        <InstantSearch
-          indexName={LISTINGS_COLLECTION}
-          searchClient={searchClient}
-        >
+        <InstantSearch indexName={LISTINGS_COLLECTION} searchClient={searchClient}>
           <UserListings
             sellerId={user.id}
-            showSold={currentTab === "sold"}
+            showSold={currentTab === 'sold'}
             setCloseToBottomFalse={setCloseToBottomFalse}
             isViewCloseToBottom={isViewCloseToBottom}
           />
