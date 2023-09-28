@@ -91,18 +91,20 @@ const User = () => {
       </View>
       <View className="flex-row mt-4 px-2 mb-3 items-center gap-x-4 w-full">
         <Button
-          onPress={() => router.push('/')}
+          onPress={() => router.push(user.isOwnAccount ? '/settings' : '/')}
+          size="$3"
           theme="active"
           className="w-[47%]"
           fontSize="$5"
-          size="$3">
+          borderRadius="$main">
           {user.isOwnAccount ? 'Редагувати' : 'Повідомлення'}
         </Button>
         <Button
           onPress={() => shareLink(user.nickname)}
-          fontSize="$5"
+          size="$3"
           className="w-[47%]"
-          size="$3">
+          fontSize="$5"
+          borderRadius="$main">
           Поділитися
         </Button>
       </View>

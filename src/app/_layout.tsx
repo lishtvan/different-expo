@@ -9,8 +9,8 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, router } from 'expo-router';
 import { useEffect } from 'react';
 import '../../global.css';
-import { AppStateStatus, Platform } from 'react-native';
-import { TamaguiProvider, Theme } from 'tamagui';
+import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
+import { TamaguiProvider, Text, Theme } from 'tamagui';
 
 import tamaguiConfig from '../../tamagui.config';
 import { useAppState } from '../hooks/useAppState';
@@ -94,6 +94,19 @@ function RootLayoutNav() {
             <Stack.Screen
               name="listing/[listingId]"
               options={{
+                headerTitle: '',
+                headerShadowVisible: false,
+              }}
+            />
+            <Stack.Screen
+              name="settings"
+              options={{
+                presentation: 'fullScreenModal',
+                headerLeft: () => (
+                  <TouchableOpacity onPress={() => router.back()}>
+                    <Text className="text-base">Скасувати</Text>
+                  </TouchableOpacity>
+                ),
                 headerTitle: '',
                 headerShadowVisible: false,
               }}

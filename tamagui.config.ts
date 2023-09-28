@@ -66,9 +66,18 @@ const tamaguiConfig = createTamagui({
     light_Input: {
       borderColorFocus: mainColor,
     },
+    light_TextArea: {
+      borderColorFocus: mainColor,
+    },
   },
 
-  tokens,
+  tokens: {
+    ...tokens,
+    radius: {
+      ...tokens.radius,
+      main: 16,
+    },
+  },
 
   media: createMedia({
     xs: { maxWidth: 660 },
