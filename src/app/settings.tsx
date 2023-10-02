@@ -2,9 +2,17 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Stack, router } from 'expo-router';
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
-import { Keyboard, SafeAreaView, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import {
+  Keyboard,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { Text, Avatar, Input, View } from 'tamagui';
 
+import { mainColor } from '../../tamagui.config';
 import TextArea from '../components/ui/TextArea';
 import { fetcher } from '../utils/fetcher';
 
@@ -62,7 +70,7 @@ const SettingsScreen = () => {
   if (isLoading) return null;
 
   return (
-    <SafeAreaView className="flex-1">
+    <SafeAreaView className="flex-1 ">
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -72,12 +80,28 @@ const SettingsScreen = () => {
           ),
         }}
       />
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="gap-y-3 flex-1 px-3">
-          <Avatar circular size="$10" className="mb-2 mx-auto">
-            <Avatar.Image src="https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg" />
-            <Avatar.Fallback bc="green" delayMs={5000} />
-          </Avatar>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+        }}>
+        <View className="gap-y-3 flex-1 px-3 mt-1">
+          <View className="mx-auto">
+            <Pressable style={styles.container} onPress={() => {}}>
+              <Avatar circular size="$10" className="mx-auto">
+                <Avatar.Image
+                  className="bg-gradient-to-l"
+                  src={
+                    user.avatarUrl ||
+                    'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'
+                  }
+                />
+                <Avatar.Fallback bc="green" delayMs={5000} />
+              </Avatar>
+              <View style={styles.plusBadge}>
+                <Text style={styles.plusText}>+</Text>
+              </View>
+            </Pressable>
+          </View>
           <View className="gap-y-3">
             <Controller
               control={control}
@@ -143,5 +167,31 @@ const SettingsScreen = () => {
     </SafeAreaView>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    width: 110,
+    height: 110,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  plusBadge: {
+    position: 'absolute',
+    right: 12,
+    bottom: 4,
+    backgroundColor: mainColor, // Customize the badge background color
+    width: 26,
+    height: 26,
+    borderRadius: 13,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  plusText: {
+    color: 'white', // Customize the text color
+    fontSize: 16, // Customize the text size
+    fontWeight: 'bold',
+  },
+});
 
 export default SettingsScreen;
