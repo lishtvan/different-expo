@@ -1,4 +1,4 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
@@ -43,7 +43,7 @@ const User = () => {
     setIsViewCloseToBottom(false);
   }, []);
 
-  if (isLoading) return null;
+  if (isLoading) return <Stack.Screen options={{ headerTitle: params?.nickname as string }} />;
 
   return (
     <ScrollView
@@ -56,7 +56,7 @@ const User = () => {
         }
       }}
       scrollEventThrottle={1000}>
-      <Stack.Screen options={{ headerTitle: user.nickname }} />
+      <Stack.Screen options={{ headerTitle: params?.nickname as string }} />
       <View className="flex flex-row gap-x-4 px-2 ">
         <Avatar circular size="$10">
           <Avatar.Image
@@ -86,8 +86,21 @@ const User = () => {
           </View>
         </View>
       </View>
-      <View className="mt-2 px-3">
-        <Text fontSize="$6">{user.description}</Text>
+
+      <View>
+        {user.location && (
+          <View className="flex-row mt-2 items-center px-1.5">
+            <EvilIcons size={25} style={{ padding: 0, opacity: 0.6 }} name="location" />
+            <Text opacity={0.6} fontSize="$6">
+              {user.location}
+            </Text>
+          </View>
+        )}
+        {user.bio && (
+          <Text fontSize="$6" className="mt-2 px-3">
+            {user.bio.replace(/\n+/g, '\n')}
+          </Text>
+        )}
       </View>
       <View className="flex-row mt-4 px-2 mb-3 items-center gap-x-4 w-full">
         <Button

@@ -4,7 +4,7 @@ interface Fetcher {
   (input: {
     route: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
-    body?: { [key: string]: unknown };
+    body?: { [key: string]: unknown } | unknown;
     domain?: string;
   }): Promise<any>;
 }
