@@ -1,20 +1,24 @@
+import { Entypo } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import * as ImagePicker from 'expo-image-picker';
 import { Stack, router } from 'expo-router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
+  Alert,
   Keyboard,
   Pressable,
   SafeAreaView,
-  StyleSheet,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+import Modal from 'react-native-modal';
 import { Text, Avatar, Input, View } from 'tamagui';
 
 import { mainColor } from '../../tamagui.config';
 import TextArea from '../components/ui/TextArea';
 import { fetcher } from '../utils/fetcher';
+import { uploadImage } from '../utils/uploadImage';
 
 const InputValidationError = ({ message }: { message: string }) => (
   <Text className="my-1 ml-2 text-red-600">{message}</Text>
@@ -28,7 +32,13 @@ const validationErrors = {
 };
 
 const SettingsScreen = () => {
+  const [newAvatarUrl, setNewAvatarUrl] = useState<string | null>();
+  const [isUploading, setIsUploading] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
   const queryClient = useQueryClient();
+  const [previewImage, setPreviewImage] = useState<string>();
+
+  const [status, requestPermission] = ImagePicker.useCameraPermissions();
   const { data: user, isLoading } = useQuery({
     queryKey: ['auth_check'],
     queryFn: () => fetcher({ route: '/auth/check', method: 'GET' }),
@@ -65,41 +75,93 @@ const SettingsScreen = () => {
     },
   });
 
-  const onSubmit = (data: unknown) => mutation.mutate(data);
+  useEffect(() => {
+    if (!status) (async () => await requestPermission())();
+  }, [status]);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+  const closeModal = () => {
+    setModalVisible(false);
+  };
+  const onSubmit = (data: Record<string, unknown>) => {
+    mutation.mutate({ ...data, avatarUrl: newAvatarUrl });
+  };
+
+  const pickImage = async () => {
+    if (!status?.granted) {
+      Alert.alert('', 'Потрібно надати доступ до галереї в налаштуваннях вашого девайсу.');
+      return;
+    }
+    try {
+      const result = await ImagePicker.launchImageLibraryAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        aspect: [1, 10],
+        quality: 1,
+        allowsEditing: true,
+      });
+      if (isModalVisible) setTimeout(() => closeModal(), 50);
+      if (!result.assets?.length) return;
+      const image = result.assets[0];
+      if (image.fileSize && image.fileSize > 10000000) {
+        Alert.alert('', 'Розмір фото не повинен перевищувати 10 Мб');
+        return;
+      }
+      setPreviewImage(image.uri);
+      setIsUploading(true);
+
+      const imageUrl = await uploadImage(image);
+      setNewAvatarUrl(imageUrl);
+      setIsUploading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteAvatar = () => {
+    closeModal();
+    setTimeout(() => setNewAvatarUrl(null), 500);
+  };
+
+  const getCurrentAvatarUrl = () => {
+    if (isUploading) return previewImage;
+    const defaultAvatarUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg';
+    if (newAvatarUrl === null) return defaultAvatarUrl;
+    return newAvatarUrl || user.avatarUrl || defaultAvatarUrl;
+  };
 
   if (isLoading) return null;
-
   return (
-    <SafeAreaView className="flex-1 ">
+    <SafeAreaView className="flex-1">
       <Stack.Screen
         options={{
           headerRight: () => (
-            <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-              <Text className="text-base">Зберегти</Text>
+            <TouchableOpacity disabled={isUploading} onPress={handleSubmit(onSubmit)}>
+              <Text className="text-base">{isUploading ? 'Завантаження...' : 'Зберегти'}</Text>
             </TouchableOpacity>
           ),
         }}
       />
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}>
-        <View className="gap-y-3 flex-1 px-3 mt-1">
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <View className="gap-y-3 flex-1 px-3">
           <View className="mx-auto">
-            <Pressable style={styles.container} onPress={() => {}}>
+            <Pressable
+              disabled={isUploading}
+              className="w-[110px] h-[110px] relative items-center justify-center"
+              onPress={() => {
+                if (newAvatarUrl || user.avatarUrl) toggleModal();
+                else pickImage();
+              }}>
               <Avatar circular size="$10" className="mx-auto">
-                <Avatar.Image
-                  className="bg-gradient-to-l"
-                  src={
-                    user.avatarUrl ||
-                    'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'
-                  }
-                />
-                <Avatar.Fallback bc="green" delayMs={5000} />
+                <Avatar.Image blurRadius={isUploading ? 100 : 0} src={getCurrentAvatarUrl()} />
+                <Avatar.Fallback bc="red" delayMs={5000} />
               </Avatar>
-              <View style={styles.plusBadge}>
-                <Text style={styles.plusText}>+</Text>
-              </View>
+              {!isUploading && (
+                <View className="absolute right-3 bottom-1 bg-white rounded-full">
+                  <Entypo size={26} name="circle-with-plus" color={mainColor} />
+                </View>
+              )}
             </Pressable>
           </View>
           <View className="gap-y-3">
@@ -162,36 +224,35 @@ const SettingsScreen = () => {
             {errors.location &&
               validationErrors[errors.location.type as keyof typeof validationErrors]}
           </View>
+          <Modal
+            style={{ justifyContent: 'flex-end', margin: 0 }}
+            onBackdropPress={closeModal}
+            isVisible={isModalVisible}
+            backdropOpacity={0.3}
+            swipeDirection={['down']}
+            onSwipeComplete={closeModal}>
+            <View className="mx-4 mb-16 bg-white rounded-2xl">
+              <TouchableOpacity
+                onPress={pickImage}
+                className="p-4 border-b-2 border-b-[#eeeeee] flex-row justify-center">
+                <Text className="text-xl">Обрати фото</Text>
+              </TouchableOpacity>
+              {(newAvatarUrl || user.avatarUrl) && (
+                <TouchableOpacity
+                  onPress={deleteAvatar}
+                  className="p-4 border-b-2 border-b-[#eeeeee] flex-row justify-center">
+                  <Text className="text-xl text-red-600">Видалити фото</Text>
+                </TouchableOpacity>
+              )}
+              <TouchableOpacity onPress={closeModal} className="p-4 flex-row justify-center">
+                <Text className="text-xl">Скасувати</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
         </View>
       </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    width: 110,
-    height: 110,
-    position: 'relative',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  plusBadge: {
-    position: 'absolute',
-    right: 12,
-    bottom: 4,
-    backgroundColor: mainColor, // Customize the badge background color
-    width: 26,
-    height: 26,
-    borderRadius: 13,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  plusText: {
-    color: 'white', // Customize the text color
-    fontSize: 16, // Customize the text size
-    fontWeight: 'bold',
-  },
-});
 
 export default SettingsScreen;
