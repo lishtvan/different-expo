@@ -2,8 +2,11 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Link, router } from 'expo-router';
 import React from 'react';
-import { Button, Text, View } from 'react-native';
+import { Image } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Button, View, Text } from 'tamagui';
 
+import { mainColor } from '../../tamagui.config';
 import { fetcher } from '../utils/fetcher';
 import { saveSession } from '../utils/secureStorage';
 
@@ -36,13 +39,38 @@ const AuthScreen = () => {
   };
 
   return (
-    <View className="flex-1 justify-center items-center mb-20">
-      <Text>Auth</Text>
-      <Button title="Sign in with Google" onPress={signIn} />
-      <Link href="/" replace>
-        <Text className="text-main">Повернутись на головну сторінку</Text>
+    <SafeAreaView className="flex-1 items-center justify-between ">
+      <View className="flex-1 items-center justify-around">
+        <View className="items-center">
+          <Image
+            style={{ width: 250, height: 50 }}
+            source={require('../../assets/images/logo.jpeg')}
+          />
+          <View className=" px-4 my-10">
+            <Text className="text-xl font-medium">
+              Увійдіть, щоб створити оголошення або придбати те, що вам потрібно.
+            </Text>
+          </View>
+        </View>
+        <Button
+          onPress={signIn}
+          size="$4"
+          icon={
+            <Image
+              style={{ width: 30, height: 30 }}
+              source={require('../../assets/images/google.jpeg')}
+            />
+          }
+          pressStyle={{ backgroundColor: 'white', borderColor: mainColor }}
+          className="w-full border border-black bg-white justify-start"
+          borderRadius="$main">
+          <Text fontSize="$7">Увійти за допомогою Google</Text>
+        </Button>
+      </View>
+      <Link className="mb-10" href="/" replace>
+        <Text className="text-blue-500  text-base">Повернутись на головну сторінку</Text>
       </Link>
-    </View>
+    </SafeAreaView>
   );
 };
 
