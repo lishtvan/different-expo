@@ -16,20 +16,10 @@ import Modal from 'react-native-modal';
 import { Text, Avatar, Input, View } from 'tamagui';
 
 import { mainColor } from '../../tamagui.config';
+import { InputValidationError, validationErrors } from '../components/ui/InputValidationErrors';
 import TextArea from '../components/ui/TextArea';
 import { fetcher } from '../utils/fetcher';
 import { uploadImage } from '../utils/uploadImage';
-
-const InputValidationError = ({ message }: { message: string }) => (
-  <Text className="my-1 ml-2 text-red-600">{message}</Text>
-);
-
-const validationErrors = {
-  required: <InputValidationError message="Це поле є обов`язковим." />,
-  pattern: <InputValidationError message="Дозволено лише a-z, 0-9 та підкреслення." />,
-  minLength: <InputValidationError message="Занадто коротко." />,
-  maxLength: <InputValidationError message="Занадто довго." />,
-};
 
 const SettingsScreen = () => {
   const [newAvatarUrl, setNewAvatarUrl] = useState<string | null>();
