@@ -4,7 +4,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { InstantSearch } from 'react-instantsearch-core';
-import { NativeScrollEvent } from 'react-native';
+import { NativeScrollEvent, RefreshControl } from 'react-native';
 import { Avatar, Button, ScrollView, Tabs, Text, View } from 'tamagui';
 import TypesenseInstantsearchAdapter from 'typesense-instantsearch-adapter';
 
@@ -12,6 +12,7 @@ import UserListings from './Listings';
 import { mainColor } from '../../../tamagui.config';
 import { config } from '../../config/config';
 import { LISTINGS_COLLECTION } from '../../constants/listing';
+import { useRefresh } from '../../hooks/useRefresh';
 import { Env } from '../../types';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
@@ -29,10 +30,16 @@ const User = () => {
   const scrollRef = useRef(null);
   useScrollToTop(scrollRef);
 
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    refetch,
+  } = useQuery({
     queryKey: ['user', params.nickname],
     queryFn: () => fetcher({ body: { nickname: params.nickname }, route: '/user/get' }),
   });
+
+  const { refreshing, handleRefresh } = useRefresh(refetch);
 
   const { searchClient } = useMemo(() => {
     const env = process.env.EXPO_PUBLIC_ENVIRONMENT as Env;
@@ -47,6 +54,7 @@ const User = () => {
 
   return (
     <ScrollView
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       ref={scrollRef}
       stickyHeaderIndices={[4]}
       className="flex-1 "
