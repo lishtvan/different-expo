@@ -64,7 +64,8 @@ const SettingsScreen = () => {
         method: 'POST',
         body: data,
       }),
-    onSuccess: async () => {
+    onSuccess: async (res) => {
+      if (res.error) return;
       const { nickname } = getValues();
       await Promise.all([
         queryClient.invalidateQueries({ queryKey: ['auth_check'] }),
@@ -184,6 +185,9 @@ const SettingsScreen = () => {
             />
             {errors.nickname &&
               validationErrors[errors.nickname.type as keyof typeof validationErrors]}
+            {mutation.data?.error && (
+              <InputValidationError message={mutation.data.errors.nickname} />
+            )}
           </View>
 
           <View>

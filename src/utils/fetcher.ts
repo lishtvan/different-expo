@@ -30,14 +30,8 @@ export const fetcher: Fetcher = async ({
       headers,
       body: JSON.stringify(body),
     });
-  } else {
-    response = await fetch(`${domain}${route}`, { method, headers });
-  }
+  } else response = await fetch(`${domain}${route}`, { method, headers });
 
-  if (response.status === 200) {
-    const json = await response.json();
-    return json;
-  }
   if (response.status === 401) {
     if (route === '/auth/check') return null;
     else throw new Error('Not authorized', { cause: 401 });
@@ -48,5 +42,9 @@ export const fetcher: Fetcher = async ({
   }
 
   const json = await response.json();
+  if (json.error) {
+    const { message } = json;
+    return { ...json, errors: JSON.parse(message) };
+  }
   return json;
 };
