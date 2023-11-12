@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Adapt, Button, Input, ListItem, Select, Sheet, Text, View } from 'tamagui';
+import { Adapt, Button, Input, ListItem, Select, Separator, Sheet, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { InputValidationError, validationErrors } from '../../components/ui/InputValidationErrors';
@@ -186,12 +186,15 @@ export default function SellScreen() {
                       <Select.Group>
                         {CONDITIONS.map((item, i) => {
                           return (
-                            <Select.Item index={i} key={item} value={item}>
-                              <Select.ItemText className="text-base">{item}</Select.ItemText>
-                              <Select.ItemIndicator marginLeft="auto">
-                                <AntDesign color={mainColor} name="check" size={20} />
-                              </Select.ItemIndicator>
-                            </Select.Item>
+                            <View key={item}>
+                              <Select.Item index={i} value={item}>
+                                <Select.ItemText className="text-base">{item}</Select.ItemText>
+                                <Select.ItemIndicator marginLeft="auto">
+                                  <AntDesign color={mainColor} name="check" size={20} />
+                                </Select.ItemIndicator>
+                              </Select.Item>
+                              <Separator borderWidth={1} />
+                            </View>
                           );
                         })}
                       </Select.Group>
@@ -257,13 +260,15 @@ export default function SellScreen() {
                             </View>
 
                             {(Object.keys(CATEGORIES) as Section[]).map((section) => (
-                              <ListItem
-                                key={section}
-                                className="bg-[#f8f8f8] text-red-500"
-                                pressStyle={{ backgroundColor: '#f0f0f0' }}
-                                onPress={() => setSelectedSection(section)}>
-                                <ListItem.Text className="text-base">{section}</ListItem.Text>
-                              </ListItem>
+                              <View key={section}>
+                                <ListItem
+                                  className="bg-[#f8f8f8] text-red-500"
+                                  pressStyle={{ backgroundColor: '#f0f0f0' }}
+                                  onPress={() => setSelectedSection(section)}>
+                                  <ListItem.Text className="text-base">{section}</ListItem.Text>
+                                </ListItem>
+                                <Separator borderWidth={1} />
+                              </View>
                             ))}
                           </>
                         )}
@@ -279,12 +284,15 @@ export default function SellScreen() {
                             </View>
 
                             {CATEGORIES[selectedSection].map((item, i) => (
-                              <Select.Item index={i} key={item} value={item}>
-                                <Select.ItemText className="text-base">{item}</Select.ItemText>
-                                <Select.ItemIndicator marginLeft="auto">
-                                  <AntDesign color={mainColor} name="check" size={20} />
-                                </Select.ItemIndicator>
-                              </Select.Item>
+                              <View key={item}>
+                                <Select.Item index={i} value={item}>
+                                  <Select.ItemText className="text-base">{item}</Select.ItemText>
+                                  <Select.ItemIndicator marginLeft="auto">
+                                    <AntDesign color={mainColor} name="check" size={20} />
+                                  </Select.ItemIndicator>
+                                </Select.Item>
+                                <Separator borderWidth={1} />
+                              </View>
                             ))}
                           </>
                         )}
@@ -360,12 +368,15 @@ export default function SellScreen() {
                         {sectionByCategory &&
                           SIZES[sectionByCategory as Section].map((item, i) => {
                             return (
-                              <Select.Item index={i} key={item} value={item}>
-                                <Select.ItemText className="text-base">{item}</Select.ItemText>
-                                <Select.ItemIndicator marginLeft="auto">
-                                  <AntDesign color={mainColor} name="check" size={20} />
-                                </Select.ItemIndicator>
-                              </Select.Item>
+                              <View key={item}>
+                                <Select.Item index={i} value={item}>
+                                  <Select.ItemText className="text-base">{item}</Select.ItemText>
+                                  <Select.ItemIndicator marginLeft="auto">
+                                    <AntDesign color={mainColor} name="check" size={20} />
+                                  </Select.ItemIndicator>
+                                </Select.Item>
+                                <Separator borderWidth={1} />
+                              </View>
                             );
                           })}
                       </Select.Group>
