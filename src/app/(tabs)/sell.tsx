@@ -2,13 +2,14 @@ import { AntDesign, Entypo } from '@expo/vector-icons';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Adapt, Button, Input, ListItem, Select, Separator, Sheet, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { InputValidationError, validationErrors } from '../../components/ui/InputValidationErrors';
 import TextArea from '../../components/ui/TextArea';
-import { CATEGORIES, CONDITIONS, SIZES, Section } from '../../constants/listing';
+import { CATEGORIES, CONDITIONS, SIZES, Section, TAGS } from '../../constants/listing';
 
 const getSectionByCategory = (category: string) => {
   const section = Object.keys(CATEGORIES).find((key) =>
@@ -36,6 +37,14 @@ export default function SellScreen() {
       size: '',
     },
   });
+  const [open, setOpen] = useState(false);
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [tags, setTags] = useState(() => TAGS.map((tag) => ({ label: tag, value: tag })));
+
+  useEffect(() => {
+    if (selectedTags?.length === 3) setOpen(false);
+  }, [selectedTags]);
+
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
 
   const onSubmit = (data: Record<string, unknown>) => {
@@ -386,6 +395,34 @@ export default function SellScreen() {
             />
             {errors.size && validationErrors[errors.size.type as keyof typeof validationErrors]}
           </View>
+          <View>
+            <Text className="mb-1 ml-2 text-base">Теги</Text>
+            <DropDownPicker
+              open={open}
+              multiple
+              max={3}
+              closeAfterSelecting
+              placeholder="Зробіть пошук свого оголошення простішим"
+              dropDownDirection="TOP"
+              showBadgeDot={false}
+              mode="BADGE"
+              placeholderStyle={{ color: '#8f8f8f', paddingLeft: 6 }}
+              arrowIconStyle={{ marginRight: 6 }}
+              dropDownContainerStyle={{ borderColor: '#ebebeb', borderRadius: 16 }}
+              style={{ backgroundColor: '#f8f8f8', borderRadius: 16, borderColor: '#ebebeb' }}
+              badgeDotColors={[mainColor]}
+              containerStyle={{ borderRadius: 16, backgroundColor: '#f8f8f8' }}
+              TickIconComponent={() => <AntDesign color={mainColor} name="check" size={23} />}
+              value={selectedTags}
+              items={tags}
+              props={{ activeOpacity: 0.5 }}
+              setOpen={setOpen}
+              setValue={setSelectedTags}
+              setItems={setTags}
+              listMode="SCROLLVIEW"
+            />
+          </View>
+
           <Button
             onPress={handleSubmit(onSubmit)}
             size="$3"
