@@ -1,15 +1,19 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import { router, useLocalSearchParams } from 'expo-router';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
+import { Keyboard, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Adapt, Button, Input, ListItem, Select, Separator, Sheet, Text, View } from 'tamagui';
 
-import { mainColor } from '../../../tamagui.config';
-import { InputValidationError, validationErrors } from '../../components/ui/InputValidationErrors';
-import TextArea from '../../components/ui/TextArea';
-import { CATEGORIES, CONDITIONS, SIZES, Section, TAGS } from '../../constants/listing';
+import { mainColor } from '../../../../tamagui.config';
+import {
+  InputValidationError,
+  validationErrors,
+} from '../../../components/ui/InputValidationErrors';
+import TextArea from '../../../components/ui/TextArea';
+import { CATEGORIES, CONDITIONS, SIZES, Section, TAGS } from '../../../constants/listing';
 
 const getSectionByCategory = (category: string) => {
   const section = Object.keys(CATEGORIES).find((key) =>
@@ -19,16 +23,21 @@ const getSectionByCategory = (category: string) => {
 };
 
 export default function SellScreen() {
+  const params = useLocalSearchParams<{ designer: string }>();
+
   const {
     control,
     handleSubmit,
     getValues,
     formState: { errors },
     watch,
+    setValue,
     resetField,
+    clearErrors,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
+      designer: '',
       title: '',
       price: '',
       description: '',
@@ -37,6 +46,13 @@ export default function SellScreen() {
       size: '',
     },
   });
+
+  useEffect(() => {
+    if (!params?.designer) return;
+    setValue('designer', params.designer);
+    if (errors.designer) clearErrors('designer');
+  }, [params]);
+
   const [open, setOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [tags, setTags] = useState(() => TAGS.map((tag) => ({ label: tag, value: tag })));
@@ -83,6 +99,29 @@ export default function SellScreen() {
             {errors.title && validationErrors[errors.title.type as keyof typeof validationErrors]}
           </View>
           <View>
+            <Text className="mb-1 ml-2 text-base">Дизайнер *</Text>
+            <Pressable onPress={() => router.push('/sell/designer_search')}>
+              <View pointerEvents="none">
+                <Controller
+                  control={control}
+                  rules={{ required: true }}
+                  render={({ field: { value } }) => (
+                    <Input
+                      size="$4"
+                      borderRadius="$main"
+                      placeholder="Оберіть дизайнера"
+                      className="w-full"
+                      value={value}
+                    />
+                  )}
+                  name="designer"
+                />
+                {errors.designer &&
+                  validationErrors[errors.designer.type as keyof typeof validationErrors]}
+              </View>
+            </Pressable>
+          </View>
+          <View>
             <Text className="mb-1 ml-2 text-base">Опис</Text>
             <Controller
               control={control}
@@ -117,20 +156,16 @@ export default function SellScreen() {
                 },
               }}
               render={({ field: { onChange, onBlur, value } }) => (
-                <View>
-                  <Text className="absolute z-50  top-[18.5%] left-3 text-lg">₴</Text>
-                  <Input
-                    size="$4"
-                    paddingLeft={30}
-                    keyboardType="number-pad"
-                    borderRadius="$main"
-                    placeholder="Введіть ціну в гривнях"
-                    className="w-full"
-                    onBlur={onBlur}
-                    onChangeText={onChange}
-                    value={value}
-                  />
-                </View>
+                <Input
+                  size="$4"
+                  keyboardType="number-pad"
+                  borderRadius="$main"
+                  placeholder="Введіть ціну в гривнях"
+                  className="w-full"
+                  onBlur={onBlur}
+                  onChangeText={onChange}
+                  value={value}
+                />
               )}
               name="price"
             />

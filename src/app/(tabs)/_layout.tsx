@@ -1,5 +1,4 @@
-import { Entypo, Feather, MaterialIcons } from '@expo/vector-icons';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { Entypo, Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Tabs } from 'expo-router';
 
@@ -31,14 +30,13 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="sell"
+        name="orders"
         options={{
-          title: 'Продати',
-          headerTitle: 'Створіть нове оголошення',
+          title: 'Замовлення',
           tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              size={32}
-              name="add-circle-outline"
+            <MaterialCommunityIcons
+              size={35}
+              name="truck-delivery-outline"
               color={color}
               style={{ marginBottom: -3 }}
             />
@@ -46,11 +44,17 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="orders"
+        name="sell"
         options={{
-          title: 'Замовлення',
+          title: 'Продати',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
-            <FontAwesome size={31} name="handshake-o" color={color} style={{ marginBottom: -3 }} />
+            <MaterialIcons
+              size={32}
+              name="add-circle-outline"
+              color={color}
+              style={{ marginBottom: -3 }}
+            />
           ),
         }}
       />
