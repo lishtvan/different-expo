@@ -159,7 +159,7 @@ export default function SellScreen() {
                   <Adapt when="sm" platform="native">
                     <Sheet
                       native
-                      snapPoints={[40]}
+                      snapPoints={[25]}
                       modal
                       dismissOnSnapToBottom
                       animationConfig={{
@@ -196,10 +196,10 @@ export default function SellScreen() {
                         {CONDITIONS.map((item, i) => {
                           return (
                             <View key={item}>
-                              <Select.Item className="py-4" index={i} value={item}>
-                                <Select.ItemText className="text-lg">{item}</Select.ItemText>
+                              <Select.Item className="py-2" index={i} value={item}>
+                                <Select.ItemText className="text-base">{item}</Select.ItemText>
                                 <Select.ItemIndicator marginLeft="auto">
-                                  <AntDesign color={mainColor} name="check" size={30} />
+                                  <AntDesign color={mainColor} name="check" size={25} />
                                 </Select.ItemIndicator>
                               </Select.Item>
                               <Separator borderWidth={1} />
@@ -237,7 +237,7 @@ export default function SellScreen() {
                   <Adapt when="sm" platform="native">
                     <Sheet
                       native
-                      snapPoints={[80]}
+                      snapPoints={[50]}
                       modal
                       dismissOnSnapToBottom
                       animationConfig={{
@@ -265,16 +265,16 @@ export default function SellScreen() {
                         {!selectedSection && (
                           <>
                             <View className="p-4">
-                              <Text className="font-bold text-xl">Оберіть секцію</Text>
+                              <Text className="font-bold text-lg">Оберіть секцію</Text>
                             </View>
 
                             {(Object.keys(CATEGORIES) as Section[]).map((section) => (
                               <View key={section}>
                                 <ListItem
-                                  className="bg-[#f8f8f8] py-4"
+                                  className="bg-[#f8f8f8] py-2"
                                   pressStyle={{ backgroundColor: '#f0f0f0' }}
                                   onPress={() => setSelectedSection(section)}>
-                                  <ListItem.Text className="text-lg">{section}</ListItem.Text>
+                                  <ListItem.Text className="text-base">{section}</ListItem.Text>
                                 </ListItem>
                                 <Separator borderWidth={1} />
                               </View>
@@ -283,19 +283,19 @@ export default function SellScreen() {
                         )}
                         {selectedSection && (
                           <>
-                            <View className="flex-row items-center justify-between p-4 ">
-                              <Text className="font-bold text-xl">Оберіть категорію</Text>
+                            <View className="flex-row items-center justify-between p-4">
+                              <Text className="font-bold text-lg">Оберіть категорію</Text>
                               <TouchableOpacity onPress={() => setSelectedSection(null)}>
-                                <Text className="text-main text-lg">Повернутись</Text>
+                                <Text className="text-main text-base">Повернутись</Text>
                               </TouchableOpacity>
                             </View>
 
                             {CATEGORIES[selectedSection].map((item, i) => (
                               <View key={item}>
-                                <Select.Item className="py-4" index={i} value={item}>
-                                  <Select.ItemText className="text-lg">{item}</Select.ItemText>
+                                <Select.Item className="py-2" index={i} value={item}>
+                                  <Select.ItemText className="text-base">{item}</Select.ItemText>
                                   <Select.ItemIndicator marginLeft="auto">
-                                    <AntDesign color={mainColor} name="check" size={30} />
+                                    <AntDesign color={mainColor} name="check" size={25} />
                                   </Select.ItemIndicator>
                                 </Select.Item>
                                 <Separator borderWidth={1} />
@@ -376,10 +376,10 @@ export default function SellScreen() {
                           SIZES[sectionByCategory as Section].map((item, i) => {
                             return (
                               <View key={item}>
-                                <Select.Item className="py-4" index={i} value={item}>
-                                  <Select.ItemText className="text-lg">{item}</Select.ItemText>
+                                <Select.Item className="py-2" index={i} value={item}>
+                                  <Select.ItemText className="text-base">{item}</Select.ItemText>
                                   <Select.ItemIndicator marginLeft="auto">
-                                    <AntDesign color={mainColor} name="check" size={30} />
+                                    <AntDesign color={mainColor} name="check" size={25} />
                                   </Select.ItemIndicator>
                                 </Select.Item>
                                 <Separator borderWidth={1} />
