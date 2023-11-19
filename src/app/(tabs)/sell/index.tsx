@@ -1,4 +1,5 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import validateCard from 'card-validator';
 import { router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
 import { useEffect, useMemo, useState } from 'react';
@@ -41,6 +42,7 @@ export default function SellScreen() {
     setValue,
     resetField,
     clearErrors,
+    setError,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
@@ -52,6 +54,7 @@ export default function SellScreen() {
       category: '',
       size: '',
       phone: '+380',
+      cardNumber: '',
     },
   });
 
@@ -78,8 +81,16 @@ export default function SellScreen() {
   }, [watchCategory]);
 
   const onSubmit = (data: Record<string, unknown>) => {
+    const { isValid } = validateCard.number(data.cardNumber);
+    if (!isValid) {
+      setError('cardNumber', { type: 'validate', message: 'Недійсний номер карти' });
+      return;
+    }
+
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
     const phone = parseInt(phoneNumberString!.number, 10);
+    const cardNumber = (data.cardNumber as string).replace(/ /g, '');
+    console.log(cardNumber);
     console.log(phone);
     console.log(data);
   };
@@ -507,14 +518,34 @@ export default function SellScreen() {
       </View>
       <View>
         <Text className="mb-1 ml-2 text-base">Номер карти *</Text>
-        <Input
-          size="$4"
-          autoCorrect={false}
-          borderRadius="$main"
-          placeholder="Введіть номер банківської карти"
-          className="w-full"
+        <Controller
+          control={control}
+          rules={{
+            required: 'Це поле є обовʼязковим.',
+            validate: (value) => {
+              const { card, isPotentiallyValid } = validateCard.number(value);
+              if (!isPotentiallyValid) return 'Недійсний номер карти.';
+              if (!card) return true;
+              if (card.niceType === 'Visa' || card.niceType === 'Mastercard') return true;
+              return 'Дозволені лише картки Visa та Mastercard.';
+            },
+          }}
+          render={({ field: { onChange, onBlur, value } }) => (
+            <Input
+              size="$4"
+              autoCorrect={false}
+              borderRadius="$main"
+              keyboardType="number-pad"
+              placeholder="Введіть номер банківської карти"
+              className="w-full"
+              onBlur={onBlur}
+              onChangeText={onChange}
+              value={value}
+            />
+          )}
+          name="cardNumber"
         />
-        {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
+        {errors.cardNumber && <InputValidationError message={errors.cardNumber.message!} />}
       </View>
       <Button
         onPress={handleSubmit(onSubmit)}
