@@ -7,6 +7,7 @@ export default function SellLayoutNav() {
     <Stack
       screenOptions={{
         headerShadowVisible: false,
+        animation: 'simple_push',
       }}>
       <Stack.Screen name="index" options={{ headerTitle: 'Створіть нове оголошення' }} />
       <Stack.Screen

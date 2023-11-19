@@ -59,7 +59,12 @@ export default function DesignerSearchScreen() {
           borderBottomRightRadius="$main"
         />
       </XStack>
-      <FlatList data={filteredData} renderItem={renderItem} keyExtractor={(item) => item} />
+      <FlatList
+        keyboardShouldPersistTaps="always"
+        data={filteredData}
+        renderItem={renderItem}
+        keyExtractor={(item) => item}
+      />
     </View>
   );
 }
