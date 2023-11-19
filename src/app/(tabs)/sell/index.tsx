@@ -86,6 +86,7 @@ export default function SellScreen() {
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   size="$4"
+                  autoCorrect={false}
                   borderRadius="$main"
                   placeholder="Введіть заголовок"
                   className="w-full"
@@ -108,6 +109,7 @@ export default function SellScreen() {
                   render={({ field: { value } }) => (
                     <Input
                       size="$4"
+                      autoCorrect={false}
                       borderRadius="$main"
                       placeholder="Оберіть дизайнера"
                       className="w-full"
@@ -159,6 +161,7 @@ export default function SellScreen() {
                 <Input
                   size="$4"
                   keyboardType="number-pad"
+                  autoCorrect={false}
                   borderRadius="$main"
                   placeholder="Введіть ціну в гривнях"
                   className="w-full"

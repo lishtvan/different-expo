@@ -162,6 +162,7 @@ const SettingsScreen = () => {
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   size="$4"
+                  autoCorrect={false}
                   borderRadius="$main"
                   autoCapitalize="none"
                   placeholder="Нікнейм"
@@ -205,6 +206,7 @@ const SettingsScreen = () => {
               render={({ field: { onChange, onBlur, value } }) => (
                 <Input
                   size="$4"
+                  autoCorrect={false}
                   borderRadius="$main"
                   placeholder="Місце знаходження"
                   className="w-full"

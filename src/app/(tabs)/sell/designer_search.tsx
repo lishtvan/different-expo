@@ -48,6 +48,7 @@ export default function DesignerSearchScreen() {
         />
         <Input
           autoFocus
+          autoCorrect={false}
           placeholder="Введіть назву дизайнера"
           flex={1}
           paddingLeft={6}
