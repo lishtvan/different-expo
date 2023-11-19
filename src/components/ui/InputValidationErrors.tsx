@@ -5,7 +5,7 @@ export const InputValidationError = ({ message }: { message: string }) => (
 );
 
 export const validationErrors = {
-  required: <InputValidationError message="Це поле є обов`язковим." />,
+  required: <InputValidationError message="Це поле є обовʼязковим." />,
   pattern: <InputValidationError message="Дозволено лише a-z, 0-9 та підкреслення." />,
   minLength: <InputValidationError message="Занадто коротко." />,
   maxLength: <InputValidationError message="Занадто довго." />,

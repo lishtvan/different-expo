@@ -1,5 +1,6 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { router, useLocalSearchParams } from 'expo-router';
+import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
 import { useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Pressable, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
@@ -20,6 +21,12 @@ const getSectionByCategory = (category: string) => {
     CATEGORIES[key as Section].includes(category)
   );
   return section;
+};
+
+const transform = {
+  output: (text: string) => {
+    return new AsYouType().input(text);
+  },
 };
 
 export default function SellScreen() {
@@ -44,14 +51,9 @@ export default function SellScreen() {
       condition: '',
       category: '',
       size: '',
+      phone: '+380',
     },
   });
-
-  useEffect(() => {
-    if (!params?.designer) return;
-    setValue('designer', params.designer);
-    if (errors.designer) clearErrors('designer');
-  }, [params]);
 
   const [open, setOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
@@ -61,9 +63,18 @@ export default function SellScreen() {
     if (selectedTags?.length === 3) setOpen(false);
   }, [selectedTags]);
 
+  useEffect(() => {
+    if (!params?.designer) return;
+    setValue('designer', params.designer);
+    if (errors.designer) clearErrors('designer');
+  }, [params]);
+
   const [selectedSection, setSelectedSection] = useState<Section | null>(null);
 
   const onSubmit = (data: Record<string, unknown>) => {
+    const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
+    const phone = parseInt(phoneNumberString!.number, 10);
+    console.log(phone);
     console.log(data);
   };
 
@@ -461,6 +472,37 @@ export default function SellScreen() {
             />
           </View>
 
+          <View>
+            <Text className="mb-1 ml-2 text-base">Номер телефону *</Text>
+            <Controller
+              control={control}
+              rules={{
+                validate: (value) => {
+                  if (value.length < 16) return true;
+                  const valid = isValidPhoneNumber(value, 'UA');
+                  return valid;
+                },
+              }}
+              render={({ field: { onChange, onBlur, value } }) => (
+                <Input
+                  size="$4"
+                  autoCorrect={false}
+                  borderRadius="$main"
+                  placeholder="Введіть номер телефону"
+                  className="w-full"
+                  keyboardType="number-pad"
+                  onBlur={onBlur}
+                  onChangeText={(text) => {
+                    if (text.length < 4 || text.length > 16) return;
+                    onChange(text);
+                  }}
+                  value={transform.output(value)}
+                />
+              )}
+              name="phone"
+            />
+            {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
+          </View>
           <Button
             onPress={handleSubmit(onSubmit)}
             size="$3"
