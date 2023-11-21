@@ -1,6 +1,7 @@
+import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import React, { FC } from 'react';
-import { Image, Text, View } from 'tamagui';
+import { Text, View } from 'tamagui';
 
 import { SHORT_SIZES } from '../../constants/listing';
 import { TListing } from '../../types';
@@ -15,7 +16,7 @@ const Listing: FC<Props> = ({ listing }) => {
       <View>
         <Image
           className="aspect-[8.5/10] w-full object-cover "
-          source={{ uri: `${listing.imageUrls[0]}` }}
+          source={listing.imageUrls[0]}
           alt="item"
         />
         <View className="px-2">

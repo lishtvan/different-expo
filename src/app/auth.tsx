@@ -1,8 +1,8 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Image } from 'expo-image';
 import { Link, router } from 'expo-router';
 import React from 'react';
-import { Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, View, Text } from 'tamagui';
 
