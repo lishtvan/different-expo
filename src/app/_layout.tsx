@@ -1,3 +1,4 @@
+import { ThemeProvider } from '@react-navigation/native';
 import {
   MutationCache,
   QueryCache,
@@ -82,36 +83,49 @@ function RootLayoutNav() {
     <QueryClientProvider client={queryClient}>
       <TamaguiProvider config={tamaguiConfig}>
         <Theme name="light">
-          <Stack>
-            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-            <Stack.Screen
-              name="auth"
-              options={{
-                headerTitle: '',
-                headerShadowVisible: false,
-              }}
-            />
-            <Stack.Screen
-              name="listing/[listingId]"
-              options={{
-                headerTitle: '',
-                headerShadowVisible: false,
-              }}
-            />
-            <Stack.Screen
-              name="settings"
-              options={{
-                presentation: 'fullScreenModal',
-                headerLeft: () => (
-                  <TouchableOpacity onPress={() => router.back()}>
-                    <Text className="text-base">Скасувати</Text>
-                  </TouchableOpacity>
-                ),
-                headerTitle: '',
-                headerShadowVisible: false,
-              }}
-            />
-          </Stack>
+          <ThemeProvider
+            value={{
+              dark: false,
+              colors: {
+                primary: 'rgb(0, 122, 255)',
+                background: 'white',
+                card: 'rgb(255, 255, 255)',
+                text: 'rgb(28, 28, 30)',
+                border: 'rgb(216, 216, 216)',
+                notification: 'rgb(255, 59, 48)',
+              },
+            }}>
+            <Stack>
+              <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+              <Stack.Screen
+                name="auth"
+                options={{
+                  headerTitle: '',
+                  headerShadowVisible: false,
+                }}
+              />
+              <Stack.Screen
+                name="listing/[listingId]"
+                options={{
+                  headerTitle: '',
+                  headerShadowVisible: false,
+                }}
+              />
+              <Stack.Screen
+                name="settings"
+                options={{
+                  presentation: 'fullScreenModal',
+                  headerLeft: () => (
+                    <TouchableOpacity onPress={() => router.back()}>
+                      <Text className="text-base">Скасувати</Text>
+                    </TouchableOpacity>
+                  ),
+                  headerTitle: '',
+                  headerShadowVisible: false,
+                }}
+              />
+            </Stack>
+          </ThemeProvider>
         </Theme>
       </TamaguiProvider>
     </QueryClientProvider>
