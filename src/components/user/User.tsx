@@ -64,7 +64,12 @@ const User = () => {
         }
       }}
       scrollEventThrottle={1000}>
-      <Stack.Screen options={{ headerTitle: params?.nickname as string }} />
+      <Stack.Screen
+        options={{
+          headerTitle: params?.nickname as string,
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 19 },
+        }}
+      />
       <View className="flex flex-row gap-x-4 px-2 ">
         <Avatar circular size="$10">
           <Avatar.Image

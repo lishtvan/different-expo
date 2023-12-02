@@ -75,11 +75,7 @@ export default function TabLayout() {
             params: { nickname: user?.nickname || '' },
           },
           title: 'Профіль',
-          headerTitle: user?.nickname || '',
-          headerTitleStyle: {
-            fontWeight: 'bold',
-            fontSize: 19,
-          },
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialIcons
               size={35}
