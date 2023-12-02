@@ -1,8 +1,9 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import validateCard from 'card-validator';
-import { router, useLocalSearchParams } from 'expo-router';
+import { Redirect, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Pressable, TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -10,12 +11,15 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Adapt, Button, Input, ListItem, Select, Separator, Sheet, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../../tamagui.config';
+import Photos from '../../../components/sell/Photos';
 import {
   InputValidationError,
   validationErrors,
 } from '../../../components/ui/InputValidationErrors';
 import TextArea from '../../../components/ui/TextArea';
 import { CATEGORIES, CONDITIONS, SIZES, Section, TAGS } from '../../../constants/listing';
+import { SelectedImage } from '../../../types';
+import { fetcher } from '../../../utils/fetcher';
 
 const getSectionByCategory = (category: string) => {
   const section = Object.keys(CATEGORIES).find((key) =>
@@ -24,7 +28,7 @@ const getSectionByCategory = (category: string) => {
   return section;
 };
 
-const transform = {
+const transformPhone = {
   output: (text: string) => {
     return new AsYouType().input(text);
   },
@@ -32,6 +36,10 @@ const transform = {
 
 export default function SellScreen() {
   const params = useLocalSearchParams<{ designer: string }>();
+  const user = useQuery({
+    queryKey: ['auth_check'],
+    queryFn: () => fetcher({ route: '/auth/check', method: 'GET' }),
+  });
 
   const {
     control,
@@ -40,6 +48,7 @@ export default function SellScreen() {
     formState: { errors },
     watch,
     setValue,
+    reset,
     resetField,
     clearErrors,
     setError,
@@ -53,8 +62,29 @@ export default function SellScreen() {
       condition: '',
       category: '',
       size: '',
-      phone: '+380',
-      cardNumber: '',
+      phone: user?.data?.phone ? transformPhone.output('+' + user.data.phone) : '+380',
+      cardNumber: (user?.data?.cardNumber as string) || '',
+    },
+  });
+
+  const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([]);
+  const updateSelectedImages = useCallback((urls: SelectedImage[]) => {
+    setSelectedImages(urls);
+  }, []);
+
+  const mutation = useMutation({
+    mutationFn: (data: unknown) =>
+      fetcher({
+        route: '/listing/create',
+        method: 'POST',
+        body: data,
+      }),
+    onSuccess: async (res) => {
+      if (res.error) return;
+
+      reset();
+      updateSelectedImages([]);
+      router.push({ pathname: `/listing/${res.listingId}` });
     },
   });
 
@@ -82,22 +112,38 @@ export default function SellScreen() {
 
   const onSubmit = (data: Record<string, unknown>) => {
     const { isValid } = validateCard.number(data.cardNumber);
+    const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
+    let isError;
     if (!isValid) {
       setError('cardNumber', { type: 'validate', message: 'Недійсний номер карти' });
-      return;
+      isError = true;
     }
+    if (!phoneNumberString?.isValid()) {
+      setError('phone', { type: 'validate' });
+      isError = true;
+    }
+    if (isError) return;
 
-    const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
     const phone = parseInt(phoneNumberString!.number, 10);
     const cardNumber = (data.cardNumber as string).replace(/ /g, '');
-    console.log(cardNumber);
-    console.log(phone);
-    console.log(data);
+
+    mutation.mutate({
+      ...data,
+      imageUrls: selectedImages.map((img) => {
+        if (img.isPreview) return;
+        return img.imageUrl;
+      }),
+      cardNumber,
+      phone,
+    });
   };
 
   const hideKeyboardIfVisible = () => {
     if (Keyboard.isVisible()) Keyboard.dismiss();
   };
+
+  if (user.isLoading) return null;
+  if (!user?.data) return <Redirect href="/auth" />;
 
   return (
     <KeyboardAwareScrollView
@@ -329,6 +375,13 @@ export default function SellScreen() {
         {errors.size && validationErrors[errors.size.type as keyof typeof validationErrors]}
       </View>
       <View>
+        <Photos
+          error={mutation?.data?.errors?.imageUrls}
+          selectedImages={selectedImages}
+          updateSelectedImages={updateSelectedImages}
+        />
+      </View>
+      <View>
         <Text className="mb-1 ml-2 text-base">Опис</Text>
         <Controller
           control={control}
@@ -509,7 +562,7 @@ export default function SellScreen() {
                 if (text.length < 4 || text.length > 16) return;
                 onChange(text);
               }}
-              value={transform.output(value)}
+              value={transformPhone.output(value)}
             />
           )}
           name="phone"

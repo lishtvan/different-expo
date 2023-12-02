@@ -20,7 +20,7 @@ export default function TabLayout() {
         headerShadowVisible: false,
       }}>
       <Tabs.Screen
-        name="index"
+        name="(index)"
         options={{
           headerShown: false,
           title: 'Головна',

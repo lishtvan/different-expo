@@ -105,13 +105,6 @@ function RootLayoutNav() {
                 }}
               />
               <Stack.Screen
-                name="listing/[listingId]"
-                options={{
-                  headerTitle: '',
-                  headerShadowVisible: false,
-                }}
-              />
-              <Stack.Screen
                 name="settings"
                 options={{
                   presentation: 'fullScreenModal',

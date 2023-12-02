@@ -2,7 +2,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, router } from 'expo-router';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import {
   Alert,
@@ -19,7 +19,7 @@ import { mainColor } from '../../tamagui.config';
 import { InputValidationError, validationErrors } from '../components/ui/InputValidationErrors';
 import TextArea from '../components/ui/TextArea';
 import { fetcher } from '../utils/fetcher';
-import { uploadImage } from '../utils/uploadImage';
+import { uploadImage, validateSingleImageSize, verifyPermission } from '../utils/uploadImage';
 
 const SettingsScreen = () => {
   const [newAvatarUrl, setNewAvatarUrl] = useState<string | null>();
@@ -28,7 +28,7 @@ const SettingsScreen = () => {
   const queryClient = useQueryClient();
   const [previewImage, setPreviewImage] = useState<string>();
 
-  const [status, requestPermission] = ImagePicker.useCameraPermissions();
+  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
   const { data: user, isLoading } = useQuery({
     queryKey: ['auth_check'],
     queryFn: () => fetcher({ route: '/auth/check', method: 'GET' }),
@@ -66,10 +66,6 @@ const SettingsScreen = () => {
     },
   });
 
-  useEffect(() => {
-    if (!status) (async () => await requestPermission())();
-  }, [status]);
-
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
   };
@@ -81,10 +77,9 @@ const SettingsScreen = () => {
   };
 
   const pickImage = async () => {
-    if (!status?.granted) {
-      Alert.alert('', 'Потрібно надати доступ до галереї в налаштуваннях вашого девайсу.');
-      return;
-    }
+    const hasPermission = await verifyPermission(permission, requestPermission);
+    if (!hasPermission) return;
+
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
@@ -95,7 +90,8 @@ const SettingsScreen = () => {
       if (isModalVisible) setTimeout(() => closeModal(), 50);
       if (!result.assets?.length) return;
       const image = result.assets[0];
-      if (image.fileSize && image.fileSize > 10000000) {
+      const isValidImageSize = validateSingleImageSize(image);
+      if (!isValidImageSize) {
         Alert.alert('', 'Розмір фото не повинен перевищувати 10 Мб');
         return;
       }

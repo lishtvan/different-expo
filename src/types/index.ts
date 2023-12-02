@@ -52,3 +52,8 @@ export interface RootLoaderData {
   ENV: Env;
   user: User | null;
 }
+
+export interface SelectedImage {
+  isPreview: boolean;
+  imageUrl: string;
+}

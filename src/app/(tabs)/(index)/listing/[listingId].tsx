@@ -3,9 +3,9 @@ import { useLocalSearchParams } from 'expo-router';
 import { Text } from 'react-native';
 import { View } from 'tamagui';
 
-import { fetcher } from '../../utils/fetcher';
+import { fetcher } from '../../../../utils/fetcher';
 
-export default function OrdersScreen() {
+export default function ListingScreen() {
   const { listingId } = useLocalSearchParams();
   const { data: listingData, isLoading } = useQuery({
     queryKey: ['listing', listingId],
