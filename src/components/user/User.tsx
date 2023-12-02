@@ -44,13 +44,15 @@ const User = () => {
   const { searchClient } = useMemo(() => {
     const env = process.env.EXPO_PUBLIC_ENVIRONMENT as Env;
     return new TypesenseInstantsearchAdapter(config[env].typesense);
-  }, []);
+  }, [refreshing]);
 
   const setCloseToBottomFalse = useCallback(() => {
     setIsViewCloseToBottom(false);
   }, []);
 
   if (isLoading) return <Stack.Screen options={{ headerTitle: params?.nickname as string }} />;
+
+  if (refreshing) return null;
 
   return (
     <ScrollView

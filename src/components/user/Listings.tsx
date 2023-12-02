@@ -4,6 +4,7 @@ import { Spinner, Text, View } from 'tamagui';
 
 import { TListing } from '../../types';
 import Listing from '../listings/Listing';
+import Delayed from '../wrappers/Delayed';
 
 interface Props {
   isViewCloseToBottom: boolean;
@@ -41,23 +42,25 @@ const UserListings: FC<Props> = ({
   }, [isViewCloseToBottom]);
 
   return (
-    <View>
-      <View className="flex justify-between flex-row flex-wrap gap-y-4 ">
-        {hits.map((listing) => (
-          <View className="w-[49.4%]" key={listing.id}>
-            <Listing listing={listing} />
-          </View>
-        ))}
-      </View>
-      {!isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
-      {results && !results.nbHits ? (
-        <View className="h-full mt-2 flex justify-center items-center">
-          <Text className=" text-lg font-semibold">
-            {showSold ? 'Ще немає проданих товарів' : 'Оголошень ще немає'}
-          </Text>
+    <Delayed waitBeforeShow={100}>
+      <View>
+        <View className="flex justify-between flex-row flex-wrap gap-y-4 ">
+          {hits.map((listing) => (
+            <View className="w-[49.4%]" key={listing.id}>
+              <Listing listing={listing} />
+            </View>
+          ))}
         </View>
-      ) : null}
-    </View>
+        {!isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
+        {results && !results.nbHits ? (
+          <View className="h-full mt-2 flex justify-center items-center">
+            <Text className=" text-lg font-semibold">
+              {showSold ? 'Ще немає проданих товарів' : 'Оголошень ще немає'}
+            </Text>
+          </View>
+        ) : null}
+      </View>
+    </Delayed>
   );
 };
 

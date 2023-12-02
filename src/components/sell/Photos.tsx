@@ -99,7 +99,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
                 className="w-full rounded-lg object-cover h-28 aspect-[8.5/10]"
                 source={{ uri: img.imageUrl }}
                 alt="item"
-                blurRadius={img.isPreview ? 15 : 0}
+                blurRadius={img.isPreview ? 20 : 0}
               />
             </View>
           ))}
