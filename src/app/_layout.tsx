@@ -13,7 +13,7 @@ import '../../global.css';
 import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
 import { TamaguiProvider, Text, Theme } from 'tamagui';
 
-import tamaguiConfig from '../../tamagui.config';
+import tamaguiConfig, { mainColor } from '../../tamagui.config';
 import { useAppState } from '../hooks/useAppState';
 import { useOnlineManager } from '../hooks/useOnlineManager';
 
@@ -87,7 +87,7 @@ function RootLayoutNav() {
             value={{
               dark: false,
               colors: {
-                primary: 'rgb(0, 122, 255)',
+                primary: mainColor,
                 background: 'white',
                 card: 'rgb(255, 255, 255)',
                 text: 'rgb(28, 28, 30)',
