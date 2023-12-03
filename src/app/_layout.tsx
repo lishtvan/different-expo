@@ -11,9 +11,11 @@ import { SplashScreen, Stack, router } from 'expo-router';
 import { useEffect } from 'react';
 import '../../global.css';
 import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { TamaguiProvider, Text, Theme } from 'tamagui';
 
 import tamaguiConfig, { mainColor } from '../../tamagui.config';
+import { toastConfig } from '../components/ui/ToastConfig';
 import { useAppState } from '../hooks/useAppState';
 import { useOnlineManager } from '../hooks/useOnlineManager';
 
@@ -118,6 +120,7 @@ function RootLayoutNav() {
                 }}
               />
             </Stack>
+            <Toast config={toastConfig} />
           </ThemeProvider>
         </Theme>
       </TamaguiProvider>

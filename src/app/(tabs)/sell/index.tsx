@@ -8,6 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Pressable, TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Toast from 'react-native-toast-message';
 import { Adapt, Button, Input, ListItem, Select, Separator, Sheet, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../../tamagui.config';
@@ -80,7 +81,13 @@ export default function SellScreen() {
         body: data,
       }),
     onSuccess: async (res) => {
-      if (res.error) return;
+      if (res.error) {
+        Toast.show({
+          type: 'error',
+          text1: 'Будь ласка, виправіть помилки',
+        });
+        return;
+      }
 
       reset();
       updateSelectedImages([]);
