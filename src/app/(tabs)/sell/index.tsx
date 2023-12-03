@@ -142,6 +142,7 @@ export default function SellScreen() {
       }),
       cardNumber,
       phone,
+      tags: selectedTags,
     });
   };
 
