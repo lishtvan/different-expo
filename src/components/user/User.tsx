@@ -147,7 +147,7 @@ const User = () => {
         borderRadius="$4">
         <Tabs.List unstyled>
           <Tabs.Tab
-            borderBottomWidth={currentTab === 'available' && '$1'}
+            borderBottomWidth={currentTab === 'available' ? '$1' : '$0'}
             borderColor={mainColor}
             backgroundColor="white"
             borderRadius="$0"
@@ -159,7 +159,7 @@ const User = () => {
           <Tabs.Tab
             borderColor={mainColor}
             borderRadius="$0"
-            borderBottomWidth={currentTab === 'sold' && '$1'}
+            borderBottomWidth={currentTab === 'sold' ? '$1' : '$0'}
             backgroundColor="white"
             flex={1}
             value="sold"

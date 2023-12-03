@@ -32,6 +32,7 @@
       }
     },
     "android": {
+      "package": "com.lishtvan.different",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
