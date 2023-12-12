@@ -38,8 +38,8 @@ const transformPhone = {
 export default function SellScreen() {
   const params = useLocalSearchParams<{ designer: string }>();
   const user = useQuery({
-    queryKey: ['auth_check'],
-    queryFn: () => fetcher({ route: '/auth/check', method: 'GET' }),
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
   const {

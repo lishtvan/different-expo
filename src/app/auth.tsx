@@ -22,7 +22,7 @@ const AuthScreen = () => {
       }),
     onSuccess: async ({ token }) => {
       await saveSession(token);
-      await queryClient.invalidateQueries({ queryKey: ['auth_check'] });
+      await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
       router.replace('/');
     },
   });

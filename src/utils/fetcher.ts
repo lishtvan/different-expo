@@ -15,7 +15,7 @@ export const fetcher: Fetcher = async ({
   method = 'POST',
   domain = process.env.EXPO_PUBLIC_API_URL,
 }) => {
-  console.log('fetch is happening', route);
+  console.log('fetching', route);
   const headers = new Headers();
 
   const token = await getSession();
@@ -33,7 +33,7 @@ export const fetcher: Fetcher = async ({
   } else response = await fetch(`${domain}${route}`, { method, headers });
 
   if (response.status === 401) {
-    if (route === '/auth/check') return null;
+    if (route === '/auth/me') return null;
     else throw new Error('Not authorized', { cause: 401 });
   }
   if (response.status === 404) throw new Error('Not found', { cause: 404 });

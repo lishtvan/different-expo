@@ -34,8 +34,8 @@ const SettingsScreen = () => {
 
   const [permission, requestPermission] = ImagePicker.useCameraPermissions();
   const { data: user, isLoading } = useQuery({
-    queryKey: ['auth_check'],
-    queryFn: () => fetcher({ route: '/auth/check', method: 'GET' }),
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
   const {
@@ -62,7 +62,7 @@ const SettingsScreen = () => {
       if (res.error) return;
       const { nickname } = getValues();
       await Promise.all([
-        queryClient.invalidateQueries({ queryKey: ['auth_check'] }),
+        queryClient.invalidateQueries({ queryKey: ['auth_me'] }),
         queryClient.invalidateQueries({ queryKey: ['user', nickname] }),
       ]);
 

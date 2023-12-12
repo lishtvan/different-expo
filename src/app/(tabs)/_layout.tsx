@@ -7,8 +7,8 @@ import { fetcher } from '../../utils/fetcher';
 
 export default function TabLayout() {
   const { data: user, isLoading } = useQuery({
-    queryKey: ['auth_check'],
-    queryFn: () => fetcher({ route: '/auth/check', method: 'GET' }),
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
   if (isLoading) return null;
