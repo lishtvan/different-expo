@@ -18,6 +18,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors['light'].tint,
         headerShadowVisible: false,
+        tabBarHideOnKeyboard: true,
+        headerTitleAlign: 'center',
       }}>
       <Tabs.Screen
         name="(index)"

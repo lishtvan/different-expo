@@ -9,6 +9,7 @@ export default function SellLayoutNav() {
     <Stack
       screenOptions={{
         headerShadowVisible: false,
+        headerTitleAlign: 'center',
       }}>
       <Stack.Screen name="index" options={{ headerTitle: '' }} />
       <Stack.Screen
