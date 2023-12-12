@@ -53,7 +53,7 @@ const UserListings: FC<Props> = ({
         </View>
         {!isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
         {results && !results.nbHits ? (
-          <View className="h-full mt-2 flex justify-center items-center">
+          <View className="mt-32 flex-1 justify-center items-center">
             <Text className=" text-lg font-semibold">
               {showSold ? 'Ще немає проданих товарів' : 'Оголошень ще немає'}
             </Text>

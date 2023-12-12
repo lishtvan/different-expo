@@ -10,9 +10,9 @@ import { useFonts } from 'expo-font';
 import { SplashScreen, Stack, router } from 'expo-router';
 import { useEffect } from 'react';
 import '../../global.css';
-import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
+import { AppStateStatus, Platform } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { TamaguiProvider, Text, Theme } from 'tamagui';
+import { TamaguiProvider, Theme } from 'tamagui';
 
 import tamaguiConfig, { mainColor } from '../../tamagui.config';
 import { toastConfig } from '../components/ui/ToastConfig';
@@ -102,19 +102,6 @@ function RootLayoutNav() {
               <Stack.Screen
                 name="auth"
                 options={{
-                  headerTitle: '',
-                  headerShadowVisible: false,
-                }}
-              />
-              <Stack.Screen
-                name="settings"
-                options={{
-                  presentation: 'fullScreenModal',
-                  headerLeft: () => (
-                    <TouchableOpacity onPress={() => router.back()}>
-                      <Text className="text-base">Скасувати</Text>
-                    </TouchableOpacity>
-                  ),
                   headerTitle: '',
                   headerShadowVisible: false,
                 }}

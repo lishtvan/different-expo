@@ -1,10 +1,12 @@
+import { isAndroid } from '../utils/platform';
+
 export const config = {
   local: {
     typesense: {
       server: {
         nodes: [
           {
-            host: '127.0.0.1',
+            host: isAndroid ? '192.168.1.121' : '127.0.0.1',
             port: 8108,
             protocol: 'http',
           },

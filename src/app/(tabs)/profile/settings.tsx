@@ -15,11 +15,15 @@ import {
 import Modal from 'react-native-modal';
 import { Text, Avatar, Input, View } from 'tamagui';
 
-import { mainColor } from '../../tamagui.config';
-import { InputValidationError, validationErrors } from '../components/ui/InputValidationErrors';
-import TextArea from '../components/ui/TextArea';
-import { fetcher } from '../utils/fetcher';
-import { uploadImage, validateSingleImageSize, verifyPermission } from '../utils/uploadImage';
+import { mainColor } from '../../../../tamagui.config';
+import {
+  InputValidationError,
+  validationErrors,
+} from '../../../components/ui/InputValidationErrors';
+import TextArea from '../../../components/ui/TextArea';
+import { fetcher } from '../../../utils/fetcher';
+import { isAndroid } from '../../../utils/platform';
+import { uploadImage, validateSingleImageSize, verifyPermission } from '../../../utils/uploadImage';
 
 const SettingsScreen = () => {
   const [newAvatarUrl, setNewAvatarUrl] = useState<string | null>();
@@ -62,7 +66,7 @@ const SettingsScreen = () => {
         queryClient.invalidateQueries({ queryKey: ['user', nickname] }),
       ]);
 
-      router.push({ pathname: '/profile', params: { nickname } });
+      router.replace({ pathname: '/(tabs)/profile', params: { nickname } });
     },
   });
 
@@ -83,7 +87,6 @@ const SettingsScreen = () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.All,
-        aspect: [1, 10],
         quality: 1,
         allowsEditing: true,
       });
@@ -119,6 +122,7 @@ const SettingsScreen = () => {
   };
 
   if (isLoading) return null;
+  const blurRadius = isAndroid ? 10 : 100;
   return (
     <SafeAreaView className="flex-1">
       <Stack.Screen
@@ -141,8 +145,10 @@ const SettingsScreen = () => {
                 else pickImage();
               }}>
               <Avatar circular size="$10" className="mx-auto">
-                <Avatar.Image blurRadius={isUploading ? 100 : 0} src={getCurrentAvatarUrl()} />
-                <Avatar.Fallback bc="red" delayMs={5000} />
+                <Avatar.Image
+                  blurRadius={isUploading ? blurRadius : 0}
+                  src={getCurrentAvatarUrl()}
+                />
               </Avatar>
               {!isUploading && (
                 <View className="absolute right-3 bottom-1 bg-white rounded-full">

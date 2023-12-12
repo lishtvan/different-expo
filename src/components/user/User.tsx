@@ -80,7 +80,6 @@ const User = () => {
               'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'
             }
           />
-          <Avatar.Fallback bc="green" delayMs={5000} />
         </Avatar>
         <View className="flex flex-row items-center gap-x-6">
           <View className="flex items-center">
@@ -119,7 +118,7 @@ const User = () => {
       </View>
       <View className="flex-row mt-4 px-2 mb-3 items-center gap-x-4 w-full">
         <Button
-          onPress={() => router.push(user.isOwnAccount ? '/settings' : '/')}
+          onPress={() => router.push(user.isOwnAccount ? '/(tabs)/profile/settings' : '/')}
           size="$3"
           theme="active"
           className="w-[47%]"

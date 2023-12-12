@@ -7,6 +7,7 @@ import { Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { SelectedImage } from '../../types';
+import { isAndroid } from '../../utils/platform';
 import {
   uploadImages,
   validateMultipleImagesSize,
@@ -67,6 +68,8 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
     updateSelectedImages([]);
   };
 
+  const blurRadius = isAndroid ? 2 : 40;
+
   return (
     <View>
       <View className="mb-3 ml-2 flex-row items-center justify-between">
@@ -99,7 +102,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
                 className="w-full rounded-lg object-cover h-28 aspect-[8.5/10]"
                 source={{ uri: img.imageUrl }}
                 alt="item"
-                blurRadius={img.isPreview ? 20 : 0}
+                blurRadius={img.isPreview ? blurRadius : 0}
               />
             </View>
           ))}
