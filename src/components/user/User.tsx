@@ -128,7 +128,6 @@ const User = () => {
         </Button>
       </View>
       <Tabs
-        defaultValue="available"
         onValueChange={(value) => {
           setIsViewCloseToBottom(false);
           setCurrentTab(value);
