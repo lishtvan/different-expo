@@ -14,7 +14,7 @@ const Listing: FC<Props> = ({ listing }) => {
   return (
     <View onPress={() => router.push(`/listing/${listing.id}`)}>
       <Image
-        className="aspect-[8.5/10] w-full object-cover "
+        className="aspect-[0.83] w-full object-cover "
         source={listing.imageUrls[0]}
         alt="item"
       />

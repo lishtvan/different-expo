@@ -28,7 +28,7 @@ const UserListings: FC<Props> = ({
   useEffect(() => {
     if (!sellerId) return;
     clear.refine();
-    refineStatus(showSold ? 'SOLD' : 'AVAILABLE');
+    if (showSold) refineStatus('SOLD');
     refineSeller(sellerId.toString());
   }, [sellerId, showSold]);
 

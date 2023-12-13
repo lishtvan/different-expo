@@ -13,7 +13,10 @@ export const config = {
         ],
         apiKey: 'xyz',
       },
-      additionalSearchParameters: { query_by: 'title,designer' },
+      additionalSearchParameters: {
+        query_by: 'title,designer',
+        filter_by: 'status:available',
+      },
     },
     wsDomain: 'ws://localhost:8000',
   },
