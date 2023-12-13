@@ -2,9 +2,9 @@ import { AntDesign, EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { Stack, router, useLocalSearchParams } from 'expo-router';
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { InstantSearch } from 'react-instantsearch-core';
-import { NativeScrollEvent, RefreshControl } from 'react-native';
+import { RefreshControl } from 'react-native';
 import { Avatar, Button, ScrollView, Tabs, Text, View } from 'tamagui';
 import TypesenseInstantsearchAdapter from 'typesense-instantsearch-adapter';
 
@@ -14,13 +14,12 @@ import { config } from '../../config/config';
 import { LISTINGS_COLLECTION } from '../../constants/listing';
 import { useRefresh } from '../../hooks/useRefresh';
 import { Env } from '../../types';
+import { isCloseToBottom } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
 
-const isCloseToBottom = ({ layoutMeasurement, contentOffset, contentSize }: NativeScrollEvent) => {
-  const paddingToBottom = 20;
-  return layoutMeasurement.height + contentOffset.y >= contentSize.height - paddingToBottom;
-};
+const env = process.env.EXPO_PUBLIC_ENVIRONMENT as Env;
+const { searchClient } = new TypesenseInstantsearchAdapter(config[env].typesense);
 
 const User = () => {
   const params = useLocalSearchParams();
@@ -39,12 +38,7 @@ const User = () => {
     queryFn: () => fetcher({ body: { nickname: params.nickname }, route: '/user/get' }),
   });
 
-  const { refreshing, handleRefresh } = useRefresh(refetch);
-
-  const { searchClient } = useMemo(() => {
-    const env = process.env.EXPO_PUBLIC_ENVIRONMENT as Env;
-    return new TypesenseInstantsearchAdapter(config[env].typesense);
-  }, [refreshing]);
+  const { refreshing, refreshKey, handleRefresh } = useRefresh(refetch, searchClient);
 
   const setCloseToBottomFalse = useCallback(() => {
     setIsViewCloseToBottom(false);
@@ -59,11 +53,9 @@ const User = () => {
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       ref={scrollRef}
       stickyHeaderIndices={[4]}
-      className="flex-1 "
+      className="flex-1"
       onScroll={({ nativeEvent }) => {
-        if (isCloseToBottom(nativeEvent)) {
-          setIsViewCloseToBottom(true);
-        }
+        if (isCloseToBottom(nativeEvent)) setIsViewCloseToBottom(true);
       }}
       scrollEventThrottle={1000}>
       <Stack.Screen
@@ -168,7 +160,7 @@ const User = () => {
         </Tabs.List>
       </Tabs>
       <View className="mt-1">
-        <InstantSearch indexName={LISTINGS_COLLECTION} searchClient={searchClient}>
+        <InstantSearch key={refreshKey} indexName={LISTINGS_COLLECTION} searchClient={searchClient}>
           <UserListings
             sellerId={user.id}
             showSold={currentTab === 'sold'}
