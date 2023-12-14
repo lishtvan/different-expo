@@ -8,11 +8,12 @@ export default function SellLayoutNav() {
       screenOptions={{
         headerShadowVisible: false,
       }}>
-      <Stack.Screen name="index" options={{ headerTitle: '' }} />
+      <Stack.Screen name="index" />
       <Stack.Screen
         name="listing/[listingId]"
         options={{
           headerTitle: '',
+          headerBackTitleVisible: false,
           headerShadowVisible: false,
         }}
       />
