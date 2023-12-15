@@ -6,20 +6,15 @@ import React, { useCallback, useRef, useState } from 'react';
 import { InstantSearch } from 'react-instantsearch-core';
 import { RefreshControl } from 'react-native';
 import { Avatar, Button, ScrollView, Tabs, Text, View } from 'tamagui';
-import TypesenseInstantsearchAdapter from 'typesense-instantsearch-adapter';
 
 import UserListings from './Listings';
 import { mainColor } from '../../../tamagui.config';
-import { config } from '../../config/config';
 import { LISTINGS_COLLECTION } from '../../constants/listing';
 import { useRefresh } from '../../hooks/useRefresh';
-import { Env } from '../../types';
 import { isCloseToBottom } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
-
-const env = process.env.EXPO_PUBLIC_ENVIRONMENT as Env;
-const { searchClient } = new TypesenseInstantsearchAdapter(config[env].typesense);
+import { searchClient } from '../../utils/typesense';
 
 const User = () => {
   const params = useLocalSearchParams();

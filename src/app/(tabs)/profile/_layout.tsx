@@ -4,7 +4,7 @@ import { Text } from 'tamagui';
 
 export const unstable_settings = { initialRouteName: 'index' };
 
-export default function SellLayoutNav() {
+export default function ProfileLayoutNav() {
   return (
     <Stack
       screenOptions={{

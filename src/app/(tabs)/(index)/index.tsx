@@ -1,22 +1,16 @@
 import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import React, { useCallback, useRef, useState } from 'react';
-import { InstantSearch } from 'react-instantsearch-core';
 import { Dimensions, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Input, View, XStack } from 'tamagui';
-import TypesenseInstantsearchAdapter from 'typesense-instantsearch-adapter';
 
 import HomeListings from '../../../components/home/Listings';
-import { config } from '../../../config/config';
-import { LISTINGS_COLLECTION } from '../../../constants/listing';
+import SearchInstance from '../../../components/wrappers/SearchInstance';
 import { useRefresh } from '../../../hooks/useRefresh';
-import { Env } from '../../../types';
 import { delay, isCloseToBottom } from '../../../utils/common';
 import { isAndroid } from '../../../utils/platform';
-
-const env = process.env.EXPO_PUBLIC_ENVIRONMENT as Env;
-const { searchClient } = new TypesenseInstantsearchAdapter(config[env].typesense);
+import { searchClient } from '../../../utils/typesense';
 
 const HomeScreen = () => {
   const [isViewCloseToBottom, setIsViewCloseToBottom] = useState(false);
@@ -35,7 +29,7 @@ const HomeScreen = () => {
 
   return (
     <View className="flex-1 items-center">
-      <InstantSearch key={refreshKey} indexName={LISTINGS_COLLECTION} searchClient={searchClient}>
+      <SearchInstance key={refreshKey}>
         <Stack.Screen
           options={{
             contentStyle: { paddingVertical: 5 },
@@ -64,7 +58,9 @@ const HomeScreen = () => {
                   borderTopRightRadius="$main"
                   borderBottomRightRadius="$main"
                 />
-                <TouchableOpacity className="ml-1 p-2 ">
+                <TouchableOpacity
+                  className="ml-1 p-2"
+                  onPress={() => router.push('/(tabs)/(index)/filters')}>
                   <MaterialCommunityIcons name="tune-variant" size={25} />
                 </TouchableOpacity>
               </XStack>
@@ -74,7 +70,7 @@ const HomeScreen = () => {
         <ScrollView
           refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           ref={scrollRef}
-          className="flex-1"
+          className="flex-1 w-full"
           keyboardDismissMode="on-drag"
           onScroll={({ nativeEvent }) => {
             if (isCloseToBottom(nativeEvent)) setIsViewCloseToBottom(true);
@@ -85,7 +81,7 @@ const HomeScreen = () => {
             isViewCloseToBottom={isViewCloseToBottom}
           />
         </ScrollView>
-      </InstantSearch>
+      </SearchInstance>
     </View>
   );
 };
