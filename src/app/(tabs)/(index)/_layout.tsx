@@ -1,6 +1,4 @@
-import { Stack, router } from 'expo-router';
-import { TouchableOpacity } from 'react-native';
-import { Text } from 'tamagui';
+import { Stack } from 'expo-router';
 
 export const unstable_settings = { initialRouteName: 'index' };
 
@@ -19,24 +17,7 @@ export default function IndexLayoutNav() {
           headerShadowVisible: false,
         }}
       />
-      <Stack.Screen
-        name="filters"
-        options={{
-          presentation: 'modal',
-          headerLeft: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text className="text-base">Закрити</Text>
-            </TouchableOpacity>
-          ),
-          headerRight: () => (
-            <TouchableOpacity onPress={() => router.back()}>
-              <Text className="text-base">Видалити всі</Text>
-            </TouchableOpacity>
-          ),
-          headerTitle: 'Фільтри',
-          headerShadowVisible: false,
-        }}
-      />
+      <Stack.Screen name="filters" options={{ presentation: 'modal', headerShown: false }} />
     </Stack>
   );
 }

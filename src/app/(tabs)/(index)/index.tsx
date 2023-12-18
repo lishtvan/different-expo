@@ -58,9 +58,7 @@ const HomeScreen = () => {
                   borderTopRightRadius="$main"
                   borderBottomRightRadius="$main"
                 />
-                <TouchableOpacity
-                  className="ml-1 p-2"
-                  onPress={() => router.push('/(tabs)/(index)/filters')}>
+                <TouchableOpacity className="ml-1 p-2" onPress={() => router.push('/filters')}>
                   <MaterialCommunityIcons name="tune-variant" size={25} />
                 </TouchableOpacity>
               </XStack>

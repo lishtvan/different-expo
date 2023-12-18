@@ -4,6 +4,8 @@ interface BearState {
   designers: string[];
   addDesigner: (designer: string) => void;
   removeDesigner: (designer: string) => void;
+  clearDesigners: () => void;
+  clearAll: () => void;
 }
 
 export const useFilterStore = create<BearState>((set) => ({
@@ -12,4 +14,6 @@ export const useFilterStore = create<BearState>((set) => ({
   removeDesigner: (designer) => {
     set((state) => ({ designers: state.designers.filter((i) => i !== designer) }));
   },
+  clearDesigners: () => set(() => ({ designers: [] })),
+  clearAll: () => set(() => ({ designers: [] })),
 }));
