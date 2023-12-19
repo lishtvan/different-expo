@@ -33,7 +33,8 @@ const User = () => {
     queryFn: () => fetcher({ body: { nickname: params.nickname }, route: '/user/get' }),
   });
 
-  const { refreshing, refreshKey, handleRefresh } = useRefresh(refetch, searchClient);
+  // TODO: add refresh search
+  const { refreshing, refreshKey, handleRefresh } = useRefresh(refetch);
 
   const setCloseToBottomFalse = useCallback(() => {
     setIsViewCloseToBottom(false);

@@ -1,23 +1,34 @@
 import { Stack } from 'expo-router';
+import { InstantSearch } from 'react-instantsearch-core';
+
+import { VirtualFilter } from './filters/current_filters';
+import { LISTINGS_COLLECTION } from '../../../constants/listing';
+import { searchClient } from '../../../utils/typesense';
 
 export const unstable_settings = { initialRouteName: 'index' };
 
 export default function IndexLayoutNav() {
   return (
-    <Stack
-      screenOptions={{
-        headerShadowVisible: false,
-      }}>
-      <Stack.Screen name="index" />
-      <Stack.Screen
-        name="listing/[listingId]"
-        options={{
-          headerTitle: '',
-          headerBackTitleVisible: false,
+    <InstantSearch
+      future={{ preserveSharedStateOnUnmount: true }}
+      indexName={LISTINGS_COLLECTION}
+      searchClient={searchClient}>
+      <VirtualFilter />
+      <Stack
+        screenOptions={{
           headerShadowVisible: false,
-        }}
-      />
-      <Stack.Screen name="filters" options={{ presentation: 'modal', headerShown: false }} />
-    </Stack>
+        }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen
+          name="listing/[listingId]"
+          options={{
+            headerTitle: '',
+            headerBackTitleVisible: false,
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen name="filters" options={{ presentation: 'modal', headerShown: false }} />
+      </Stack>
+    </InstantSearch>
   );
 }

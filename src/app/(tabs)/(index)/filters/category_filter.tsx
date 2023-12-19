@@ -5,10 +5,10 @@ import { Text, TouchableOpacity } from 'react-native';
 import { View } from 'tamagui';
 
 const DesignerFilter = () => {
-  const { items, refine } = useRefinementList({ attribute: 'designer' });
+  const { items, refine } = useRefinementList({ attribute: 'category' });
 
-  const { canRefine, refine: clearAllDesigners } = useClearRefinements({
-    includedAttributes: ['designer'],
+  const { canRefine, refine: clearAllCategories } = useClearRefinements({
+    includedAttributes: ['category'],
   });
 
   return (
@@ -18,7 +18,7 @@ const DesignerFilter = () => {
           headerRight: () => (
             <TouchableOpacity
               className={`${canRefine ? '' : 'hidden'} `}
-              onPress={clearAllDesigners}>
+              onPress={clearAllCategories}>
               <Text className="text-base">Видалити всe</Text>
             </TouchableOpacity>
           ),
@@ -33,6 +33,7 @@ const DesignerFilter = () => {
           key={i.value}>
           <Text>
             {i.label} {i.isRefined && 'X'}
+            {'    '} {i.count}
           </Text>
         </TouchableOpacity>
       ))}
