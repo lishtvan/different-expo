@@ -10,6 +10,8 @@ import {
 import { TouchableOpacity } from 'react-native';
 import { Button, ListItem, Separator, Text, View } from 'tamagui';
 
+import Delayed from '../../../../components/wrappers/Delayed';
+
 interface FilterListItemProps {
   attribute: string;
   routeName: string;
@@ -81,23 +83,25 @@ const CurrentFilters = () => {
   renderCounter.current = renderCounter.current + 1;
 
   return (
-    <View className="px-4 pt-3 mb-16 flex flex-col justify-between  flex-1">
-      <Clear />
-      <View>
-        <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
-        <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
-        <FilterListItem attribute="designer" title="Розмір" routeName="designer_filter" />
-        <FilterListItem attribute="designer" title="Стан речі" routeName="designer_filter" />
-        <FilterListItem attribute="designer" title="Ціна" routeName="designer_filter" />
-        <FilterListItem attribute="designer" title="Теги" routeName="designer_filter" />
-      </View>
-      <View className="mb-30">
+    <Delayed waitBeforeShow={0}>
+      <View className="px-4 pt-3 mb-16 flex flex-col justify-between  flex-1">
+        <Clear />
         <View>
-          <Text className="text-lg"> renders count: {renderCounter.current}</Text>
+          <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
+          <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
+          <FilterListItem attribute="designer" title="Розмір" routeName="designer_filter" />
+          <FilterListItem attribute="designer" title="Стан речі" routeName="designer_filter" />
+          <FilterListItem attribute="designer" title="Ціна" routeName="designer_filter" />
+          <FilterListItem attribute="designer" title="Теги" routeName="designer_filter" />
         </View>
-        <ShowListingsButton />
+        <View className="mb-30">
+          <View>
+            <Text className="text-lg"> renders count: {renderCounter.current}</Text>
+          </View>
+          <ShowListingsButton />
+        </View>
       </View>
-    </View>
+    </Delayed>
   );
 };
 

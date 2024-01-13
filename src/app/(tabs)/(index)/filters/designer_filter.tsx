@@ -4,6 +4,8 @@ import { useClearRefinements, useRefinementList } from 'react-instantsearch-core
 import { Text, TouchableOpacity } from 'react-native';
 import { View } from 'tamagui';
 
+import Delayed from '../../../../components/wrappers/Delayed';
+
 const Clear = () => {
   const { canRefine, refine: clearAllDesigners } = useClearRefinements({
     includedAttributes: ['designer'],
@@ -45,9 +47,11 @@ const DesignerFilter = () => {
 
 const DesignerFilterScreen = () => {
   return (
-    <View>
-      <DesignerFilter />
-    </View>
+    <Delayed waitBeforeShow={0}>
+      <View>
+        <DesignerFilter />
+      </View>
+    </Delayed>
   );
 };
 
