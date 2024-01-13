@@ -116,8 +116,3 @@ const CurrentFiltersScreen = () => {
 };
 
 export default CurrentFiltersScreen;
-
-// const focused = useIsFocused();
-//   useEffect(() => {
-//     console.log('use effect', focused);
-//   }, [results?.nbHits]);

@@ -3,6 +3,7 @@ import React from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
 import { Text, TouchableOpacity } from 'react-native';
 import { View } from 'tamagui';
+
 import Delayed from '../../../../components/wrappers/Delayed';
 
 const DesignerFilter = () => {

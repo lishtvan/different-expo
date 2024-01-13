@@ -28,7 +28,6 @@ const DesignerFilter = () => {
 
   return (
     <View>
-      <Clear />
       {items.map((i) => (
         <TouchableOpacity
           onPress={() => {
@@ -49,6 +48,7 @@ const DesignerFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
       <View>
+        <Clear />
         <DesignerFilter />
       </View>
     </Delayed>

@@ -1,5 +1,6 @@
 import { useScrollToTop } from '@react-navigation/native';
-import React, { useRef } from 'react';
+import { useFocusEffect } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useInfiniteHits } from 'react-instantsearch-core';
 import { FlatList, RefreshControlProps } from 'react-native';
 import { Spinner, Text, View } from 'tamagui';
@@ -23,11 +24,25 @@ interface Props {
 }
 
 const HomeListings: React.FC<Props> = ({ refreshControl }) => {
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<FlatList>(null);
+  const [shouldScrollToTop, setShouldScrollToTop] = useState(false);
 
   const { hits, isLastPage, showMore, results } = useInfiniteHits<TListing>();
 
   useScrollToTop(scrollRef);
+
+  useEffect(() => {
+    setShouldScrollToTop(true);
+  }, [results?.nbHits]);
+
+  useFocusEffect(
+    useCallback(() => {
+      if (shouldScrollToTop) {
+        scrollRef?.current?.scrollToOffset({ offset: 0, animated: true });
+        setShouldScrollToTop(false);
+      }
+    }, [shouldScrollToTop])
+  );
 
   return (
     <FlatList
