@@ -1,29 +1,35 @@
 import { Entypo } from '@expo/vector-icons';
 import { Link, Stack, router } from 'expo-router';
-import React, { useRef } from 'react';
+import React, { FC, useRef } from 'react';
 import {
   useClearRefinements,
   useCurrentRefinements,
   useHits,
   useRefinementList,
 } from 'react-instantsearch-core';
-import { Text, TouchableOpacity } from 'react-native';
-import { ListItem, Separator, View } from 'tamagui';
+import { TouchableOpacity } from 'react-native';
+import { Button, ListItem, Separator, Text, View } from 'tamagui';
 
-const CurrentDesignerFilter = () => {
-  const designers = useCurrentRefinements({ includedAttributes: ['designer'] });
+interface FilterListItemProps {
+  attribute: string;
+  routeName: string;
+  title: string;
+}
+
+const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }) => {
+  const categories = useCurrentRefinements({ includedAttributes: [attribute] });
 
   return (
-    <Link href="/filters/designer_filter" asChild className="mb-1">
+    <Link href={`/filters/${routeName}`} asChild className="mb-1">
       <TouchableOpacity activeOpacity={0.5} className="w-full">
         <ListItem className="px-0.5 py-3">
-          <ListItem.Text className="text-base w-[35%]">Дизайнер</ListItem.Text>
+          <ListItem.Text className="text-base w-[35%]">{title}</ListItem.Text>
           <ListItem.Subtitle
             textAlign="right"
             className="mr-2 text-main text-base font-medium"
             opacity={1}>
-            {designers.items.length > 0 &&
-              designers.items[0].refinements.map((r) => r.label).join(', ')}
+            {categories.items.length > 0 &&
+              categories.items[0].refinements.map((r) => r.label).join(', ')}
           </ListItem.Subtitle>
           <Entypo name="chevron-thin-right" size={15} />
         </ListItem>
@@ -37,9 +43,13 @@ const ShowListingsButton = () => {
   const { results } = useHits();
 
   return (
-    <View>
-      <Text>Переглянути {results?.nbHits} оголошень</Text>
-    </View>
+    <Button
+      theme="active"
+      fontSize="$5"
+      borderRadius="$main"
+      onPress={() => router.push({ pathname: '/' })}>
+      {`Переглянути ${results?.nbHits} оголошень`}
+    </Button>
   );
 };
 
@@ -71,89 +81,22 @@ const CurrentFilters = () => {
   renderCounter.current = renderCounter.current + 1;
 
   return (
-    <View className="px-4 py-3">
+    <View className="px-4 pt-3 mb-16 flex flex-col justify-between  flex-1">
       <Clear />
-      <CurrentDesignerFilter />
-      <Link href="/filters/category_filter" className="mb-1">
-        <View className="w-full">
-          <ListItem className="px-0.5 py-3">
-            <ListItem.Text className="text-base w-[35%]">Категорія</ListItem.Text>
-            <ListItem.Subtitle
-              textAlign="right"
-              className="mr-2 text-main text-base font-medium"
-              opacity={1}>
-              {/* {categories.items.length > 0 &&
-                categories.items[0].refinements.map((r) => r.label).join(', ')} */}
-            </ListItem.Subtitle>
-            <Entypo name="chevron-thin-right" size={15} />
-          </ListItem>
-          <Separator borderColor="$gray7Light" />
-        </View>
-      </Link>
-      <Link href="/filters/designer_filter" className="mb-1">
-        <View className="w-full">
-          <ListItem className="px-0.5 py-3">
-            <ListItem.Text className="text-base w-[35%]">Розмір</ListItem.Text>
-            {/* <ListItem.Subtitle
-              textAlign="right"
-              className="mr-2 text-main text-base font-medium"
-              opacity={1}>
-              {designers.length > 0 && designers.join(', ')}
-            </ListItem.Subtitle> */}
-            <Entypo name="chevron-thin-right" size={15} />
-          </ListItem>
-          <Separator borderColor="$gray7Light" />
-        </View>
-      </Link>
-      <Link href="/filters/designer_filter" className="mb-1">
-        <View className="w-full">
-          <ListItem className="px-0.5 py-3">
-            <ListItem.Text className="text-base w-[35%]">Стан речі</ListItem.Text>
-            {/* <ListItem.Subtitle
-              textAlign="right"
-              className="mr-2 text-main text-base font-medium"
-              opacity={1}>
-              {designers.length > 0 && designers.join(', ')}
-            </ListItem.Subtitle> */}
-            <Entypo name="chevron-thin-right" size={15} />
-          </ListItem>
-          <Separator borderColor="$gray7Light" />
-        </View>
-      </Link>
-      <Link href="/filters/designer_filter" className="mb-1">
-        <View className="w-full">
-          <ListItem className="px-0.5 py-3">
-            <ListItem.Text className="text-base w-[35%]">Ціна</ListItem.Text>
-            {/* <ListItem.Subtitle
-              textAlign="right"
-              className="mr-2 text-main text-base font-medium"
-              opacity={1}>
-              {designers.length > 0 && designers.join(', ')}
-            </ListItem.Subtitle> */}
-            <Entypo name="chevron-thin-right" size={15} />
-          </ListItem>
-          <Separator borderColor="$gray7Light" />
-        </View>
-      </Link>
-      <Link href="/filters/designer_filter" className="mb-1">
-        <TouchableOpacity className="w-full">
-          <ListItem className="px-0.5 py-3">
-            <ListItem.Text className="text-base w-[35%]">Теги</ListItem.Text>
-            {/* <ListItem.Subtitle
-              textAlign="right"
-              className="mr-2 text-main text-base font-medium"
-              opacity={1}>
-              {designers.length > 0 && designers.join(', ')}
-            </ListItem.Subtitle> */}
-            <Entypo name="chevron-thin-right" size={15} />
-          </ListItem>
-          <Separator borderColor="$gray7Light" />
-        </TouchableOpacity>
-      </Link>
-      <View className="mt-32">
-        <Text className="text-lg"> renders count: {renderCounter.current}</Text>
+      <View>
+        <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
+        <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
+        <FilterListItem attribute="designer" title="Розмір" routeName="designer_filter" />
+        <FilterListItem attribute="designer" title="Стан речі" routeName="designer_filter" />
+        <FilterListItem attribute="designer" title="Ціна" routeName="designer_filter" />
+        <FilterListItem attribute="designer" title="Теги" routeName="designer_filter" />
       </View>
-      <ShowListingsButton />
+      <View className="mb-30">
+        <View>
+          <Text className="text-lg"> renders count: {renderCounter.current}</Text>
+        </View>
+        <ShowListingsButton />
+      </View>
     </View>
   );
 };
@@ -169,3 +112,8 @@ const CurrentFiltersScreen = () => {
 };
 
 export default CurrentFiltersScreen;
+
+// const focused = useIsFocused();
+//   useEffect(() => {
+//     console.log('use effect', focused);
+//   }, [results?.nbHits]);

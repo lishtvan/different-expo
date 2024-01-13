@@ -1,38 +1,55 @@
-import React, { FC, useEffect } from 'react';
+import { useScrollToTop } from '@react-navigation/native';
+import React, { useRef } from 'react';
 import { useInfiniteHits } from 'react-instantsearch-core';
-import { Spinner, View } from 'tamagui';
+import { FlatList, RefreshControlProps } from 'react-native';
+import { Spinner, Text, View } from 'tamagui';
 
 import { TListing } from '../../types';
 import Listing from '../listings/Listing';
 
+const renderItem = ({ item }: { item: TListing }) => {
+  return (
+    <View className="w-[49.5%]">
+      <Listing listing={item} />
+    </View>
+  );
+};
+
 interface Props {
-  isViewCloseToBottom: boolean;
-  setCloseToBottomFalse: () => void;
+  refreshControl: React.ReactElement<
+    RefreshControlProps,
+    string | React.JSXElementConstructor<any>
+  >;
 }
 
-const HomeListings: FC<Props> = ({ isViewCloseToBottom, setCloseToBottomFalse }) => {
+const HomeListings: React.FC<Props> = ({ refreshControl }) => {
+  const scrollRef = useRef(null);
+
   const { hits, isLastPage, showMore, results } = useInfiniteHits<TListing>();
 
-  useEffect(() => {
-    if (results?.nbHits && isViewCloseToBottom && !isLastPage) {
-      showMore();
-      setTimeout(() => {
-        setCloseToBottomFalse();
-      }, 200);
-    }
-  }, [isViewCloseToBottom]);
+  useScrollToTop(scrollRef);
 
   return (
-    <View>
-      <View className="flex justify-between flex-row flex-wrap gap-y-4">
-        {hits.map((listing) => (
-          <View className="w-[49.4%]" key={listing.id}>
-            <Listing listing={listing} />
-          </View>
-        ))}
-      </View>
-      {!isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
-    </View>
+    <FlatList
+      ref={scrollRef}
+      data={hits}
+      refreshControl={refreshControl}
+      keyboardDismissMode="on-drag"
+      ListHeaderComponent={() => (
+        <View className="px-2 py-1">
+          <Text className=" text-lg font-semibold">{results?.nbHits} оголошень в наявновсті</Text>
+        </View>
+      )}
+      onEndReached={() => {
+        if (!isLastPage) showMore();
+      }}
+      columnWrapperStyle={{ justifyContent: 'space-between' }}
+      numColumns={2}
+      ItemSeparatorComponent={() => <View className="h-3" />}
+      renderItem={renderItem}
+      keyExtractor={(item) => item.id}
+      ListFooterComponent={() => !isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
+    />
   );
 };
 
