@@ -8,7 +8,7 @@ import {
   useRefinementList,
 } from 'react-instantsearch-core';
 import { Text, TouchableOpacity } from 'react-native';
-import { Button, ListItem, Separator, View } from 'tamagui';
+import { ListItem, Separator, View } from 'tamagui';
 
 const CurrentDesignerFilter = () => {
   const designers = useCurrentRefinements({ includedAttributes: ['designer'] });
@@ -39,35 +39,40 @@ const ShowListingsButton = () => {
   return (
     <View>
       <Text>Переглянути {results?.nbHits} оголошень</Text>
-      <Button onPress={() => router.push('/filters/designer_filter')}>go to designers</Button>
     </View>
   );
 };
 
-const CurrentFilters = () => {
+const Clear = () => {
   const { canRefine, refine: clearAllFilters } = useClearRefinements();
+
+  return (
+    <Stack.Screen
+      options={{
+        headerLeft: () => {
+          return (
+            <TouchableOpacity onPress={() => router.back()}>
+              <Text className="text-base">Закрити</Text>
+            </TouchableOpacity>
+          );
+        },
+        headerRight: () => (
+          <TouchableOpacity className={`${canRefine ? '' : 'hidden'} `} onPress={clearAllFilters}>
+            <Text className="text-base">Видалити всe</Text>
+          </TouchableOpacity>
+        ),
+      }}
+    />
+  );
+};
+
+const CurrentFilters = () => {
   const renderCounter = useRef(0);
   renderCounter.current = renderCounter.current + 1;
 
   return (
     <View className="px-4 py-3">
-      <Stack.Screen
-        options={{
-          headerLeft: () => {
-            return (
-              <TouchableOpacity onPress={() => router.back()}>
-                <Text className="text-base">Закрити</Text>
-              </TouchableOpacity>
-            );
-          },
-          headerRight: () => (
-            <TouchableOpacity className={`${canRefine ? '' : 'hidden'} `} onPress={clearAllFilters}>
-              <Text className="text-base">Видалити всe</Text>
-            </TouchableOpacity>
-          ),
-        }}
-      />
-
+      <Clear />
       <CurrentDesignerFilter />
       <Link href="/filters/category_filter" className="mb-1">
         <View className="w-full">

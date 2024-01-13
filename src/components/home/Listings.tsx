@@ -4,7 +4,6 @@ import { Spinner, View } from 'tamagui';
 
 import { TListing } from '../../types';
 import Listing from '../listings/Listing';
-import Delayed from '../wrappers/Delayed';
 
 interface Props {
   isViewCloseToBottom: boolean;
@@ -24,18 +23,16 @@ const HomeListings: FC<Props> = ({ isViewCloseToBottom, setCloseToBottomFalse })
   }, [isViewCloseToBottom]);
 
   return (
-    <Delayed waitBeforeShow={100}>
-      <View>
-        <View className="flex justify-between flex-row flex-wrap gap-y-4 ">
-          {hits.map((listing) => (
-            <View className="w-[49.4%]" key={listing.id}>
-              <Listing listing={listing} />
-            </View>
-          ))}
-        </View>
-        {!isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
+    <View>
+      <View className="flex justify-between flex-row flex-wrap gap-y-4">
+        {hits.map((listing) => (
+          <View className="w-[49.4%]" key={listing.id}>
+            <Listing listing={listing} />
+          </View>
+        ))}
       </View>
-    </Delayed>
+      {!isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
+    </View>
   );
 };
 

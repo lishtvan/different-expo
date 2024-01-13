@@ -4,26 +4,29 @@ import { useClearRefinements, useRefinementList } from 'react-instantsearch-core
 import { Text, TouchableOpacity } from 'react-native';
 import { View } from 'tamagui';
 
-const DesignerFilter = () => {
-  const { items, refine } = useRefinementList({ attribute: 'designer' });
-
+const Clear = () => {
   const { canRefine, refine: clearAllDesigners } = useClearRefinements({
     includedAttributes: ['designer'],
   });
+  return (
+    <Stack.Screen
+      options={{
+        headerRight: () => (
+          <TouchableOpacity className={`${canRefine ? '' : 'hidden'} `} onPress={clearAllDesigners}>
+            <Text className="text-base">Видалити всe</Text>
+          </TouchableOpacity>
+        ),
+      }}
+    />
+  );
+};
+
+const DesignerFilter = () => {
+  const { items, refine } = useRefinementList({ attribute: 'designer' });
 
   return (
     <View>
-      <Stack.Screen
-        options={{
-          headerRight: () => (
-            <TouchableOpacity
-              className={`${canRefine ? '' : 'hidden'} `}
-              onPress={clearAllDesigners}>
-              <Text className="text-base">Видалити всe</Text>
-            </TouchableOpacity>
-          ),
-        }}
-      />
+      <Clear />
       {items.map((i) => (
         <TouchableOpacity
           onPress={() => {

@@ -1,8 +1,8 @@
 import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
-import { Stack, router } from 'expo-router';
-import React, { useCallback, useRef, useState } from 'react';
-import { useInstantSearch } from 'react-instantsearch-core';
+import { Stack, router, useNavigation } from 'expo-router';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+// import { useInstantSearch } from 'react-instantsearch-core';
 import { Dimensions, RefreshControl, ScrollView, TouchableOpacity } from 'react-native';
 import { Button, Input, XStack } from 'tamagui';
 
@@ -13,12 +13,11 @@ import { isAndroid } from '../../../utils/platform';
 
 const HomeScreen = () => {
   const [isViewCloseToBottom, setIsViewCloseToBottom] = useState(false);
-  const { refresh } = useInstantSearch();
-  const { refreshing, refreshKey, handleRefresh } = useRefresh(delay);
-
+  const navigation = useNavigation();
+  // const { refresh } = useInstantSearch();
+  const { refreshing, handleRefresh, refreshKey } = useRefresh(() => delay(100));
   const scrollRef = useRef(null);
 
-  // TODO: Implement scroll after filter
   useScrollToTop(scrollRef);
 
   const setCloseToBottomFalse = useCallback(() => {
@@ -28,7 +27,24 @@ const HomeScreen = () => {
   const ScreenWidth = Dimensions.get('window').width;
 
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1' : 'p-0 pl-2';
+  console.log('render');
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+      if (scrollRef?.current) {
+        console.log('scroll to top');
+        // @ts-ignore
+        scrollRef.current.scrollTo({
+          y: 0,
+          animated: true,
+        });
+      }
+    });
+
+    return unsubscribe;
+  }, [navigation]);
+
+  // TODO: Use flatlist for perf
   return (
     <ScrollView
       key={refreshKey}
@@ -36,7 +52,7 @@ const HomeScreen = () => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => {
-            refresh();
+            // refresh();
             handleRefresh();
           }}
         />
@@ -50,7 +66,7 @@ const HomeScreen = () => {
       scrollEventThrottle={1000}>
       <Stack.Screen
         options={{
-          contentStyle: { paddingVertical: 5 },
+          contentStyle: { paddingVertical: 7 },
           headerTitle: () => (
             <XStack alignItems="center" style={{ width: ScreenWidth - 30 }}>
               <Button
