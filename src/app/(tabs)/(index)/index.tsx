@@ -12,7 +12,7 @@ import { isAndroid } from '../../../utils/platform';
 
 const HomeListingsWrapper = () => {
   const { refreshing, refreshKey, handleRefresh } = useRefresh(() => delay(50));
-  const { refresh } = useInstantSearch();
+  const { refresh, setUiState } = useInstantSearch();
   return (
     <HomeListings
       key={refreshKey}
@@ -20,6 +20,10 @@ const HomeListingsWrapper = () => {
         <RefreshControl
           refreshing={refreshing}
           onRefresh={() => {
+            setUiState((state) => {
+              state.listings.page = 0;
+              return state;
+            });
             refresh();
             handleRefresh();
           }}
