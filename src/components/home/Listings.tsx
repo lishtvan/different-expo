@@ -8,6 +8,7 @@ import { Spinner, Text, View } from 'tamagui';
 import { TListing } from '../../types';
 import { getDynamicEndingForListingsCount } from '../../utils/common';
 import Listing from '../listings/Listing';
+import Delayed from '../wrappers/Delayed';
 
 const renderItem = ({ item }: { item: TListing }) => {
   return (
@@ -53,26 +54,28 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
   }, [results]);
 
   return (
-    <FlatList
-      ref={scrollRef}
-      data={hits}
-      refreshControl={refreshControl}
-      keyboardDismissMode="on-drag"
-      ListHeaderComponent={() => (
-        <View className="px-2 py-1">
-          <Text className="font-semibold text-lg">{listingsCountString}</Text>
-        </View>
-      )}
-      onEndReached={() => {
-        if (!isLastPage) showMore();
-      }}
-      columnWrapperStyle={{ justifyContent: 'space-between' }}
-      numColumns={2}
-      ItemSeparatorComponent={() => <View className="h-3" />}
-      renderItem={renderItem}
-      keyExtractor={(item) => item.id}
-      ListFooterComponent={() => !isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
-    />
+    <Delayed waitBeforeShow={100}>
+      <FlatList
+        ref={scrollRef}
+        data={hits}
+        refreshControl={refreshControl}
+        keyboardDismissMode="on-drag"
+        ListHeaderComponent={() => (
+          <View className="px-2 py-1">
+            <Text className="font-semibold text-lg">{listingsCountString}</Text>
+          </View>
+        )}
+        onEndReached={() => {
+          if (!isLastPage) showMore();
+        }}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        numColumns={2}
+        ItemSeparatorComponent={() => <View className="h-3" />}
+        renderItem={renderItem}
+        keyExtractor={(item) => item.id}
+        ListFooterComponent={() => !isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
+      />
+    </Delayed>
   );
 };
 

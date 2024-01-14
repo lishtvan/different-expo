@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
-import React, { FC } from 'react';
+import React, { FC, memo } from 'react';
 import { Text, View } from 'tamagui';
 
 import { SHORT_SIZES } from '../../constants/listing';
@@ -10,7 +10,7 @@ interface Props {
   listing: TListing;
 }
 
-const Listing: FC<Props> = ({ listing }) => {
+const MyListing: FC<Props> = ({ listing }) => {
   return (
     <View onPress={() => router.push(`/listing/${listing.id}`)}>
       <Image
@@ -35,5 +35,7 @@ const Listing: FC<Props> = ({ listing }) => {
     </View>
   );
 };
+
+const Listing = memo(MyListing);
 
 export default Listing;
