@@ -87,19 +87,19 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
 
       {selectedImages.length === 0 ? (
         <TouchableOpacity onPress={pickImages}>
-          <View className="w-full h-28 rounded-xl border-[0.5px] border-main justify-center items-center">
+          <View className="h-28 w-full items-center justify-center rounded-xl border-[0.5px] border-main">
             <MaterialIcons name="add-a-photo" size={32} color={mainColor} />
           </View>
         </TouchableOpacity>
       ) : (
-        <View className="flex-row flex-wrap gap-y-2 gap-x-2 items-center">
+        <View className="flex-row flex-wrap items-center gap-x-2 gap-y-2">
           {selectedImages.map((img) => (
             <View
               onPress={() => deletePhoto(img)}
               key={img.imageUrl}
-              className="w-[22.7%] h-28 rounded-lg justify-center items-center">
+              className="h-28 w-[22.7%] items-center justify-center rounded-lg">
               <Image
-                className="w-full rounded-lg object-cover h-28 aspect-[8.5/10]"
+                className="aspect-[8.5/10] h-28 w-full rounded-lg object-cover"
                 source={{ uri: img.imageUrl }}
                 alt="item"
                 blurRadius={img.isPreview ? blurRadius : 0}
@@ -109,7 +109,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
           {selectedImages.length < 8 && (
             <TouchableOpacity
               onPress={pickImages}
-              className="w-[22.7%] h-28 rounded-lg border-[0.5px] border-main justify-center items-center">
+              className="h-28 w-[22.7%] items-center justify-center rounded-lg border-[0.5px] border-main">
               <MaterialIcons name="add-circle" size={20} color={mainColor} />
             </TouchableOpacity>
           )}

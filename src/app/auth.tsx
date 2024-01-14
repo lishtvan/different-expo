@@ -39,14 +39,14 @@ const AuthScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-between ">
+    <SafeAreaView className="flex-1 items-center justify-between">
       <View className="flex-1 items-center justify-around">
         <View className="items-center">
           <Image
             style={{ width: 250, height: 50 }}
             source={require('../../assets/images/logo.jpeg')}
           />
-          <View className=" px-4 my-10">
+          <View className="my-10 px-4">
             <Text className="text-xl font-medium">
               Увійдіть, щоб створити оголошення або придбати те, що вам потрібно.
             </Text>
@@ -62,13 +62,13 @@ const AuthScreen = () => {
             />
           }
           pressStyle={{ backgroundColor: 'white', borderColor: mainColor }}
-          className="w-full border border-black bg-white justify-start"
+          className="w-full justify-start border border-black bg-white"
           borderRadius="$main">
           <Text fontSize="$7">Увійти за допомогою Google</Text>
         </Button>
       </View>
       <Link className="mb-10" href="/" replace>
-        <Text className="text-blue-500  text-base">Повернутись на головну сторінку</Text>
+        <Text className="text-base  text-blue-500">Повернутись на головну сторінку</Text>
       </Link>
     </SafeAreaView>
   );

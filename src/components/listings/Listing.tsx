@@ -19,7 +19,7 @@ const MyListing: FC<Props> = ({ listing }) => {
         alt="item"
       />
       <View className="px-2">
-        <View className="mt-3 w-full flex flex-row justify-between">
+        <View className="mt-3 flex w-full flex-row justify-between">
           <Text numberOfLines={1} className="w-10/12 text-sm font-bold">
             {listing.designer}
           </Text>

@@ -158,7 +158,7 @@ export default function SellScreen() {
       viewIsInsideTabBar
       keyboardShouldPersistTaps="handled"
       extraScrollHeight={25}
-      className="flex-1 p-3 gap-y-3">
+      className="flex-1 gap-y-3 p-3">
       <View>
         <Text className="mb-1 ml-2 text-base">Заголовок *</Text>
         <Controller
@@ -253,7 +253,7 @@ export default function SellScreen() {
                     {!selectedSection && (
                       <>
                         <View className="p-4">
-                          <Text className="font-bold text-lg">Оберіть секцію</Text>
+                          <Text className="text-lg font-bold">Оберіть секцію</Text>
                         </View>
 
                         {(Object.keys(CATEGORIES) as Section[]).map((section) => (
@@ -272,9 +272,9 @@ export default function SellScreen() {
                     {selectedSection && (
                       <>
                         <View className="flex-row items-center justify-between p-4">
-                          <Text className="font-bold text-lg">Оберіть категорію</Text>
+                          <Text className="text-lg font-bold">Оберіть категорію</Text>
                           <TouchableOpacity onPress={() => setSelectedSection(null)}>
-                            <Text className="text-main text-base">Повернутись</Text>
+                            <Text className="text-base text-main">Повернутись</Text>
                           </TouchableOpacity>
                         </View>
 

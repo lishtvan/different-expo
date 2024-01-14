@@ -36,7 +36,7 @@ export default function DesignerSearchScreen() {
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1 bg-[#f8f8f8]' : 'p-0 pl-2  bg-[#f8f8f8]';
 
   return (
-    <View className="p-3 flex-1">
+    <View className="flex-1 p-3">
       <XStack alignItems="center">
         <Button
           size="$4"

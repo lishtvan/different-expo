@@ -91,7 +91,7 @@ const User = () => {
 
       <View>
         {user.location && (
-          <View className="flex-row mt-2 items-center px-1.5">
+          <View className="mt-2 flex-row items-center px-1.5">
             <EvilIcons size={25} style={{ padding: 0, opacity: 0.6 }} name="location" />
             <Text opacity={0.6} fontSize="$6">
               {user.location}
@@ -104,7 +104,7 @@ const User = () => {
           </Text>
         )}
       </View>
-      <View className="flex-row mt-4 px-2 mb-3 items-center gap-x-4 w-full">
+      <View className="mb-3 mt-4 w-full flex-row items-center gap-x-4 px-2">
         <Button
           onPress={() => router.push(user.isOwnAccount ? '/(tabs)/profile/settings' : '/')}
           size="$3"

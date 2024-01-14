@@ -27,10 +27,10 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
     <Link href={`/filters/${routeName}`} asChild className="mb-1">
       <TouchableOpacity activeOpacity={0.5} className="w-full">
         <ListItem className="px-0.5 py-3">
-          <ListItem.Text className="text-base w-[35%]">{title}</ListItem.Text>
+          <ListItem.Text className="w-[35%] text-base">{title}</ListItem.Text>
           <ListItem.Subtitle
             textAlign="right"
-            className="mr-2 text-main text-base font-medium"
+            className="mr-2 text-base font-medium text-main"
             opacity={1}>
             {categories.items.length > 0 &&
               categories.items[0].refinements.map((r) => r.label).join(', ')}
@@ -93,7 +93,7 @@ const SortBy = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <View className="flex-row items-center justify-between mt-32">
+    <View className="mt-32 flex-row items-center justify-between">
       <Text className="text-lg">Сортування</Text>
       <View className="w-3/5">
         <DropDownPicker
@@ -132,7 +132,7 @@ const StatusFilter = () => {
   const [checked, setChecked] = useState(false);
 
   return (
-    <View className="flex-row items-center justify-between mt-4">
+    <View className="mt-4 flex-row items-center justify-between">
       <Text className="text-lg">Показати продані</Text>
       <Switch
         size="$3.5"
@@ -148,7 +148,7 @@ const StatusFilter = () => {
 const CurrentFilters = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View className="px-4 pt-3 mb-16 flex flex-col justify-between flex-1">
+      <View className="mb-16 flex flex-1 flex-col justify-between px-4 pt-3">
         <Clear />
         <View>
           <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />

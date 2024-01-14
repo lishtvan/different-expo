@@ -135,11 +135,11 @@ const SettingsScreen = () => {
         }}
       />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="gap-y-3 flex-1 px-3">
+        <View className="flex-1 gap-y-3 px-3">
           <View className="mx-auto">
             <Pressable
               disabled={isUploading}
-              className="w-[110px] h-[110px] relative items-center justify-center"
+              className="relative h-[110px] w-[110px] items-center justify-center"
               onPress={() => {
                 if (newAvatarUrl || user.avatarUrl) toggleModal();
                 else pickImage();
@@ -151,7 +151,7 @@ const SettingsScreen = () => {
                 />
               </Avatar>
               {!isUploading && (
-                <View className="absolute right-3 bottom-1 bg-white rounded-full">
+                <View className="absolute bottom-1 right-3 rounded-full bg-white">
                   <Entypo size={26} name="circle-with-plus" color={mainColor} />
                 </View>
               )}
@@ -229,20 +229,20 @@ const SettingsScreen = () => {
             backdropOpacity={0.3}
             swipeDirection={['down']}
             onSwipeComplete={closeModal}>
-            <View className="mx-4 mb-16 bg-white rounded-2xl">
+            <View className="mx-4 mb-16 rounded-2xl bg-white">
               <TouchableOpacity
                 onPress={pickImage}
-                className="p-4 border-b-2 border-b-[#eeeeee] flex-row justify-center">
+                className="flex-row justify-center border-b-2 border-b-[#eeeeee] p-4">
                 <Text className="text-xl">Обрати фото</Text>
               </TouchableOpacity>
               {(newAvatarUrl || user.avatarUrl) && (
                 <TouchableOpacity
                   onPress={deleteAvatar}
-                  className="p-4 border-b-2 border-b-[#eeeeee] flex-row justify-center">
+                  className="flex-row justify-center border-b-2 border-b-[#eeeeee] p-4">
                   <Text className="text-xl text-red-600">Видалити фото</Text>
                 </TouchableOpacity>
               )}
-              <TouchableOpacity onPress={closeModal} className="p-4 flex-row justify-center">
+              <TouchableOpacity onPress={closeModal} className="flex-row justify-center p-4">
                 <Text className="text-xl">Скасувати</Text>
               </TouchableOpacity>
             </View>

@@ -62,7 +62,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
         keyboardDismissMode="on-drag"
         ListHeaderComponent={() => (
           <View className="px-2 py-1">
-            <Text className="font-semibold text-lg">{listingsCountString}</Text>
+            <Text className="text-lg font-semibold">{listingsCountString}</Text>
           </View>
         )}
         onEndReached={() => {
@@ -73,7 +73,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
         ItemSeparatorComponent={() => <View className="h-3" />}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
-        ListFooterComponent={() => !isLastPage && <Spinner className="mt-10 mb-10" size="large" />}
+        ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
       />
     </Delayed>
   );
