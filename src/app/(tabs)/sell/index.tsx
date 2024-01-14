@@ -63,8 +63,8 @@ export default function SellScreen() {
       condition: '',
       category: '',
       size: '',
-      phone: user?.data?.phone ? transformPhone.output('+' + user.data.phone) : '+380',
-      cardNumber: (user?.data?.cardNumber as string) || '',
+      phone: user.data?.phone ? transformPhone.output('+' + user.data.phone) : '+380',
+      cardNumber: (user.data?.cardNumber as string) || '',
     },
   });
 
@@ -104,11 +104,11 @@ export default function SellScreen() {
   const sectionByCategory = useMemo(() => getSectionByCategory(watchCategory), [watchCategory]);
 
   useEffect(() => {
-    if (selectedTags?.length === 3) setOpen(false);
+    if (selectedTags.length === 3) setOpen(false);
   }, [selectedTags]);
 
   useEffect(() => {
-    if (!params?.designer) return;
+    if (!params.designer) return;
     setValue('designer', params.designer);
     if (errors.designer) clearErrors('designer');
   }, [params]);
@@ -151,7 +151,7 @@ export default function SellScreen() {
   };
 
   if (user.isLoading) return null;
-  if (!user?.data) return <Redirect href="/auth" />;
+  if (!user.data) return <Redirect href="/auth" />;
 
   return (
     <KeyboardAwareScrollView
@@ -384,7 +384,7 @@ export default function SellScreen() {
       </View>
       <View>
         <Photos
-          error={mutation?.data?.errors?.imageUrls}
+          error={mutation.data?.errors?.imageUrls}
           selectedImages={selectedImages}
           updateSelectedImages={updateSelectedImages}
         />
@@ -543,8 +543,8 @@ export default function SellScreen() {
           )}
           name="price"
         />
-        {(errors.price?.message && <InputValidationError message={errors.price.message} />) ||
-          (errors.price && validationErrors[errors.price.type as keyof typeof validationErrors])}
+        {errors.price?.message && <InputValidationError message={errors.price.message} />}
+        {errors.price && validationErrors[errors.price.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Text className="mb-1 ml-2 text-base">Номер телефону *</Text>

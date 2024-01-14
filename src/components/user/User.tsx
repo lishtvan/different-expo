@@ -17,7 +17,7 @@ import { shareLink } from '../../utils/share';
 import { searchClient } from '../../utils/typesense';
 
 const User = () => {
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{ nickname: string }>();
   const [currentTab, setCurrentTab] = useState('available');
   const [isViewCloseToBottom, setIsViewCloseToBottom] = useState(false);
 
@@ -40,7 +40,7 @@ const User = () => {
     setIsViewCloseToBottom(false);
   }, []);
 
-  if (isLoading) return <Stack.Screen options={{ headerTitle: params?.nickname as string }} />;
+  if (isLoading) return <Stack.Screen options={{ headerTitle: params.nickname }} />;
 
   if (refreshing) return null;
 
@@ -56,7 +56,7 @@ const User = () => {
       scrollEventThrottle={1000}>
       <Stack.Screen
         options={{
-          headerTitle: params?.nickname as string,
+          headerTitle: params.nickname,
           headerTitleStyle: { fontWeight: 'bold', fontSize: 19 },
         }}
       />

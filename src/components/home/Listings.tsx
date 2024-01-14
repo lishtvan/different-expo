@@ -40,7 +40,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
   useFocusEffect(
     useCallback(() => {
       if (shouldScrollToTop) {
-        scrollRef?.current?.scrollToOffset({ offset: 0, animated: true });
+        scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
         setShouldScrollToTop(false);
       }
     }, [shouldScrollToTop])

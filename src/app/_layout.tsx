@@ -56,18 +56,20 @@ function onAppStateChange(status: AppStateStatus) {
   }
 }
 
-const erorrActions = {
+interface ErrActions {
+  [key: string]: (() => void) | undefined;
+}
+
+const erorrActions: ErrActions = {
   404: () => router.replace('/404'),
   500: () => router.replace('/500'),
   401: () => router.replace('/auth'),
 };
 
-const globalErrorHandler = (err: unknown) => {
-  if (err instanceof Error) {
-    const errAction = erorrActions[err.cause as keyof typeof erorrActions];
-    if (errAction) errAction();
-    else throw err;
-  }
+const globalErrorHandler = (err: Error) => {
+  const errAction = erorrActions[err.cause as string];
+  if (errAction) errAction();
+  else throw err;
 };
 
 const queryClient = new QueryClient({
