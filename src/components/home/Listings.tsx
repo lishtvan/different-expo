@@ -1,11 +1,12 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { useFocusEffect } from 'expo-router';
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInfiniteHits } from 'react-instantsearch-core';
 import { FlatList, RefreshControlProps } from 'react-native';
 import { Spinner, Text, View } from 'tamagui';
 
 import { TListing } from '../../types';
+import { getDynamicEndingForListingsCount } from '../../utils/common';
 import Listing from '../listings/Listing';
 
 const renderItem = ({ item }: { item: TListing }) => {
@@ -44,6 +45,13 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
     }, [shouldScrollToTop])
   );
 
+  const listingsCountString = useMemo(() => {
+    if (!results) return '';
+    const refinements = results.getRefinements();
+    const isShowSold = refinements.find((i) => i.attributeName === 'status')?.name === 'SOLD';
+    return getDynamicEndingForListingsCount(results.nbHits, isShowSold);
+  }, [results]);
+
   return (
     <FlatList
       ref={scrollRef}
@@ -52,7 +60,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
       keyboardDismissMode="on-drag"
       ListHeaderComponent={() => (
         <View className="px-2 py-1">
-          <Text className=" text-lg font-semibold">{results?.nbHits} оголошень в наявновсті</Text>
+          <Text className="font-semibold text-lg">{listingsCountString}</Text>
         </View>
       )}
       onEndReached={() => {

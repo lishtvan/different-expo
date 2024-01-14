@@ -11,7 +11,7 @@ import { delay } from '../../../utils/common';
 import { isAndroid } from '../../../utils/platform';
 
 const HomeListingsWrapper = () => {
-  const { refreshing, refreshKey, handleRefresh } = useRefresh(() => delay(100));
+  const { refreshing, refreshKey, handleRefresh } = useRefresh(() => delay(50));
   const { refresh } = useInstantSearch();
   return (
     <HomeListings
