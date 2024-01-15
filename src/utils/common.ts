@@ -39,6 +39,18 @@ const getDynamicEndingSoldListings = (number: number) => {
   }
 };
 
+export const getDynamicEndingShowButton = (number: number) => {
+  if (number === 1) {
+    return number + ' оголошення';
+  } else if (number % 10 === 1 && number % 100 !== 11) {
+    return number + ' оголошення';
+  } else if (number % 10 >= 2 && number % 10 <= 4 && (number % 100 < 10 || number % 100 >= 20)) {
+    return number + ' оголошення';
+  } else {
+    return number + ' оголошень';
+  }
+};
+
 export const getDynamicEndingForListingsCount = (listingsCount: number, sold = false) => {
   return sold
     ? getDynamicEndingSoldListings(listingsCount)

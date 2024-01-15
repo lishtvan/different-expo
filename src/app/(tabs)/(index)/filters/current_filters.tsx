@@ -13,6 +13,7 @@ import { Button, ListItem, Separator, Switch, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../../../tamagui.config';
 import Delayed from '../../../../components/wrappers/Delayed';
+import { getDynamicEndingShowButton } from '../../../../utils/common';
 
 interface FilterListItemProps {
   attribute: string;
@@ -53,7 +54,7 @@ const ShowListingsButton = () => {
       size="$5"
       borderRadius="$main"
       onPress={() => router.push({ pathname: '/' })}>
-      {`Переглянути ${results?.nbHits} оголошень`}
+      {results && `Переглянути ${getDynamicEndingShowButton(results.nbHits)}`}
     </Button>
   );
 };
