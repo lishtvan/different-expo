@@ -129,16 +129,16 @@ const SortBy = () => {
 };
 
 const StatusFilter = () => {
-  const [checked, setChecked] = useState(false);
+  const { refine, items } = useRefinementList({ attribute: 'status' });
 
   return (
     <View className="mt-4 flex-row items-center justify-between">
       <Text className="text-lg">Показати продані</Text>
       <Switch
         size="$3.5"
-        checked={checked}
-        backgroundColor={checked ? mainColor : '$gray7'}
-        onCheckedChange={(c) => setChecked(c)}>
+        checked={items.length === 2}
+        backgroundColor={items.length === 2 ? mainColor : '$gray7'}
+        onCheckedChange={() => refine('SOLD')}>
         <Switch.Thumb backgroundColor="white" animation="bouncy" />
       </Switch>
     </View>
