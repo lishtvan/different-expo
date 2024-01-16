@@ -1,11 +1,12 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
-import React, { memo } from 'react';
+import React from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
 import { Text, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, View, XStack } from 'tamagui';
 
+import FilterItem from '../../../../components/home/FilterItem';
 import Delayed from '../../../../components/wrappers/Delayed';
 import { isAndroid } from '../../../../utils/platform';
 
@@ -25,42 +26,6 @@ const Clear = () => {
     />
   );
 };
-
-interface RefinementListItem {
-  value: string;
-  label: string;
-  isRefined: boolean;
-  count: number;
-}
-
-const RenderItem = ({
-  item,
-  refine,
-}: {
-  item: RefinementListItem;
-  refine: (value: string) => void;
-}) => {
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        refine(item.value);
-      }}
-      className="flex-row justify-between px-2 py-2.5">
-      <Text className={`text-base ${item.isRefined ? 'font-semibold text-main' : 'text-black'}`}>
-        {item.label}
-      </Text>
-      <View className="flex-row gap-x-2.5">
-        <View className={`rounded-full px-2 ${item.isRefined ? 'bg-main' : 'bg-[#ebebeb]'}`}>
-          <Text className={`mr-0.5 text-base ${item.isRefined ? 'text-white' : 'text-black'}`}>
-            {item.count}
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const MemoizedItem = memo(RenderItem);
 
 const DesignerFilter = () => {
   const { items, refine, searchForItems, toggleShowMore, isShowingMore } = useRefinementList({
@@ -103,7 +68,7 @@ const DesignerFilter = () => {
         estimatedItemSize={50}
         contentContainerStyle={{ paddingHorizontal: 12 }}
         data={items}
-        renderItem={(object) => <MemoizedItem refine={refine} item={object.item} />}
+        renderItem={(object) => <FilterItem refine={refine} item={object.item} />}
         keyExtractor={(item) => item.value}
         ItemSeparatorComponent={() => <Separator />}
         onEndReached={() => {
