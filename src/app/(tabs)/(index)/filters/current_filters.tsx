@@ -1,11 +1,12 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { Link, Stack, router } from 'expo-router';
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import {
   useClearRefinements,
   useCurrentRefinements,
   useHits,
   useRefinementList,
+  useSortBy,
 } from 'react-instantsearch-core';
 import { TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -61,6 +62,7 @@ const ShowListingsButton = () => {
 
 const Clear = () => {
   const { canRefine, refine: clearAllFilters } = useClearRefinements();
+  const sort = useSortBy({ items: sortItems });
 
   return (
     <Stack.Screen
@@ -73,7 +75,12 @@ const Clear = () => {
           );
         },
         headerRight: () => (
-          <TouchableOpacity className={`${canRefine ? '' : 'hidden'} `} onPress={clearAllFilters}>
+          <TouchableOpacity
+            className={`${sort.currentRefinement !== 'listings' || canRefine ? '' : 'hidden'} `}
+            onPress={() => {
+              clearAllFilters();
+              sort.refine('listings');
+            }}>
             <Text className="text-base">Видалити всe</Text>
           </TouchableOpacity>
         ),
@@ -82,20 +89,30 @@ const Clear = () => {
   );
 };
 
+const sortItems = [
+  { label: 'Спочатку нові', value: 'listings' },
+  { label: 'Спочатку дешеві', value: 'listings/sort/price:asc' },
+  { label: 'Спочатку дорогі', value: 'listings/sort/price:desc' },
+];
+
 const SortBy = () => {
-  const [sort, setSort] = useState(() =>
-    ['Спочатку нові', 'Спочатку дешеві', 'Спочатку дорогі'].map((tag) => ({
-      label: tag,
-      value: tag,
-    }))
-  );
-  const [selectedSort, setSelectedSort] = useState('Спочатку нові');
+  const sort = useSortBy({ items: sortItems });
+  const [selectedSort, setSelectedSort] = useState('');
 
   const [open, setOpen] = useState(false);
 
+  useEffect(() => {
+    setSelectedSort(sort.currentRefinement);
+  }, [sort.currentRefinement]);
+
   return (
     <View className="mt-32 flex-row items-center justify-between">
-      <Text className="text-lg">Сортування</Text>
+      <View className="flex-row items-center">
+        <Text className="text-lg">Сортування</Text>
+        {sort.currentRefinement !== 'listings' && (
+          <View className="ml-2 mt-0.5 h-2.5 w-2.5 rounded-full bg-main" />
+        )}
+      </View>
       <View className="w-3/5">
         <DropDownPicker
           open={open}
@@ -105,7 +122,6 @@ const SortBy = () => {
           dropDownContainerStyle={{ borderColor: '#ebebeb', borderRadius: 16, width: '100%' }}
           style={{
             width: '100%',
-            maxWidth: '100%',
             backgroundColor: '#f8f8f8',
             borderRadius: 16,
             borderColor: '#ebebeb',
@@ -113,15 +129,15 @@ const SortBy = () => {
           textStyle={{ fontSize: 16 }}
           listItemLabelStyle={{ fontSize: 18 }}
           listItemContainerStyle={{ marginVertical: 5 }}
-          badgeDotColors={[mainColor]}
           containerStyle={{ borderRadius: 16, backgroundColor: 'white' }}
           TickIconComponent={() => <AntDesign color={mainColor} name="check" size={23} />}
-          value={selectedSort}
-          items={sort}
+          value={selectedSort || sort.currentRefinement}
+          items={sortItems}
           props={{ activeOpacity: 0.5 }}
           setOpen={setOpen}
           setValue={setSelectedSort}
-          setItems={setSort}
+          onChangeValue={(value) => sort.refine(value!)}
+          setItems={() => {}}
           listMode="SCROLLVIEW"
         />
       </View>
@@ -173,6 +189,7 @@ export const VirtualFilter = () => {
   useRefinementList({ attribute: 'category' });
   useRefinementList({ attribute: 'designer' });
   useRefinementList({ attribute: 'status' });
+  useSortBy({ items: sortItems });
 
   return null;
 };
