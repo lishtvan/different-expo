@@ -13,8 +13,8 @@ import { LISTINGS_COLLECTION } from '../../constants/listing';
 import { useRefresh } from '../../hooks/useRefresh';
 import { isCloseToBottom } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
+import { searchClient } from '../../utils/searchClient';
 import { shareLink } from '../../utils/share';
-import { searchClient } from '../../utils/typesense';
 
 const User = () => {
   const params = useLocalSearchParams<{ nickname: string }>();

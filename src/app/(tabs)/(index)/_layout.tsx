@@ -3,7 +3,7 @@ import { InstantSearch } from 'react-instantsearch-core';
 
 import { VirtualFilter } from './filters/current_filters';
 import { LISTINGS_COLLECTION } from '../../../constants/listing';
-import { searchClient } from '../../../utils/typesense';
+import { searchClient } from '../../../utils/searchClient';
 
 export const unstable_settings = { initialRouteName: 'index' };
 

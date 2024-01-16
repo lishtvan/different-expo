@@ -7,6 +7,7 @@ import {
   useHits,
   useRefinementList,
   useSortBy,
+  useToggleRefinement,
 } from 'react-instantsearch-core';
 import { TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -23,7 +24,7 @@ interface FilterListItemProps {
 }
 
 const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }) => {
-  const categories = useCurrentRefinements({ includedAttributes: [attribute] });
+  const currentFilter = useCurrentRefinements({ includedAttributes: [attribute] });
 
   return (
     <Link href={`/filters/${routeName}`} asChild className="mb-1">
@@ -34,8 +35,8 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
             textAlign="right"
             className="mr-2 text-base font-medium text-main"
             opacity={1}>
-            {categories.items.length > 0 &&
-              categories.items[0].refinements.map((r) => r.label).join(', ')}
+            {currentFilter.items.length > 0 &&
+              currentFilter.items[0].refinements.map((r) => r.label).join(', ')}
           </ListItem.Subtitle>
           <Entypo name="chevron-thin-right" size={15} />
         </ListItem>
@@ -146,16 +147,20 @@ const SortBy = () => {
 };
 
 const StatusFilter = () => {
-  const { refine, items } = useRefinementList({ attribute: 'status' });
+  const { refine, value } = useToggleRefinement({
+    attribute: 'status',
+    on: 'SOLD',
+    off: 'AVAILABLE',
+  });
 
   return (
     <View className="mt-4 flex-row items-center justify-between">
       <Text className="text-lg">Показати продані</Text>
       <Switch
         size="$3.5"
-        checked={items.length === 2}
-        backgroundColor={items.length === 2 ? mainColor : '$gray7'}
-        onCheckedChange={() => refine('SOLD')}>
+        checked={value.isRefined}
+        backgroundColor={value.isRefined ? mainColor : '$gray7'}
+        onCheckedChange={() => refine({ isRefined: value.isRefined })}>
         <Switch.Thumb backgroundColor="white" animation="bouncy" />
       </Switch>
     </View>
@@ -190,6 +195,11 @@ export const VirtualFilter = () => {
   useRefinementList({ attribute: 'designer' });
   useRefinementList({ attribute: 'status' });
   useSortBy({ items: sortItems });
+  useToggleRefinement({
+    attribute: 'status',
+    on: 'SOLD',
+    off: 'AVAILABLE',
+  });
 
   return null;
 };
