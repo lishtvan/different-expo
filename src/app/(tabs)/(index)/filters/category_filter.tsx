@@ -6,6 +6,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { Separator, View } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
+import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
 
 const Clear = () => {
@@ -37,7 +38,7 @@ const CategoryFilter = () => {
   });
 
   return (
-    <View className="h-full pb-10 pt-2">
+    <View className="flex-1 pb-4 pt-2">
       <FlashList
         keyboardShouldPersistTaps="always"
         keyboardDismissMode="on-drag"
@@ -58,9 +59,12 @@ const CategoryFilter = () => {
 const CategoryFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View>
+      <View className="mb-8 flex-1 justify-between">
         <Clear />
         <CategoryFilter />
+        <View className="px-3">
+          <ShowListingsButton />
+        </View>
       </View>
     </Delayed>
   );

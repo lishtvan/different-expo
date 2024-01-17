@@ -4,18 +4,17 @@ import React, { FC, useEffect, useState } from 'react';
 import {
   useClearRefinements,
   useCurrentRefinements,
-  useHits,
   useRefinementList,
   useSortBy,
   useToggleRefinement,
 } from 'react-instantsearch-core';
 import { TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
-import { Button, ListItem, Separator, Switch, Text, View } from 'tamagui';
+import { ListItem, Separator, Switch, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../../../tamagui.config';
+import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
-import { getDynamicEndingShowButton } from '../../../../utils/common';
 
 interface FilterListItemProps {
   attribute: string;
@@ -43,21 +42,6 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
         <Separator borderColor="$gray7Light" />
       </TouchableOpacity>
     </Link>
-  );
-};
-
-const ShowListingsButton = () => {
-  const { results } = useHits();
-
-  return (
-    <Button
-      theme="active"
-      fontSize="$6"
-      size="$5"
-      borderRadius="$main"
-      onPress={() => router.push({ pathname: '/' })}>
-      {results && `Переглянути ${getDynamicEndingShowButton(results.nbHits)}`}
-    </Button>
   );
 };
 
@@ -182,7 +166,7 @@ const CurrentFilters = () => {
           <SortBy />
           <StatusFilter />
         </View>
-        <View className="mb-30">
+        <View>
           <ShowListingsButton />
         </View>
       </View>

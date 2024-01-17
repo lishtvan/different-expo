@@ -7,6 +7,7 @@ import { Text, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, View, XStack } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
+import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
 import { isAndroid } from '../../../../utils/platform';
 
@@ -37,7 +38,7 @@ const DesignerFilter = () => {
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1 bg-[#f8f8f8]' : 'p-0 pl-2  bg-[#f8f8f8]';
 
   return (
-    <View className="h-full pb-10 pt-2">
+    <View className="flex-1 pb-4 pt-2">
       <XStack alignItems="center" className="mb-2 px-3">
         <Button
           size="$4"
@@ -82,9 +83,12 @@ const DesignerFilter = () => {
 const DesignerFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View>
+      <View className="mb-8 flex-1 justify-between">
         <Clear />
         <DesignerFilter />
+        <View className="px-3">
+          <ShowListingsButton />
+        </View>
       </View>
     </Delayed>
   );
