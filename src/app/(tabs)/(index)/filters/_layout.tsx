@@ -6,6 +6,8 @@ export default function FiltersLayout() {
       <Stack.Screen name="current_filters" options={{ headerTitle: 'Фільтри' }} />
       <Stack.Screen name="designer_filter" options={{ headerTitle: 'Дизайнери' }} />
       <Stack.Screen name="category_filter" options={{ headerTitle: 'Категорія' }} />
+      <Stack.Screen name="size_filter" options={{ headerTitle: 'Розмір' }} />
+      <Stack.Screen name="condition_filter" options={{ headerTitle: 'Стан речі' }} />
     </Stack>
   );
 }

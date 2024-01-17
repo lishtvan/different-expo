@@ -159,8 +159,8 @@ const CurrentFilters = () => {
         <View>
           <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
           <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
-          <FilterListItem attribute="designer" title="Розмір" routeName="designer_filter" />
-          <FilterListItem attribute="designer" title="Стан речі" routeName="designer_filter" />
+          <FilterListItem attribute="size" title="Розмір" routeName="size_filter" />
+          <FilterListItem attribute="condition" title="Стан речі" routeName="condition_filter" />
           <FilterListItem attribute="designer" title="Ціна" routeName="designer_filter" />
           <FilterListItem attribute="designer" title="Теги" routeName="designer_filter" />
           <SortBy />
@@ -177,6 +177,8 @@ const CurrentFilters = () => {
 export const VirtualFilter = () => {
   useRefinementList({ attribute: 'category' });
   useRefinementList({ attribute: 'designer' });
+  useRefinementList({ attribute: 'size' });
+  useRefinementList({ attribute: 'condition' });
   useRefinementList({ attribute: 'status' });
   useSortBy({ items: sortItems });
   useToggleRefinement({
