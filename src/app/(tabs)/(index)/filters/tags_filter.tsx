@@ -10,15 +10,15 @@ import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
 
 const Clear = () => {
-  const { canRefine, refine: clearAllSizes } = useClearRefinements({
-    includedAttributes: ['size'],
+  const { canRefine, refine: clearAllTags } = useClearRefinements({
+    includedAttributes: ['tags'],
   });
 
   return (
     <Stack.Screen
       options={{
         headerRight: () => (
-          <TouchableOpacity className={`${canRefine ? '' : 'hidden'} `} onPress={clearAllSizes}>
+          <TouchableOpacity className={`${canRefine ? '' : 'hidden'} `} onPress={clearAllTags}>
             <Text className="text-base">Видалити всe</Text>
           </TouchableOpacity>
         ),
@@ -27,10 +27,9 @@ const Clear = () => {
   );
 };
 
-// TODO: implement sections
-const SizeFilter = () => {
+const TagsFilter = () => {
   const { items, refine, toggleShowMore, isShowingMore } = useRefinementList({
-    attribute: 'size',
+    attribute: 'tags',
     limit: 30,
     showMore: true,
     showMoreLimit: 522,
@@ -55,12 +54,12 @@ const SizeFilter = () => {
   );
 };
 
-const SizeFilterScreen = () => {
+const TagsFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
       <View className="mb-8 flex-1 justify-between">
         <Clear />
-        <SizeFilter />
+        <TagsFilter />
         <View className="px-3">
           <ShowListingsButton />
         </View>
@@ -69,4 +68,4 @@ const SizeFilterScreen = () => {
   );
 };
 
-export default SizeFilterScreen;
+export default TagsFilterScreen;

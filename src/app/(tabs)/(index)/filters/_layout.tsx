@@ -8,6 +8,7 @@ export default function FiltersLayout() {
       <Stack.Screen name="category_filter" options={{ headerTitle: 'Категорія' }} />
       <Stack.Screen name="size_filter" options={{ headerTitle: 'Розмір' }} />
       <Stack.Screen name="condition_filter" options={{ headerTitle: 'Стан речі' }} />
+      <Stack.Screen name="tags_filter" options={{ headerTitle: 'Теги' }} />
     </Stack>
   );
 }
