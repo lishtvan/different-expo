@@ -51,7 +51,9 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
 };
 
 const Clear = () => {
-  const { canRefine, refine: clearAllFilters } = useClearRefinements();
+  const { canRefine, refine: clearAllFilters } = useClearRefinements({
+    excludedAttributes: ['status'],
+  });
   const sort = useSortBy({ items: sortItems });
 
   return (
@@ -187,11 +189,7 @@ export const VirtualFilter = () => {
   useRefinementList({ attribute: 'status' });
   useRefinementList({ attribute: 'tags' });
   useSortBy({ items: sortItems });
-  useToggleRefinement({
-    attribute: 'status',
-    on: 'SOLD',
-    off: 'AVAILABLE',
-  });
+  useToggleRefinement({ attribute: 'status', on: 'SOLD', off: 'AVAILABLE' });
 
   return null;
 };
