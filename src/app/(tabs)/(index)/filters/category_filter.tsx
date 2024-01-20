@@ -28,7 +28,7 @@ const Clear = () => {
     />
   );
 };
-
+// TODO: implement sections
 const CategoryFilter = () => {
   const { items, refine, toggleShowMore, isShowingMore } = useRefinementList({
     attribute: 'category',

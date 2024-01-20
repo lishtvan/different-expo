@@ -15,6 +15,7 @@ import { ListItem, Separator, Switch, Text, View } from 'tamagui';
 import { mainColor } from '../../../../../tamagui.config';
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
+import { SHORT_SIZES } from '../../../../constants/listing';
 
 interface FilterListItemProps {
   attribute: string;
@@ -35,7 +36,11 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
             className="mr-2 text-base font-medium text-main"
             opacity={1}>
             {currentFilter.items.length > 0 &&
-              currentFilter.items[0].refinements.map((r) => r.label).join(', ')}
+              currentFilter.items[0].refinements
+                .map((r) =>
+                  attribute === 'size' ? SHORT_SIZES[r.label as keyof typeof SHORT_SIZES] : r.label
+                )
+                .join(', ')}
           </ListItem.Subtitle>
           <Entypo name="chevron-thin-right" size={15} />
         </ListItem>
