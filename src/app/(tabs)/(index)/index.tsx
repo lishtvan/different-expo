@@ -37,7 +37,6 @@ const HomeScreen = () => {
   const ScreenWidth = Dimensions.get('window').width;
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1' : 'p-0 pl-2';
 
-  console.log('render');
   return (
     <View>
       <Stack.Screen

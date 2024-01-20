@@ -613,7 +613,7 @@ export const TAGS = [
   '#Minimalism',
 ];
 
-// UPDATE SIZES IN PROD
+// TODO: UPDATE SIZES IN PROD
 export const SIZES = {
   Верх: [
     'XXS / EU 40',

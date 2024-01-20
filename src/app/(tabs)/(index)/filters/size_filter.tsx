@@ -82,8 +82,6 @@ const SizeFilter = () => {
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
 
   const groupedItems = useMemo(() => {
-    const startTime = performance.now();
-
     const sizes: SizesFilter<typeof items> = {
       Верх: [],
       Низ: [],
@@ -101,9 +99,6 @@ const SizeFilter = () => {
         if (filterItem) sizes[category as keyof typeof SIZES].push(filterItem);
       });
     });
-
-    const endTime = performance.now();
-    console.log(`Call took ${endTime - startTime} milliseconds.`);
 
     return sizes;
   }, [items]);
@@ -124,7 +119,7 @@ const SizeFilter = () => {
           groupedItems[section as keyof typeof groupedItems].length > 0 && (
             <View key={section}>
               <TouchableOpacity className="px-2 mr-2 py-2" onPress={() => selectCategory(section)}>
-                <View className=" px-1 pb-2 flex-row justify-between items-center">
+                <View className="px-1 pb-2 flex-row justify-between items-center">
                   <Text className="text-lg">{section}</Text>
                   <Square
                     animation="quick"
