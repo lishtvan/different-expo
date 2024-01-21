@@ -38,8 +38,6 @@ const TagsFilter = () => {
   return (
     <View className="flex-1 pb-4 pt-2">
       <FlashList
-        keyboardShouldPersistTaps="always"
-        keyboardDismissMode="on-drag"
         estimatedItemSize={50}
         contentContainerStyle={{ paddingHorizontal: 12 }}
         data={items}

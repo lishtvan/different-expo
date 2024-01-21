@@ -71,8 +71,8 @@ const Header = () => {
             <TouchableOpacity className="ml-1 p-2 flex-row" onPress={() => router.push('/filters')}>
               <MaterialCommunityIcons name="tune-variant" size={25} />
               {items.length > 0 && (
-                <View className="bg-main px-2 ml-2 flex-row items-center justify-center rounded-full">
-                  <Text className="text-white">{items.length}</Text>
+                <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
+                  <Text className="text-white font-bold">{items.length}</Text>
                 </View>
               )}
             </TouchableOpacity>
