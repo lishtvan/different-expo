@@ -26,7 +26,7 @@ const MyFilterItem: FC<Props> = ({ item, refine }) => {
       </Text>
       <View className="flex-row gap-x-2.5">
         <View className={`rounded-full px-2 ${item.isRefined ? 'bg-main' : 'bg-[#ebebeb]'}`}>
-          <Text className={`mr-0.5 text-base ${item.isRefined ? 'text-white' : 'text-black'}`}>
+          <Text className={`text-base ${item.isRefined ? 'text-white' : 'text-black'}`}>
             {item.count}
           </Text>
         </View>
