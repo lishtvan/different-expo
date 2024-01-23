@@ -2,12 +2,7 @@ import { FC, memo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, View } from 'tamagui';
 
-interface RefinementListItem {
-  value: string;
-  label: string;
-  isRefined: boolean;
-  count: number;
-}
+import { RefinementListItem } from '../../types';
 
 interface Props {
   item: RefinementListItem;

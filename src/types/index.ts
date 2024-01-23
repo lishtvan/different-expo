@@ -23,3 +23,10 @@ export interface SelectedImage {
   isPreview: boolean;
   imageUrl: string;
 }
+
+export interface RefinementListItem {
+  value: string;
+  label: string;
+  isRefined: boolean;
+  count: number;
+}

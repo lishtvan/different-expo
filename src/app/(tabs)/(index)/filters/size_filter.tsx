@@ -8,6 +8,7 @@ import { ScrollView, Separator, Square, View } from 'tamagui';
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
 import { EU_SIZES, SHORT_SIZES, SIZES } from '../../../../constants/listing';
+import { RefinementListItem } from '../../../../types';
 
 const Clear = () => {
   const { canRefine, refine: clearAllSizes } = useClearRefinements({
@@ -26,13 +27,6 @@ const Clear = () => {
     />
   );
 };
-
-interface RefinementListItem {
-  value: string;
-  label: string;
-  isRefined: boolean;
-  count: number;
-}
 
 interface Props {
   item: RefinementListItem;
