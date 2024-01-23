@@ -610,11 +610,11 @@ export default function SellScreen() {
       </View>
       <Button
         onPress={handleSubmit(onSubmit)}
-        size="$3"
+        size="$4"
         theme="active"
-        fontSize="$5"
+        fontSize="$6"
         borderRadius="$main"
-        className="mb-10">
+        className="mb-12">
         Створити
       </Button>
     </KeyboardAwareScrollView>
