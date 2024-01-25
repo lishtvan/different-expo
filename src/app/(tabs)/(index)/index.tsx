@@ -34,10 +34,7 @@ const HomeListingsWrapper = () => {
   );
 };
 
-const Header = () => {
-  const ScreenWidth = Dimensions.get('window').width;
-  const iconClassname = isAndroid ? 'p-0 pl-2 pb-1' : 'p-0 pl-2';
-
+const FiltersButton = () => {
   const { items } = useCurrentRefinements({ excludedAttributes: ['status'] });
 
   const filtersCount = useMemo(() => {
@@ -55,53 +52,66 @@ const Header = () => {
   }, [items]);
 
   return (
-    <Stack.Screen
-      options={{
-        contentStyle: { paddingTop: 7 },
-        headerTitle: () => (
-          <XStack alignItems="center" style={{ width: ScreenWidth - 30 }}>
-            <Button
-              size="$4"
-              icon={<EvilIcons name="search" size={30} />}
-              className={iconClassname}
-              borderTopLeftRadius="$main"
-              borderBottomLeftRadius="$main"
-              borderTopRightRadius="$0"
-              backgroundColor="#f8f4f4"
-              borderBottomRightRadius="$0"
-              borderWidth="$0"
-              borderRightWidth="$0"
-            />
-            <Input
-              autoCorrect={false}
-              placeholder="Пошук"
-              backgroundColor="#f8f4f4"
-              flex={1}
-              paddingLeft={6}
-              borderWidth="$0"
-              borderRadius="$0"
-              borderTopRightRadius="$main"
-              borderBottomRightRadius="$main"
-            />
-            <TouchableOpacity className="ml-1 p-2 flex-row" onPress={() => router.push('/filters')}>
-              <MaterialCommunityIcons name="tune-variant" size={25} />
-              {filtersCount > 0 && (
-                <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
-                  <Text className="text-white font-bold">{filtersCount}</Text>
-                </View>
-              )}
-            </TouchableOpacity>
-          </XStack>
-        ),
-      }}
-    />
+    <TouchableOpacity className="ml-1 p-2 flex-row" onPress={() => router.push('/filters')}>
+      <MaterialCommunityIcons name="tune-variant" size={25} />
+      {filtersCount > 0 && (
+        <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
+          <Text className="text-white font-bold">{filtersCount}</Text>
+        </View>
+      )}
+    </TouchableOpacity>
+  );
+};
+
+const ListingSearch = () => {
+  const iconClassname = isAndroid ? 'p-0 pl-2 pb-1' : 'p-0 pl-2';
+
+  return (
+    <>
+      <Button
+        size="$4"
+        icon={<EvilIcons name="search" size={30} />}
+        className={iconClassname}
+        borderTopLeftRadius="$main"
+        borderBottomLeftRadius="$main"
+        borderTopRightRadius="$0"
+        backgroundColor="#f8f4f4"
+        borderBottomRightRadius="$0"
+        borderWidth="$0"
+        borderRightWidth="$0"
+      />
+      <Input
+        autoCorrect={false}
+        placeholder="Пошук"
+        backgroundColor="#f8f4f4"
+        flex={1}
+        paddingLeft={6}
+        borderWidth="$0"
+        borderRadius="$0"
+        borderTopRightRadius="$main"
+        borderBottomRightRadius="$main"
+      />
+    </>
+  );
+};
+
+const CustomHeader = () => {
+  const ScreenWidth = Dimensions.get('window').width;
+
+  return (
+    <XStack alignItems="center" style={{ width: ScreenWidth - 30 }}>
+      <ListingSearch />
+      <FiltersButton />
+    </XStack>
   );
 };
 
 const HomeScreen = () => {
   return (
     <View>
-      <Header />
+      <Stack.Screen
+        options={{ contentStyle: { paddingTop: 7 }, headerTitle: () => <CustomHeader /> }}
+      />
       <HomeListingsWrapper />
     </View>
   );
