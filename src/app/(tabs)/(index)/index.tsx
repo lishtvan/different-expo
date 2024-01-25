@@ -1,11 +1,12 @@
 import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { useCurrentRefinements, useInstantSearch } from 'react-instantsearch-core';
 import { Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack } from 'tamagui';
 
 import HomeListings from '../../../components/home/Listings';
+import { INITIAL_PRICE } from '../../../constants/filter';
 import { useRefresh } from '../../../hooks/useRefresh';
 import { delay } from '../../../utils/common';
 import { isAndroid } from '../../../utils/platform';
@@ -39,6 +40,20 @@ const Header = () => {
 
   const { items } = useCurrentRefinements({ excludedAttributes: ['status'] });
 
+  const filtersCount = useMemo(() => {
+    if (!items.length) return 0;
+
+    const priceFilter = items.find((i) => i.attribute === 'price');
+    if (!priceFilter) return items.length;
+    const [min, max] = priceFilter.refinements.map((r) => r.label.split(' ')[1]);
+
+    const maxChanged = max !== INITIAL_PRICE.MAX.toString();
+    const minChanged = min !== INITIAL_PRICE.MIN.toString();
+    const showPriceFilter = minChanged || maxChanged;
+    if (!showPriceFilter) return items.length - 1;
+    return items.length;
+  }, [items]);
+
   return (
     <Stack.Screen
       options={{
@@ -70,9 +85,9 @@ const Header = () => {
             />
             <TouchableOpacity className="ml-1 p-2 flex-row" onPress={() => router.push('/filters')}>
               <MaterialCommunityIcons name="tune-variant" size={25} />
-              {items.length > 0 && (
+              {filtersCount > 0 && (
                 <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
-                  <Text className="text-white font-bold">{items.length}</Text>
+                  <Text className="text-white font-bold">{filtersCount}</Text>
                 </View>
               )}
             </TouchableOpacity>

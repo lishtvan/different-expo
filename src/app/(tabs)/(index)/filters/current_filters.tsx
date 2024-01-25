@@ -1,9 +1,10 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { Link, Stack, router } from 'expo-router';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
   useClearRefinements,
   useCurrentRefinements,
+  useRange,
   useRefinementList,
   useSortBy,
   useToggleRefinement,
@@ -15,6 +16,7 @@ import { ListItem, Separator, Switch, Text, View } from 'tamagui';
 import { mainColor } from '../../../../../tamagui.config';
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';
 import Delayed from '../../../../components/wrappers/Delayed';
+import { INITIAL_PRICE } from '../../../../constants/filter';
 import { SHORT_SIZES } from '../../../../constants/listing';
 
 interface FilterListItemProps {
@@ -22,6 +24,42 @@ interface FilterListItemProps {
   routeName: string;
   title: string;
 }
+
+const PriceFilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }) => {
+  const currentFilter = useCurrentRefinements({ includedAttributes: [attribute] });
+
+  const currentFilterString = useMemo(() => {
+    if (currentFilter.items.length === 0) return '';
+    const [min, max] = currentFilter.items[0].refinements.map((r) => r.label.split(' ')[1]);
+    const maxChanged = max !== INITIAL_PRICE.MAX.toString();
+    const minChanged = min !== INITIAL_PRICE.MIN.toString();
+    const showFilter = minChanged || maxChanged;
+
+    if (showFilter) {
+      if (minChanged && maxChanged) return `Від ${min} до ${max} грн`;
+      if (minChanged) return `Від ${min} грн`;
+      if (maxChanged) return `До ${max} грн`;
+    }
+  }, [currentFilter]);
+
+  return (
+    <Link href={`/filters/${routeName}`} asChild className="mb-1">
+      <TouchableOpacity activeOpacity={0.5} className="w-full">
+        <ListItem className="px-0.5 py-3">
+          <ListItem.Text className="w-[35%] text-base">{title}</ListItem.Text>
+          <ListItem.Subtitle
+            textAlign="right"
+            className="mr-2 text-base font-medium text-main"
+            opacity={1}>
+            {currentFilterString}
+          </ListItem.Subtitle>
+          <Entypo name="chevron-thin-right" size={15} />
+        </ListItem>
+        <Separator borderColor="$gray7Light" />
+      </TouchableOpacity>
+    </Link>
+  );
+};
 
 const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }) => {
   const currentFilter = useCurrentRefinements({ includedAttributes: [attribute] });
@@ -52,9 +90,18 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
 
 const Clear = () => {
   const { canRefine, refine: clearAllFilters } = useClearRefinements({
-    excludedAttributes: ['status'],
+    excludedAttributes: ['status', 'price'],
+  });
+  const { start, refine: refinePrice } = useRange({
+    attribute: 'price',
+    min: INITIAL_PRICE.MIN,
+    max: INITIAL_PRICE.MAX,
   });
   const sort = useSortBy({ items: sortItems });
+
+  const [min, max] = start;
+  const canResetPrice = min !== INITIAL_PRICE.MIN || max !== INITIAL_PRICE.MAX;
+  const canClearAll = sort.currentRefinement !== 'listings' || canRefine || canResetPrice;
 
   return (
     <Stack.Screen
@@ -68,10 +115,11 @@ const Clear = () => {
         },
         headerRight: () => (
           <TouchableOpacity
-            className={`${sort.currentRefinement !== 'listings' || canRefine ? '' : 'hidden'} `}
+            className={`${canClearAll ? '' : 'hidden'} `}
             onPress={() => {
               clearAllFilters();
               sort.refine('listings');
+              refinePrice([INITIAL_PRICE.MIN, INITIAL_PRICE.MAX]);
             }}>
             <Text className="text-base">Видалити всe</Text>
           </TouchableOpacity>
@@ -168,7 +216,7 @@ const CurrentFilters = () => {
           <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
           <FilterListItem attribute="size" title="Розмір" routeName="size_filter" />
           <FilterListItem attribute="condition" title="Стан речі" routeName="condition_filter" />
-          <FilterListItem attribute="designer" title="Ціна" routeName="designer_filter" />
+          <PriceFilterListItem attribute="price" title="Ціна" routeName="price_filter" />
           <FilterListItem attribute="tags" title="Теги" routeName="tags_filter" />
           <SortBy />
           <StatusFilter />
@@ -190,6 +238,7 @@ export const VirtualFilter = () => {
   useRefinementList({ attribute: 'tags' });
   useSortBy({ items: sortItems });
   useToggleRefinement({ attribute: 'status', on: 'SOLD', off: 'AVAILABLE' });
+  useRange({ attribute: 'price' });
 
   return null;
 };
