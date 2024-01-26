@@ -1,12 +1,15 @@
 import { SHORT_SIZES } from '../constants/listing';
 
-export interface User {
+export interface TUser {
   id: number;
   nickname: string;
   avatarUrl?: string;
   bio: string;
   location: string;
   phone?: string;
+  availableListingsCount: number;
+  soldListingsCount: number;
+  isOwnAccount: boolean;
 }
 
 export type TListing = {
