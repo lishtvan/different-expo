@@ -90,7 +90,7 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
 
 const Clear = () => {
   const { canRefine, refine: clearAllFilters } = useClearRefinements({
-    excludedAttributes: ['status', 'price'],
+    excludedAttributes: ['status', 'price', 'query'],
   });
   const { start, refine: refinePrice } = useRange({
     attribute: 'price',

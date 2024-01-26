@@ -1,9 +1,9 @@
 import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Stack, router } from 'expo-router';
 import React, { useMemo } from 'react';
-import { useCurrentRefinements, useInstantSearch } from 'react-instantsearch-core';
+import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
 import { Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
-import { Button, Input, Text, View, XStack } from 'tamagui';
+import { Button, Input, Text, View, XStack, debounce } from 'tamagui';
 
 import HomeListings from '../../../components/home/Listings';
 import { INITIAL_PRICE } from '../../../constants/filter';
@@ -35,7 +35,7 @@ const HomeListingsWrapper = () => {
 };
 
 const FiltersButton = () => {
-  const { items } = useCurrentRefinements({ excludedAttributes: ['status'] });
+  const { items } = useCurrentRefinements({ excludedAttributes: ['status', 'query'] });
 
   const filtersCount = useMemo(() => {
     if (!items.length) return 0;
@@ -64,6 +64,8 @@ const FiltersButton = () => {
 };
 
 const ListingSearch = () => {
+  const { refine } = useSearchBox();
+  const debouncedRefine = debounce(refine, 150);
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1' : 'p-0 pl-2';
 
   return (
@@ -87,6 +89,7 @@ const ListingSearch = () => {
         flex={1}
         paddingLeft={6}
         borderWidth="$0"
+        onChangeText={debouncedRefine}
         borderRadius="$0"
         borderTopRightRadius="$main"
         borderBottomRightRadius="$main"
