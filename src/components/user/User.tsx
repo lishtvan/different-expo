@@ -72,13 +72,12 @@ const renderItem = ({ item }: { item: TListing }) => {
   );
 };
 
-const StatusSwitcher = () => {
-  const { refine, value } = useToggleRefinement({
-    attribute: 'status',
-    on: 'SOLD',
-    off: 'AVAILABLE',
-  });
+interface StatusSwitcherProps {
+  value: { isRefined: boolean };
+  refine: (value: { isRefined: boolean }) => void;
+}
 
+const StatusSwitcher: FC<StatusSwitcherProps> = ({ value, refine }) => {
   return (
     <View className="flex-row items-center mb-4 mt-1 px-3 gap-x-4">
       <Text className="text-lg">Показати продані речі</Text>
@@ -94,6 +93,12 @@ const StatusSwitcher = () => {
 };
 
 const MyHeader = ({ user }: { user: TUser }) => {
+  const { refine, value } = useToggleRefinement({
+    attribute: 'status',
+    on: 'SOLD',
+    off: 'AVAILABLE',
+  });
+
   return (
     <View>
       <View className="flex flex-row gap-x-4 px-2 ">
@@ -158,7 +163,7 @@ const MyHeader = ({ user }: { user: TUser }) => {
           Поділитися
         </Button>
       </View>
-      {user.soldListingsCount > 0 && <StatusSwitcher />}
+      {user.soldListingsCount > 0 && <StatusSwitcher value={value} refine={refine} />}
     </View>
   );
 };
