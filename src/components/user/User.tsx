@@ -1,7 +1,7 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { router, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
   useInfiniteHits,
@@ -145,15 +145,11 @@ const MyHeader = ({ user }: { user: TUser }) => {
         )}
       </View>
       <View className="mb-3 mt-4 w-full flex-row items-center gap-x-4 px-2">
-        <Button
-          onPress={() => router.push(user.isOwnAccount ? '/(tabs)/profile/settings' : '/')}
-          size="$3"
-          theme="active"
-          className="w-[47%]"
-          fontSize="$5"
-          borderRadius="$main">
-          {user.isOwnAccount ? 'Редагувати' : 'Повідомлення'}
-        </Button>
+        <Link href={`${user.isOwnAccount ? '/profile/settings' : '/'}`} asChild>
+          <Button size="$3" theme="active" className="w-[47%]" fontSize="$5" borderRadius="$main">
+            {user.isOwnAccount ? 'Редагувати' : 'Повідомлення'}
+          </Button>
+        </Link>
         <Button
           onPress={() => shareLink(user.nickname)}
           size="$3"

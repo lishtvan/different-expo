@@ -1,5 +1,5 @@
 import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
-import { Stack, router } from 'expo-router';
+import { Link, Stack } from 'expo-router';
 import React, { useMemo } from 'react';
 import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
 import { Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
@@ -52,14 +52,16 @@ const FiltersButton = () => {
   }, [items]);
 
   return (
-    <TouchableOpacity className="ml-1 p-2 flex-row" onPress={() => router.push('/filters')}>
-      <MaterialCommunityIcons name="tune-variant" size={25} />
-      {filtersCount > 0 && (
-        <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
-          <Text className="text-white font-bold">{filtersCount}</Text>
-        </View>
-      )}
-    </TouchableOpacity>
+    <Link href="/filters" asChild>
+      <TouchableOpacity className="ml-1 p-2 flex-row">
+        <MaterialCommunityIcons name="tune-variant" size={25} />
+        {filtersCount > 0 && (
+          <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
+            <Text className="text-white font-bold">{filtersCount}</Text>
+          </View>
+        )}
+      </TouchableOpacity>
+    </Link>
   );
 };
 

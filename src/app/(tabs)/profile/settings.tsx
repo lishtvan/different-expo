@@ -66,7 +66,7 @@ const SettingsScreen = () => {
         queryClient.invalidateQueries({ queryKey: ['user', nickname] }),
       ]);
 
-      router.push({ pathname: '/(tabs)/profile', params: { nickname } });
+      router.navigate({ pathname: '/(tabs)/profile', params: { nickname } });
     },
   });
 

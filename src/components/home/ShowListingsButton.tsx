@@ -1,4 +1,4 @@
-import { router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useHits } from 'react-instantsearch-core';
 import { Button } from 'tamagui';
 
@@ -8,14 +8,11 @@ const ShowListingsButton = () => {
   const { results } = useHits();
 
   return (
-    <Button
-      theme="active"
-      fontSize="$6"
-      size="$5"
-      borderRadius="$main"
-      onPress={() => router.push({ pathname: '/' })}>
-      {results && `Переглянути ${getDynamicEndingShowButton(results.nbHits)}`}
-    </Button>
+    <Link href="/" asChild>
+      <Button theme="active" fontSize="$6" size="$5" borderRadius="$main">
+        {results && `Переглянути ${getDynamicEndingShowButton(results.nbHits)}`}
+      </Button>
+    </Link>
   );
 };
 

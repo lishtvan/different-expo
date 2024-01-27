@@ -1,7 +1,7 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import validateCard from 'card-validator';
-import { Redirect, router, useLocalSearchParams } from 'expo-router';
+import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -182,27 +182,29 @@ export default function SellScreen() {
       </View>
       <View>
         <Text className="mb-1 ml-2 text-base">Дизайнер *</Text>
-        <Pressable onPress={() => router.push('/sell/designer_search')}>
-          <View pointerEvents="none">
-            <Controller
-              control={control}
-              rules={{ required: true }}
-              render={({ field: { value } }) => (
-                <Input
-                  size="$4"
-                  autoCorrect={false}
-                  borderRadius="$main"
-                  placeholder="Оберіть дизайнера"
-                  className="w-full"
-                  value={value}
-                />
-              )}
-              name="designer"
-            />
-            {errors.designer &&
-              validationErrors[errors.designer.type as keyof typeof validationErrors]}
-          </View>
-        </Pressable>
+        <Link href="/sell/designer_search" asChild>
+          <Pressable>
+            <View pointerEvents="none">
+              <Controller
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value } }) => (
+                  <Input
+                    size="$4"
+                    autoCorrect={false}
+                    borderRadius="$main"
+                    placeholder="Оберіть дизайнера"
+                    className="w-full"
+                    value={value}
+                  />
+                )}
+                name="designer"
+              />
+              {errors.designer &&
+                validationErrors[errors.designer.type as keyof typeof validationErrors]}
+            </View>
+          </Pressable>
+        </Link>
       </View>
       <View>
         <Text className="mb-1 ml-2 text-base">Категорія *</Text>
@@ -609,12 +611,7 @@ export default function SellScreen() {
         {errors.cardNumber && <InputValidationError message={errors.cardNumber.message!} />}
       </View>
       <Button
-        onPress={() =>
-          Toast.show({
-            type: 'error',
-            text1: 'Будь ласка, виправіть помилки',
-          })
-        }
+        onPress={handleSubmit(onSubmit)}
         size="$4"
         theme="active"
         fontSize="$6"

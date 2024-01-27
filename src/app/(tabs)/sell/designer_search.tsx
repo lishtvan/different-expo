@@ -1,5 +1,5 @@
 import { EvilIcons } from '@expo/vector-icons';
-import { router } from 'expo-router';
+import { Link } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack } from 'tamagui';
@@ -24,13 +24,11 @@ export default function DesignerSearchScreen() {
   }, [searchText]);
 
   const renderItem = ({ item }: { item: string }) => (
-    <TouchableOpacity
-      className="p-2"
-      onPress={() => {
-        router.push({ pathname: '/sell', params: { designer: item } });
-      }}>
-      <Text className="text-lg">{item}</Text>
-    </TouchableOpacity>
+    <Link href={{ pathname: '/sell', params: { designer: item } }} asChild>
+      <TouchableOpacity className="p-2">
+        <Text className="text-lg">{item}</Text>
+      </TouchableOpacity>
+    </Link>
   );
 
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1 bg-[#f8f8f8]' : 'p-0 pl-2  bg-[#f8f8f8]';
