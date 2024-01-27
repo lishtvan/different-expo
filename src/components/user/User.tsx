@@ -20,6 +20,7 @@ import { shareLink } from '../../utils/share';
 import Listing from '../listings/Listing';
 import Delayed from '../wrappers/Delayed';
 
+// TODO: implement refresh on reopen app after user route is implemented
 const User = () => {
   const params = useLocalSearchParams<{ nickname: string }>();
   const {

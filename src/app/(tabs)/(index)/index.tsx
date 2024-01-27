@@ -2,34 +2,41 @@ import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import { Link, Stack } from 'expo-router';
 import React, { useMemo } from 'react';
 import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
-import { Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
+import { Dimensions, AppStateStatus, RefreshControl, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack, debounce } from 'tamagui';
 
 import HomeListings from '../../../components/home/Listings';
 import { INITIAL_PRICE } from '../../../constants/filter';
+import { useAppState } from '../../../hooks/useAppState';
 import { useRefresh } from '../../../hooks/useRefresh';
 import { delay } from '../../../utils/common';
 import { isAndroid } from '../../../utils/platform';
 
 const HomeListingsWrapper = () => {
+  const search = useInstantSearch();
   const { refreshing, refreshKey, handleRefresh } = useRefresh(() => delay(50));
-  const { refresh, setUiState } = useInstantSearch();
+  const { refresh, setUiState } = search;
+
+  const fullSearchRefresh = () => {
+    setUiState((state) => {
+      state.listings.page = 0;
+      return state;
+    });
+    refresh();
+    handleRefresh();
+  };
+
+  const onAppStateChange = (status: AppStateStatus) => {
+    if (status !== 'active') return;
+    fullSearchRefresh();
+  };
+
+  useAppState(onAppStateChange);
+
   return (
     <HomeListings
       key={refreshKey}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => {
-            setUiState((state) => {
-              state.listings.page = 0;
-              return state;
-            });
-            refresh();
-            handleRefresh();
-          }}
-        />
-      }
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fullSearchRefresh} />}
     />
   );
 };

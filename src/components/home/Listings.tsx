@@ -68,6 +68,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
         onEndReached={() => {
           if (!isLastPage) showMore();
         }}
+        style={{ height: '100%' }}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         numColumns={2}
         ItemSeparatorComponent={() => <View className="h-3" />}
