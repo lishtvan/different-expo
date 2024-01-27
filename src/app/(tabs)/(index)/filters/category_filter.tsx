@@ -2,7 +2,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
-import { TouchableOpacity } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { ScrollView, Separator, Square, Text, View } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
@@ -116,15 +116,19 @@ const CategoryFilter = () => {
 const CategoryFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View className="mb-8 flex-1 gap-y-4">
-        <ScrollView className="flex-1" contentContainerStyle={{ justifyContent: 'space-between' }}>
-          <Clear />
-          <CategoryFilter />
-        </ScrollView>
-        <View className="px-3">
-          <ShowListingsButton />
+      <SafeAreaView className="flex-1">
+        <View className="mb-2 flex-1 gap-y-4">
+          <ScrollView
+            className="flex-1"
+            contentContainerStyle={{ justifyContent: 'space-between' }}>
+            <Clear />
+            <CategoryFilter />
+          </ScrollView>
+          <View className="px-3">
+            <ShowListingsButton />
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Delayed>
   );
 };

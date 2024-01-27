@@ -2,8 +2,15 @@ import { Stack } from 'expo-router';
 
 export default function FiltersLayout() {
   return (
-    <Stack screenOptions={{ headerShadowVisible: false }}>
-      <Stack.Screen name="current_filters" options={{ headerTitle: 'Фільтри' }} />
+    <Stack
+      screenOptions={{
+        headerShadowVisible: false,
+        headerTitleAlign: 'center',
+      }}>
+      <Stack.Screen
+        name="current_filters"
+        options={{ headerTitle: 'Фільтри', headerBackVisible: false }}
+      />
       <Stack.Screen name="designer_filter" options={{ headerTitle: 'Дизайнери' }} />
       <Stack.Screen name="category_filter" options={{ headerTitle: 'Категорія' }} />
       <Stack.Screen name="size_filter" options={{ headerTitle: 'Розмір' }} />

@@ -10,7 +10,7 @@ import { INITIAL_PRICE } from '../../../../constants/filter';
 import { isAndroid } from '../../../../utils/platform';
 
 const PriceFilter = () => {
-  const keyboardVerticalOffset = isAndroid ? 0 : 100;
+  const keyboardVerticalOffset = isAndroid ? 0 : 120;
   const behavior = isAndroid ? 'height' : 'padding';
 
   const { refine, start } = useRange({
@@ -123,7 +123,7 @@ const PriceFilter = () => {
           </View>
         </View>
 
-        <View className="px-3 mb-8">
+        <View className="px-3 mb-2">
           <ShowListingsButton />
         </View>
       </KeyboardAvoidingView>

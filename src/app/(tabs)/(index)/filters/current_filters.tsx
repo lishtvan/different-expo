@@ -9,7 +9,7 @@ import {
   useSortBy,
   useToggleRefinement,
 } from 'react-instantsearch-core';
-import { TouchableOpacity } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ListItem, Separator, Switch, Text, View } from 'tamagui';
 
@@ -209,22 +209,24 @@ const StatusFilter = () => {
 const CurrentFilters = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View className="mb-16 flex flex-1 flex-col justify-between px-4 pt-3">
+      <SafeAreaView className="flex-1">
         <Clear />
-        <View>
-          <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
-          <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
-          <FilterListItem attribute="size" title="Розмір" routeName="size_filter" />
-          <FilterListItem attribute="condition" title="Стан речі" routeName="condition_filter" />
-          <PriceFilterListItem attribute="price" title="Ціна" routeName="price_filter" />
-          <FilterListItem attribute="tags" title="Теги" routeName="tags_filter" />
-          <SortBy />
-          <StatusFilter />
+        <View className="mb-2 flex flex-1 flex-col justify-between px-4 pt-3">
+          <View>
+            <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
+            <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
+            <FilterListItem attribute="size" title="Розмір" routeName="size_filter" />
+            <FilterListItem attribute="condition" title="Стан речі" routeName="condition_filter" />
+            <PriceFilterListItem attribute="price" title="Ціна" routeName="price_filter" />
+            <FilterListItem attribute="tags" title="Теги" routeName="tags_filter" />
+            <SortBy />
+            <StatusFilter />
+          </View>
+          <View>
+            <ShowListingsButton />
+          </View>
         </View>
-        <View>
-          <ShowListingsButton />
-        </View>
-      </View>
+      </SafeAreaView>
     </Delayed>
   );
 };

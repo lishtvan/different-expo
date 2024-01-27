@@ -6,7 +6,7 @@ export const config = {
       server: {
         nodes: [
           {
-            host: isAndroid ? '192.168.1.121' : '127.0.0.1',
+            host: isAndroid ? '192.168.1.117' : '127.0.0.1',
             port: 8108,
             protocol: 'http',
           },

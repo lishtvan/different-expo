@@ -2,7 +2,7 @@ import { Entypo } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import React, { FC, memo, useMemo, useState } from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
-import { Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, Separator, Square, View } from 'tamagui';
 
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';
@@ -143,15 +143,19 @@ const SizeFilter = () => {
 const SizeFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View className="mb-8 flex-1 gap-y-4">
-        <ScrollView className="flex-1" contentContainerStyle={{ justifyContent: 'space-between' }}>
-          <Clear />
-          <SizeFilter />
-        </ScrollView>
-        <View className="px-3">
-          <ShowListingsButton />
+      <SafeAreaView className="flex-1">
+        <View className="mb-2 flex-1 gap-y-4">
+          <ScrollView
+            className="flex-1"
+            contentContainerStyle={{ justifyContent: 'space-between' }}>
+            <Clear />
+            <SizeFilter />
+          </ScrollView>
+          <View className="px-3">
+            <ShowListingsButton />
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Delayed>
   );
 };

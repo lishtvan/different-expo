@@ -2,7 +2,7 @@ import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
 import React, { useMemo } from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
-import { TouchableOpacity } from 'react-native';
+import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { Separator, Text, View } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
@@ -60,13 +60,15 @@ const ConditionFilter = () => {
 const ConditionFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View className="mb-8 flex-1 justify-between">
-        <Clear />
-        <ConditionFilter />
-        <View className="px-3">
-          <ShowListingsButton />
+      <SafeAreaView className="flex-1">
+        <View className="mb-2 flex-1 justify-between">
+          <Clear />
+          <ConditionFilter />
+          <View className="px-3">
+            <ShowListingsButton />
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Delayed>
   );
 };

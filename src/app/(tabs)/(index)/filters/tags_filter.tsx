@@ -2,7 +2,7 @@ import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
-import { Text, TouchableOpacity } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { Separator, View } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
@@ -55,13 +55,15 @@ const TagsFilter = () => {
 const TagsFilterScreen = () => {
   return (
     <Delayed waitBeforeShow={0}>
-      <View className="mb-8 flex-1 justify-between">
-        <Clear />
-        <TagsFilter />
-        <View className="px-3">
-          <ShowListingsButton />
+      <SafeAreaView className="flex-1">
+        <View className="mb-2 flex-1 justify-between">
+          <Clear />
+          <TagsFilter />
+          <View className="px-3">
+            <ShowListingsButton />
+          </View>
         </View>
-      </View>
+      </SafeAreaView>
     </Delayed>
   );
 };
