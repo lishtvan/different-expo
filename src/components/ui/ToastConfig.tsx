@@ -26,6 +26,7 @@ export const toastConfig = {
           elevation: 2,
           alignItems: 'center',
           paddingHorizontal: 25,
+          marginTop: 25,
         }}
         contentContainerStyle={{
           paddingHorizontal: 0,

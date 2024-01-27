@@ -609,7 +609,12 @@ export default function SellScreen() {
         {errors.cardNumber && <InputValidationError message={errors.cardNumber.message!} />}
       </View>
       <Button
-        onPress={handleSubmit(onSubmit)}
+        onPress={() =>
+          Toast.show({
+            type: 'error',
+            text1: 'Будь ласка, виправіть помилки',
+          })
+        }
         size="$4"
         theme="active"
         fontSize="$6"
