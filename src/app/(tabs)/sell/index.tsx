@@ -91,7 +91,7 @@ export default function SellScreen() {
 
       reset();
       updateSelectedImages([]);
-      router.push({ pathname: `/listing/${res.listingId}` });
+      router.navigate({ pathname: `/listing/${res.listingId}` });
     },
   });
 
