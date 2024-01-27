@@ -7,7 +7,8 @@ import {
   focusManager,
 } from '@tanstack/react-query';
 import { useFonts } from 'expo-font';
-import { SplashScreen, Stack, router } from 'expo-router';
+import { Stack, router } from 'expo-router';
+import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import '../../global.css';
 import { AppStateStatus, Platform } from 'react-native';

@@ -2,8 +2,8 @@ import { Entypo } from '@expo/vector-icons';
 import { Stack } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
-import { Text, TouchableOpacity } from 'react-native';
-import { ScrollView, Separator, Square, View } from 'tamagui';
+import { TouchableOpacity } from 'react-native';
+import { ScrollView, Separator, Square, Text, View } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';

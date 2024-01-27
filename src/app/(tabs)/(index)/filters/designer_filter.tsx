@@ -3,8 +3,8 @@ import { FlashList } from '@shopify/flash-list';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
-import { Text, TouchableOpacity } from 'react-native';
-import { Button, Input, Separator, View, XStack } from 'tamagui';
+import { TouchableOpacity } from 'react-native';
+import { Button, Input, Separator, Text, View, XStack } from 'tamagui';
 
 import FilterItem from '../../../../components/home/FilterItem';
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';

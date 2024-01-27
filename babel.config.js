@@ -1,4 +1,5 @@
 process.env.TAMAGUI_TARGET = 'native';
+process.env.EXPO_ROUTER_APP_ROOT = '../../src/app';
 
 module.exports = function (api) {
   api.cache(true);
@@ -13,7 +14,6 @@ module.exports = function (api) {
         },
       ],
       // Required for expo-router
-      'expo-router/babel',
       'nativewind/babel',
       'react-native-reanimated/plugin',
     ],
