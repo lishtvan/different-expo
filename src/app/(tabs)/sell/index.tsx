@@ -157,7 +157,7 @@ export default function SellScreen() {
     <KeyboardAwareScrollView
       viewIsInsideTabBar
       keyboardShouldPersistTaps="handled"
-      extraScrollHeight={25}
+      extraScrollHeight={100}
       className="flex-1 gap-y-3 p-3">
       <View>
         <Text className="mb-1 ml-2 text-base">Заголовок *</Text>
@@ -616,7 +616,7 @@ export default function SellScreen() {
         theme="active"
         fontSize="$6"
         borderRadius="$main"
-        className="mb-12">
+        className="mb-20 mt-4">
         Створити
       </Button>
     </KeyboardAwareScrollView>
