@@ -10,7 +10,7 @@ import { INITIAL_PRICE } from '../../../../constants/filter';
 import { isAndroid } from '../../../../utils/platform';
 
 const PriceFilter = () => {
-  const keyboardVerticalOffset = isAndroid ? 0 : 120;
+  const keyboardVerticalOffset = isAndroid ? 60 : 120;
   const behavior = isAndroid ? 'height' : 'padding';
 
   const { refine, start } = useRange({
