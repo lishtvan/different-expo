@@ -155,7 +155,7 @@ export default function SellScreen() {
 
   return (
     <KeyboardAwareScrollView
-      viewIsInsideTabBar
+      enableOnAndroid
       keyboardShouldPersistTaps="handled"
       extraScrollHeight={100}
       className="flex-1 gap-y-3 p-3">
