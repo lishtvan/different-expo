@@ -157,7 +157,7 @@ export default function SellScreen() {
     <KeyboardAwareScrollView
       viewIsInsideTabBar
       keyboardShouldPersistTaps="handled"
-      extraScrollHeight={25}
+      extraScrollHeight={100}
       className="flex-1 gap-y-3 p-3">
       <View>
         <Text className="mb-1 ml-2 text-base">Заголовок *</Text>
@@ -579,7 +579,7 @@ export default function SellScreen() {
         />
         {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
-      <View>
+      <View className="mb-4">
         <Text className="mb-1 ml-2 text-base">Номер карти *</Text>
         <Controller
           control={control}
