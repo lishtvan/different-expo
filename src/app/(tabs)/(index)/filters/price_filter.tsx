@@ -1,7 +1,14 @@
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { useRange } from 'react-instantsearch-core';
-import { KeyboardAvoidingView, SafeAreaView, Text, TouchableOpacity } from 'react-native';
+import {
+  Keyboard,
+  KeyboardAvoidingView,
+  SafeAreaView,
+  Text,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native';
 import { Input, Separator, View } from 'tamagui';
 
 import ShowListingsButton from '../../../../components/home/ShowListingsButton';
@@ -10,7 +17,7 @@ import { INITIAL_PRICE } from '../../../../constants/filter';
 import { isAndroid } from '../../../../utils/platform';
 
 const PriceFilter = () => {
-  const keyboardVerticalOffset = isAndroid ? 60 : 120;
+  const keyboardVerticalOffset = isAndroid ? 80 : 120;
   const behavior = isAndroid ? 'height' : 'padding';
 
   const { refine, start } = useRange({
@@ -50,12 +57,14 @@ const PriceFilter = () => {
     setValue([price, undefined]);
     setSelectedPrice(`${price}min`);
     refine([Number(price), undefined]);
+    Keyboard.dismiss();
   };
 
   const setMaxPriceOnClick = (price: string) => {
     setValue([undefined, price]);
     setSelectedPrice(`${price}max`);
     refine([undefined, Number(price)]);
+    Keyboard.dismiss();
   };
 
   return (
@@ -69,64 +78,66 @@ const PriceFilter = () => {
           ),
         }}
       />
-      <KeyboardAvoidingView
-        keyboardVerticalOffset={keyboardVerticalOffset}
-        behavior={behavior}
-        style={{ flex: 1, paddingVertical: 16 }}
-        contentContainerStyle={{ justifyContent: 'space-between' }}>
-        <View className="flex-1 px-2">
-          <View className="flex-row justify-around ">
-            <Input
-              size="$4"
-              className="w-2/5"
-              autoCorrect={false}
-              borderRadius="$main"
-              placeholder="Мінімум"
-              keyboardType="number-pad"
-              onChangeText={onMinChange}
-              value={value[0]}
-            />
-            <Input
-              size="$4"
-              autoCorrect={false}
-              borderRadius="$main"
-              className="w-2/5"
-              placeholder="Максимум"
-              keyboardType="number-pad"
-              onChangeText={onMaxChange}
-              value={value[1]}
-            />
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          keyboardVerticalOffset={keyboardVerticalOffset}
+          behavior={behavior}
+          style={{ flex: 1, paddingTop: 16 }}
+          contentContainerStyle={{ justifyContent: 'space-between' }}>
+          <View className="flex-1 px-2">
+            <View className="flex-row justify-around ">
+              <Input
+                size="$4"
+                className="w-2/5"
+                autoCorrect={false}
+                borderRadius="$main"
+                placeholder="Мінімум"
+                keyboardType="number-pad"
+                onChangeText={onMinChange}
+                value={value[0]}
+              />
+              <Input
+                size="$4"
+                autoCorrect={false}
+                borderRadius="$main"
+                className="w-2/5"
+                placeholder="Максимум"
+                keyboardType="number-pad"
+                onChangeText={onMaxChange}
+                value={value[1]}
+              />
+            </View>
+            <View className="mt-2">
+              {['500', '1000', '2000', '3000'].map((i, key) => (
+                <View key={key}>
+                  <TouchableOpacity
+                    onPress={() => setMaxPriceOnClick(i)}
+                    className="py-2.5 px-2 mt-2">
+                    <Text
+                      className={`text-base ${selectedPrice === i + 'max' ? 'text-main font-bold' : 'text-black'}`}>
+                      До {i} грн
+                    </Text>
+                  </TouchableOpacity>
+                  <Separator borderColor="$gray7Light" />
+                </View>
+              ))}
+              <TouchableOpacity
+                onPress={() => setMinPriceOnClick('3000')}
+                className="py-2.5 px-2 mt-2">
+                <Text
+                  className={`text-base ${selectedPrice === '3000min' ? 'text-main font-bold' : 'text-black'}`}>
+                  Від 3000 грн
+                </Text>
+              </TouchableOpacity>
+              <Separator borderColor="$gray7Light" />
+            </View>
           </View>
-          <View className="mt-2">
-            {['500', '1000', '2000', '3000'].map((i, key) => (
-              <View key={key}>
-                <TouchableOpacity
-                  onPress={() => setMaxPriceOnClick(i)}
-                  className="py-2.5 px-2 mt-2">
-                  <Text
-                    className={`text-base ${selectedPrice === i + 'max' ? 'text-main font-bold' : 'text-black'}`}>
-                    До {i} грн
-                  </Text>
-                </TouchableOpacity>
-                <Separator borderColor="$gray7Light" />
-              </View>
-            ))}
-            <TouchableOpacity
-              onPress={() => setMinPriceOnClick('3000')}
-              className="py-2.5 px-2 mt-2">
-              <Text
-                className={`text-base ${selectedPrice === '3000min' ? 'text-main font-bold' : 'text-black'}`}>
-                Від 3000 грн
-              </Text>
-            </TouchableOpacity>
-            <Separator borderColor="$gray7Light" />
-          </View>
-        </View>
 
-        <View className="px-3 mb-2">
-          <ShowListingsButton />
-        </View>
-      </KeyboardAvoidingView>
+          <View className="px-3 mb-2">
+            <ShowListingsButton />
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </SafeAreaView>
   );
 };

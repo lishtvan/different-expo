@@ -64,6 +64,7 @@ const DesignerFilter = () => {
         />
       </XStack>
       <FlashList
+        keyboardShouldPersistTaps="handled"
         keyboardDismissMode="on-drag"
         estimatedItemSize={50}
         contentContainerStyle={{ paddingHorizontal: 12 }}
