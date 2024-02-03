@@ -9,6 +9,7 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "build:simulatorios": "eas build --profile development-simulator --platform ios",
+    "build:ios": "eas build --profile development --platform ios",
     "build:android": "eas build --profile development --platform android",
     "test": "jest --watchAll",
     "lint": "eslint ."

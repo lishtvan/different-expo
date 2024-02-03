@@ -14,7 +14,7 @@ export default function IndexLayoutNav() {
       indexName={LISTINGS_COLLECTION}
       searchClient={searchClient}>
       <VirtualFilter />
-      <Stack screenOptions={{ headerShadowVisible: false }}>
+      <Stack screenOptions={{ headerShadowVisible: false, fullScreenGestureEnabled: true }}>
         <Stack.Screen name="index" />
         <Stack.Screen
           name="listing/[listingId]"
