@@ -14,14 +14,18 @@ export default function IndexLayoutNav() {
       indexName={LISTINGS_COLLECTION}
       searchClient={searchClient}>
       <VirtualFilter />
-      <Stack
-        screenOptions={{
-          animation: 'simple_push',
-          headerShadowVisible: false,
-        }}>
+      <Stack screenOptions={{ headerShadowVisible: false }}>
         <Stack.Screen name="index" />
         <Stack.Screen
           name="listing/[listingId]"
+          options={{
+            headerTitle: '',
+            headerBackTitleVisible: false,
+            headerShadowVisible: false,
+          }}
+        />
+        <Stack.Screen
+          name="user/[nickname]"
           options={{
             headerTitle: '',
             headerBackTitleVisible: false,
