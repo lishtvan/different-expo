@@ -17,7 +17,7 @@ import { useRefresh } from '../../hooks/useRefresh';
 import { TListing, TUser } from '../../types';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
-import Listing from '../listings/Listing';
+import Listing from '../listings/ListingCard';
 import Delayed from '../wrappers/Delayed';
 
 // TODO: implement refresh on reopen app after user route is implemented

@@ -7,7 +7,7 @@ import { Spinner, Text, View } from 'tamagui';
 
 import { TListing } from '../../types';
 import { getDynamicEndingForListingsCount } from '../../utils/common';
-import Listing from '../listings/Listing';
+import Listing from '../listings/ListingCard';
 import Delayed from '../wrappers/Delayed';
 
 const renderItem = ({ item }: { item: TListing }) => {

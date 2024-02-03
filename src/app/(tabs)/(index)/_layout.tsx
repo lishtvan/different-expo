@@ -16,6 +16,7 @@ export default function IndexLayoutNav() {
       <VirtualFilter />
       <Stack
         screenOptions={{
+          animation: 'simple_push',
           headerShadowVisible: false,
         }}>
         <Stack.Screen name="index" />
