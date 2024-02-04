@@ -1,6 +1,7 @@
 import { Entypo, Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { Tabs } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 
 import Colors from '../../constants/Colors';
 import { fetcher } from '../../utils/fetcher';
@@ -10,6 +11,11 @@ export default function TabLayout() {
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
+  const onAuthTabPress = (e: EventArg<'tabPress', true, undefined>) => {
+    if (user) return;
+    e.preventDefault();
+    router.navigate('/auth');
+  };
 
   if (isLoading) return null;
 
@@ -32,6 +38,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="orders"
+        listeners={{ tabPress: onAuthTabPress }}
         options={{
           title: 'Замовлення',
           tabBarIcon: ({ color }) => (
@@ -46,6 +53,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="sell"
+        listeners={{ tabPress: onAuthTabPress }}
         options={{
           title: 'Продати',
           headerShown: false,
@@ -61,6 +69,7 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="messages"
+        listeners={{ tabPress: onAuthTabPress }}
         options={{
           title: 'Повідомлення',
           tabBarIcon: ({ color }) => (
@@ -70,11 +79,8 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="profile"
+        listeners={{ tabPress: onAuthTabPress }}
         options={{
-          href: {
-            pathname: '/profile',
-            params: { nickname: user?.nickname || '' },
-          },
           title: 'Профіль',
           headerShown: false,
           tabBarIcon: ({ color }) => (

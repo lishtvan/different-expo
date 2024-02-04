@@ -64,7 +64,7 @@ interface ErrActions {
 const erorrActions: ErrActions = {
   404: () => router.replace('/404'),
   500: () => router.replace('/500'),
-  401: () => router.replace('/auth'),
+  401: () => router.navigate('/auth'),
 };
 
 const globalErrorHandler = (err: Error) => {
@@ -105,6 +105,7 @@ function RootLayoutNav() {
               <Stack.Screen
                 name="auth"
                 options={{
+                  presentation: 'modal',
                   headerTitle: '',
                   headerShadowVisible: false,
                 }}

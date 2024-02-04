@@ -1,4 +1,4 @@
-import { Redirect, Stack, useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { InstantSearch } from 'react-instantsearch-core';
 
@@ -9,7 +9,6 @@ import { searchClient } from '../../../utils/searchClient';
 // TODO: move current user nickname to global state (async storage probably)
 export default function ProfileScreen() {
   const params = useLocalSearchParams<{ nickname: string }>();
-  if (!params.nickname) return <Redirect href="/auth" />;
 
   return (
     <InstantSearch

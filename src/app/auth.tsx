@@ -1,7 +1,7 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, View, Text } from 'tamagui';
@@ -23,7 +23,7 @@ const AuthScreen = () => {
     onSuccess: async ({ token }) => {
       await saveSession(token);
       await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
-      router.replace('/');
+      router.back();
     },
   });
 
@@ -39,7 +39,7 @@ const AuthScreen = () => {
   };
 
   return (
-    <SafeAreaView className="flex-1 items-center justify-between">
+    <SafeAreaView className="flex-1 items-center">
       <View className="flex-1 items-center justify-around">
         <View className="items-center">
           <Image
@@ -67,9 +67,6 @@ const AuthScreen = () => {
           <Text fontSize="$7">Увійти за допомогою Google</Text>
         </Button>
       </View>
-      <Link className="mb-10" href="/" replace>
-        <Text className="text-base  text-blue-500">Повернутись на головну сторінку</Text>
-      </Link>
     </SafeAreaView>
   );
 };

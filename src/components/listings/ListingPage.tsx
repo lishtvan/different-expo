@@ -13,13 +13,6 @@ export default function ListingPage() {
   });
   if (isLoading) return null;
 
-  const hrefOptions = listingData.isOwnListing
-    ? {
-        pathname: '/profile',
-        params: { nickname: 'user2' },
-      }
-    : '/user/different212dd';
-
   return (
     <View className="px-2">
       <Text>{listingData.listing.title}</Text>
@@ -30,8 +23,7 @@ export default function ListingPage() {
       <Text>Listing</Text>
       <Link
         className="text-2xl"
-        // @ts-expect-error expo problem
-        href={hrefOptions}>
+        href={listingData.isOwnListing ? '/profile' : `/user/${listingData.listing.User.nickname}`}>
         User link
       </Link>
     </View>
