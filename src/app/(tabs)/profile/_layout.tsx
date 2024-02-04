@@ -20,6 +20,7 @@ export default function ProfileLayoutNav() {
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        fullScreenGestureEnabled: true,
       }}>
       <Stack.Screen
         initialParams={{ nickname: user?.nickname }}
@@ -37,7 +38,7 @@ export default function ProfileLayoutNav() {
       <Stack.Screen
         name="settings"
         options={{
-          presentation: 'fullScreenModal',
+          presentation: 'modal',
           headerLeft: () => (
             <TouchableOpacity onPress={() => router.back()}>
               <Text className="text-base">Скасувати</Text>

@@ -6,6 +6,7 @@ export default function FiltersLayout() {
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        fullScreenGestureEnabled: true,
       }}>
       <Stack.Screen
         name="current_filters"
