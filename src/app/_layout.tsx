@@ -1,3 +1,4 @@
+import { AntDesign } from '@expo/vector-icons';
 import { ThemeProvider } from '@react-navigation/native';
 import {
   MutationCache,
@@ -11,9 +12,9 @@ import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect } from 'react';
 import '../../global.css';
-import { AppStateStatus, Platform } from 'react-native';
+import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
-import { TamaguiProvider, Theme } from 'tamagui';
+import { Circle, TamaguiProvider, Theme } from 'tamagui';
 
 import tamaguiConfig, { mainColor } from '../../tamagui.config';
 import { toastConfig } from '../components/ui/ToastConfig';
@@ -105,6 +106,15 @@ function RootLayoutNav() {
               <Stack.Screen
                 name="auth"
                 options={{
+                  headerRight: () => {
+                    return (
+                      <TouchableOpacity onPress={() => router.back()}>
+                        <Circle backgroundColor="#e1e1e1" size="$2.5">
+                          <AntDesign size={22} name="close" />
+                        </Circle>
+                      </TouchableOpacity>
+                    );
+                  },
                   presentation: 'modal',
                   headerTitle: '',
                   headerShadowVisible: false,
