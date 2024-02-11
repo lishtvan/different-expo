@@ -23,6 +23,10 @@ export type TListing = {
   id: string;
   tags: string[];
   description: string;
+  User: {
+    nickname: string;
+    avatarUrl: string;
+  };
 };
 
 export interface SelectedImage {

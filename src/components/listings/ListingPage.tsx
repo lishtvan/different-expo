@@ -1,9 +1,9 @@
 import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { FC, useState } from 'react';
-import { Dimensions, ScrollView } from 'react-native';
+import { Dimensions, Pressable, ScrollView } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 // @ts-expect-error pwdq
 import Pinchable from 'react-native-pinchable';
@@ -62,14 +62,19 @@ const ListingImages: FC<ListingImagesProps> = ({ imageUrls }) => {
 
 export default function ListingPage() {
   const { listingId } = useLocalSearchParams();
-  const { data, isLoading } = useQuery<{ listing: TListing }>({
+  const { data, isLoading } = useQuery<{
+    listing: TListing;
+    isOwnListing: boolean;
+    sellerSoldListingsCount: boolean;
+    sellerAvailableListingsCount: boolean;
+  }>({
     queryKey: ['listing', listingId],
     queryFn: () => fetcher({ body: { listingId }, route: '/listing/get' }),
   });
 
   if (isLoading || !data) return null;
 
-  const { listing } = data;
+  const { listing, isOwnListing, sellerAvailableListingsCount, sellerSoldListingsCount } = data;
 
   return (
     <View className="flex-1">
@@ -111,6 +116,26 @@ export default function ListingPage() {
               ))}
             </View>
           )}
+          <Link asChild href={isOwnListing ? '/profile' : `/user/${listing.User.nickname}`}>
+            <Pressable className="flex-row mt-4 gap-x-3">
+              <Image
+                className="h-14 w-14 rounded-full object-cover"
+                source={{
+                  uri:
+                    listing.User.avatarUrl ||
+                    'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg',
+                }}
+                alt="selleravatar"
+              />
+              <View className="flex-1">
+                <Text className="text-lg">{listing.User.nickname}</Text>
+                <View className="flex-row gap-x-2 mt-1.5">
+                  <Text className="text-[#737373]">{sellerAvailableListingsCount} оголошень</Text>
+                  <Text className="text-[#737373]">{sellerSoldListingsCount} продано</Text>
+                </View>
+              </View>
+            </Pressable>
+          </Link>
         </View>
       </ScrollView>
       <View className="absolute bottom-0 w-full flex flex-row gap-x-4 justify-between px-4 py-2">
