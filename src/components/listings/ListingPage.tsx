@@ -1,4 +1,4 @@
-import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
+import { Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { Link, useLocalSearchParams } from 'expo-router';
@@ -85,7 +85,7 @@ export default function ListingPage() {
           <Separator className="mt-2" />
           <Text className="mt-3 text-lg">
             <Text className="text-[#737373]">Дизайнер:</Text>
-            {'  '} Takahiromiyashita The Soloist.
+            {'  '} {listing.designer}
           </Text>
           <Text className="mt-2 text-lg">
             <Text className="text-[#737373]">Розмір:</Text>
@@ -140,7 +140,7 @@ export default function ListingPage() {
       </ScrollView>
       <View className="absolute bottom-0 w-full flex flex-row gap-x-4 justify-between px-4 py-2">
         <Button
-          icon={() => <AntDesign name="message1" size={20} />}
+          icon={() => <Feather name="send" color="#737373" size={20} />}
           size="$4"
           fontSize="$6"
           className="w-[47.5%]"
