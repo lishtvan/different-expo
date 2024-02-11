@@ -19,7 +19,10 @@ export type TListing = {
   title: string;
   price: number;
   status: 'AVAILABLE' | 'SOLD';
+  condition: string;
   id: string;
+  tags: string[];
+  description: string;
 };
 
 export interface SelectedImage {
