@@ -1,3 +1,4 @@
+import { AntDesign, SimpleLineIcons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
 import { useLocalSearchParams } from 'expo-router';
@@ -7,7 +8,7 @@ import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 // @ts-expect-error pwdq
 import Pinchable from 'react-native-pinchable';
 import Carousel from 'react-native-reanimated-carousel';
-import { Separator, Text, View } from 'tamagui';
+import { Button, Separator, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { TListing } from '../../types';
@@ -71,42 +72,66 @@ export default function ListingPage() {
   const { listing } = data;
 
   return (
-    <ScrollView className="flex-1">
-      <ListingImages imageUrls={listing.imageUrls} />
-      <View className="mt-4 px-3 mb-20">
-        <Text className="text-lg">{listing.title}</Text>
-        <Separator className="mt-2" />
-        <Text className="mt-3 text-lg">
-          <Text className="text-[#737373]">Дизайнер:</Text>
-          {'  '} Takahiromiyashita The Soloist.
-        </Text>
-        <Text className="mt-2 text-lg">
-          <Text className="text-[#737373]">Розмір:</Text>
-          {'  '} {listing.size}
-        </Text>
-        <Text className="mt-2 text-lg">
-          <Text className="text-[#737373]">Стан:</Text>
-          {'  '} {listing.condition}
-        </Text>
-        <Separator className="mt-2" />
-        {listing.description && (
-          <View className="mt-2">
-            <Text className="text-lg text-[#737373]">Опис</Text>
-            <Text className="text-lg mt-1">
-              Розмір Л фіт Л-ХЛ Стан дуже хороший Вся фурнітура YKK
+    <View className="flex-1">
+      <ScrollView className="flex-1">
+        <ListingImages imageUrls={listing.imageUrls} />
+        <View className="mt-4 px-3 mb-20">
+          <Text className="text-lg">{listing.title}</Text>
+          <Separator className="mt-2" />
+          <Text className="mt-3 text-lg">
+            <Text className="text-[#737373]">Дизайнер:</Text>
+            {'  '} Takahiromiyashita The Soloist.
+          </Text>
+          <Text className="mt-2 text-lg">
+            <Text className="text-[#737373]">Розмір:</Text>
+            {'  '} {listing.size}
+          </Text>
+          <View className="mt-2 flex-row justify-between">
+            <Text className="text-lg">
+              <Text className="text-[#737373]">Стан:</Text>
+              {'  '} {listing.condition}
             </Text>
+            <Text className="text-xl font-bold">{listing.price} грн</Text>
           </View>
-        )}
-        {listing.tags.length > 0 && (
-          <View className="flex flex-row  gap-x-2 mt-3">
-            {listing.tags.map((tag) => (
-              <View key={tag} className="rounded-lg border border-main px-2 py-1 text-lg text-main">
-                <Text className="text-main text-base">{tag}</Text>
-              </View>
-            ))}
-          </View>
-        )}
+          <Separator className="mt-2" />
+          {listing.description && (
+            <View className="mt-2">
+              <Text className="text-lg text-[#737373]">Опис</Text>
+              <Text className="text-lg mt-1">{listing.description}</Text>
+            </View>
+          )}
+          {listing.tags.length > 0 && (
+            <View className="flex flex-row  gap-x-2 mt-3">
+              {listing.tags.map((tag) => (
+                <View
+                  key={tag}
+                  className="rounded-lg border border-main px-2 py-1 text-lg text-main">
+                  <Text className="text-main">{tag}</Text>
+                </View>
+              ))}
+            </View>
+          )}
+        </View>
+      </ScrollView>
+      <View className="absolute bottom-0 w-full flex flex-row gap-x-4 justify-between px-4 py-2">
+        <Button
+          icon={() => <AntDesign name="message1" size={20} />}
+          size="$4"
+          fontSize="$6"
+          className="w-[47.5%]"
+          borderRadius="$main">
+          Написати
+        </Button>
+        <Button
+          icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
+          size="$4"
+          theme="active"
+          className="w-[47.5%]"
+          fontSize="$6"
+          borderRadius="$main">
+          Замовити
+        </Button>
       </View>
-    </ScrollView>
+    </View>
   );
 }
