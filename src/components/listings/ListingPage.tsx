@@ -138,25 +138,29 @@ export default function ListingPage() {
           </Link>
         </View>
       </ScrollView>
-      <View className="absolute bottom-0 w-full flex flex-row gap-x-4 justify-between px-4 py-2">
-        <Button
-          icon={() => <Feather name="send" color="#737373" size={20} />}
-          size="$4"
-          fontSize="$6"
-          className="w-[47.5%]"
-          borderRadius="$main">
-          Написати
-        </Button>
-        <Button
-          icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
-          size="$4"
-          theme="active"
-          className="w-[47.5%]"
-          fontSize="$6"
-          borderRadius="$main">
-          Замовити
-        </Button>
-      </View>
+      {!isOwnListing && (
+        <View flexGrow={1} className="absolute bottom-0 w-full flex-row px-2 py-2">
+          <Button
+            icon={() => <Feather name="send" color="#737373" size={20} />}
+            size="$4"
+            className="flex-1 mx-1.5"
+            fontSize="$6"
+            borderRadius="$main">
+            Написати
+          </Button>
+          {listing.status === 'AVAILABLE' && (
+            <Button
+              icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
+              size="$4"
+              className="flex-1 mx-1.5"
+              theme="active"
+              fontSize="$6"
+              borderRadius="$main">
+              Замовити
+            </Button>
+          )}
+        </View>
+      )}
     </View>
   );
 }
