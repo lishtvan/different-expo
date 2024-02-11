@@ -3,7 +3,7 @@ import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { Tabs, router } from 'expo-router';
 
-import Colors from '../../constants/Colors';
+import Colors from '../../constants/colors';
 import { fetcher } from '../../utils/fetcher';
 
 export default function TabLayout() {

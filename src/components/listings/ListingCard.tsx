@@ -20,6 +20,7 @@ const MyListing: FC<Props> = ({ listing }) => {
           className="aspect-[0.83] w-full object-cover "
           source={listing.imageUrls[0]}
           alt="item"
+          transition={200}
         />
         <View className="px-2">
           <View className="mt-3 flex w-full flex-row justify-between">

@@ -12,6 +12,7 @@ import { Button, Separator, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { TListing } from '../../types';
+import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 
 interface ListingImagesProps {
@@ -121,9 +122,7 @@ export default function ListingPage() {
               <Image
                 className="h-14 w-14 rounded-full object-cover"
                 source={{
-                  uri:
-                    listing.User.avatarUrl ||
-                    'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg',
+                  uri: avatarFb(listing.User.avatarUrl),
                 }}
                 alt="selleravatar"
               />

@@ -21,8 +21,8 @@ import {
   validationErrors,
 } from '../../../components/ui/InputValidationErrors';
 import TextArea from '../../../components/ui/TextArea';
+import { DEFAULT_AVATAR } from '../../../utils/avatarUrlFallback';
 import { fetcher } from '../../../utils/fetcher';
-import { isAndroid } from '../../../utils/platform';
 import { uploadImage, validateSingleImageSize, verifyPermission } from '../../../utils/uploadImage';
 
 const SettingsScreen = () => {
@@ -116,13 +116,12 @@ const SettingsScreen = () => {
 
   const getCurrentAvatarUrl = () => {
     if (isUploading) return previewImage;
-    const defaultAvatarUrl = 'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg';
-    if (newAvatarUrl === null) return defaultAvatarUrl;
-    return newAvatarUrl || user.avatarUrl || defaultAvatarUrl;
+    if (newAvatarUrl === null) return DEFAULT_AVATAR;
+    return newAvatarUrl || user.avatarUrl || DEFAULT_AVATAR;
   };
 
   if (isLoading) return null;
-  const blurRadius = isAndroid ? 10 : 100;
+  const blurRadius = 10;
   return (
     <SafeAreaView className="flex-1">
       <Stack.Screen

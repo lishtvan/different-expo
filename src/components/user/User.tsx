@@ -15,6 +15,7 @@ import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
 import { mainColor } from '../../../tamagui.config';
 import { useRefresh } from '../../hooks/useRefresh';
 import { TListing, TUser } from '../../types';
+import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
 import Listing from '../listings/ListingCard';
@@ -104,12 +105,7 @@ const MyHeader = ({ user }: { user: TUser }) => {
     <View>
       <View className="flex flex-row gap-x-4 px-2 ">
         <Avatar circular size="$10">
-          <Avatar.Image
-            src={
-              user.avatarUrl ||
-              'https://upload.wikimedia.org/wikipedia/commons/a/ac/Default_pfp.jpg'
-            }
-          />
+          <Avatar.Image src={avatarFb(user.avatarUrl)} />
         </Avatar>
         <View className="flex flex-row items-center gap-x-6">
           <View className="flex items-center">
