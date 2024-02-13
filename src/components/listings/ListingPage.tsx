@@ -1,9 +1,10 @@
 import { Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { MenuView } from '@react-native-menu/menu';
 import { useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import { FC, useState } from 'react';
-import { Dimensions, Pressable, ScrollView } from 'react-native';
+import { Alert, Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 // @ts-expect-error pwdq
 import Pinchable from 'react-native-pinchable';
@@ -18,6 +19,67 @@ import { fetcher } from '../../utils/fetcher';
 interface ListingImagesProps {
   imageUrls: string[];
 }
+
+const ListingMenu = () => {
+  return (
+    <Stack.Screen
+      options={{
+        headerRight: () => {
+          return (
+            <MenuView
+              onPressAction={({ nativeEvent }) => {
+                Alert.alert('Ви впевнені, що хочете видалити оголошення?', '', [
+                  {
+                    text: 'Ні',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  { text: 'Так', onPress: () => console.log('OK Pressed') },
+                ]);
+              }}
+              actions={[
+                {
+                  id: 'edit',
+                  title: 'Редагувати',
+                  titleColor: '#2367A2',
+                  image: Platform.select({
+                    ios: 'square.and.pencil',
+                    android: 'ic_menu_edit',
+                  }),
+                  imageColor: 'black',
+                },
+                {
+                  id: 'share',
+                  title: 'Поширити',
+                  titleColor: '#46F289',
+                  image: Platform.select({
+                    ios: 'square.and.arrow.up',
+                    android: 'ic_menu_share',
+                  }),
+                  imageColor: 'black',
+                },
+                {
+                  id: 'delete',
+                  title: 'Видалити',
+                  attributes: {
+                    destructive: true,
+                  },
+                  image: Platform.select({
+                    ios: 'trash',
+                    android: 'ic_menu_delete',
+                  }),
+                },
+              ]}>
+              <TouchableOpacity className="pl-2 py-1">
+                <SimpleLineIcons name="options" size={22} />
+              </TouchableOpacity>
+            </MenuView>
+          );
+        },
+      }}
+    />
+  );
+};
 
 const ListingImages: FC<ListingImagesProps> = ({ imageUrls }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -81,6 +143,7 @@ export default function ListingPage() {
     <View className="flex-1">
       <ScrollView className="flex-1">
         <ListingImages imageUrls={listing.imageUrls} />
+        <ListingMenu />
         <View className="mt-4 px-3 mb-20">
           <Text className="text-lg">{listing.title}</Text>
           <Separator className="mt-2" />
