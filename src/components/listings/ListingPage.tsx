@@ -48,6 +48,12 @@ const menuActionsUi = [
   },
 ];
 
+const headerTitleStatusMapper = {
+  ORDER: { text: 'Створено замовлення', color: 'red' },
+  SOLD: { text: 'Продано', color: mainColor },
+  AVAILABLE: { text: 'В наявності', color: 'black' },
+};
+
 const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
   listing,
   isOwnListing,
@@ -76,9 +82,13 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
     action();
   };
 
+  const { color, text } = headerTitleStatusMapper[listing.status];
+
   return (
     <Stack.Screen
       options={{
+        headerTitle: text,
+        headerTitleStyle: { color },
         headerRight: () => {
           if (isOwnListing && listing.status === 'AVAILABLE') {
             return (
