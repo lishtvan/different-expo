@@ -1,18 +1,18 @@
 import { Feather, SimpleLineIcons } from '@expo/vector-icons';
-import { MenuView } from '@react-native-menu/menu';
-import { useQuery } from '@tanstack/react-query';
+import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { Link, Stack, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, router, useLocalSearchParams } from 'expo-router';
 import { FC, useState } from 'react';
 import { Alert, Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
-// @ts-expect-error pwdq
+// @ts-expect-error pinchable problem
 import Pinchable from 'react-native-pinchable';
 import Carousel from 'react-native-reanimated-carousel';
 import { Button, Separator, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
-import { TListing } from '../../types';
+import { ListingStatus, RFunc, TListing } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 
@@ -20,56 +20,63 @@ interface ListingImagesProps {
   imageUrls: string[];
 }
 
-const ListingMenu = () => {
+const menuActionsUi = [
+  {
+    id: 'edit',
+    title: 'Редагувати',
+    imageColor: 'black',
+    image: Platform.select({ ios: 'square.and.pencil', android: 'ic_menu_edit' }),
+  },
+  {
+    id: 'share',
+    title: 'Поширити',
+    imageColor: 'black',
+    image: Platform.select({ ios: 'square.and.arrow.up', android: 'ic_menu_share' }),
+  },
+  {
+    id: 'delete',
+    title: 'Видалити',
+    attributes: { destructive: true },
+    image: Platform.select({ ios: 'trash', android: 'ic_menu_delete' }),
+  },
+];
+
+interface ListingMenuProps {
+  status: ListingStatus;
+  listingId: number;
+}
+
+const ListingMenu: FC<ListingMenuProps> = ({ listingId, status }) => {
+  const mutation = useMutation({
+    mutationFn: (listingId: number) =>
+      fetcher({ route: '/listing/delete', method: 'POST', body: { listingId } }),
+    onSuccess: () => router.back(),
+  });
+
+  const openConfirmationModal = () => {
+    Alert.alert('Ви впевнені, що хочете видалити оголошення?', '', [
+      { text: 'Ні', onPress: () => {}, style: 'cancel' },
+      { text: 'Так', onPress: () => mutation.mutate(listingId) },
+    ]);
+  };
+
+  const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
+    const menuActions: RFunc = {
+      delete: openConfirmationModal,
+      edit: () => console.log('edit'),
+      share: () => console.log('share'),
+    };
+
+    const action = menuActions[nativeEvent.event];
+    action();
+  };
+
   return (
     <Stack.Screen
       options={{
         headerRight: () => {
           return (
-            <MenuView
-              onPressAction={({ nativeEvent }) => {
-                Alert.alert('Ви впевнені, що хочете видалити оголошення?', '', [
-                  {
-                    text: 'Ні',
-                    onPress: () => console.log('Cancel Pressed'),
-                    style: 'cancel',
-                  },
-                  { text: 'Так', onPress: () => console.log('OK Pressed') },
-                ]);
-              }}
-              actions={[
-                {
-                  id: 'edit',
-                  title: 'Редагувати',
-                  titleColor: '#2367A2',
-                  image: Platform.select({
-                    ios: 'square.and.pencil',
-                    android: 'ic_menu_edit',
-                  }),
-                  imageColor: 'black',
-                },
-                {
-                  id: 'share',
-                  title: 'Поширити',
-                  titleColor: '#46F289',
-                  image: Platform.select({
-                    ios: 'square.and.arrow.up',
-                    android: 'ic_menu_share',
-                  }),
-                  imageColor: 'black',
-                },
-                {
-                  id: 'delete',
-                  title: 'Видалити',
-                  attributes: {
-                    destructive: true,
-                  },
-                  image: Platform.select({
-                    ios: 'trash',
-                    android: 'ic_menu_delete',
-                  }),
-                },
-              ]}>
+            <MenuView onPressAction={onPressAction} actions={menuActionsUi}>
               <TouchableOpacity className="pl-2 py-1">
                 <SimpleLineIcons name="options" size={22} />
               </TouchableOpacity>
@@ -141,9 +148,9 @@ export default function ListingPage() {
 
   return (
     <View className="flex-1">
+      <ListingMenu status={listing.status} listingId={listing.id} />
       <ScrollView className="flex-1">
         <ListingImages imageUrls={listing.imageUrls} />
-        <ListingMenu />
         <View className="mt-4 px-3 mb-20">
           <Text className="text-lg">{listing.title}</Text>
           <Separator className="mt-2" />

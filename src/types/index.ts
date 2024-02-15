@@ -12,15 +12,17 @@ export interface TUser {
   isOwnAccount: boolean;
 }
 
+export type ListingStatus = 'AVAILABLE' | 'SOLD' | 'ORDER';
+
 export type TListing = {
   imageUrls: string[];
   designer: string;
   size: keyof typeof SHORT_SIZES;
   title: string;
   price: number;
-  status: 'AVAILABLE' | 'SOLD';
+  status: ListingStatus;
   condition: string;
-  id: string;
+  id: number;
   tags: string[];
   description: string;
   User: {
@@ -40,3 +42,5 @@ export interface RefinementListItem {
   isRefined: boolean;
   count: number;
 }
+
+export type RFunc = Record<string, () => void>;
