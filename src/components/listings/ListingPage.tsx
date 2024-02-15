@@ -1,4 +1,4 @@
-import { Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { EvilIcons, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
@@ -12,12 +12,19 @@ import Carousel from 'react-native-reanimated-carousel';
 import { Button, Separator, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
-import { ListingStatus, RFunc, TListing } from '../../types';
+import { RFunc, TListing } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 
 interface ListingImagesProps {
   imageUrls: string[];
+}
+
+interface ListingResponse {
+  listing: TListing;
+  isOwnListing: boolean;
+  sellerSoldListingsCount: boolean;
+  sellerAvailableListingsCount: boolean;
 }
 
 const menuActionsUi = [
@@ -41,12 +48,10 @@ const menuActionsUi = [
   },
 ];
 
-interface ListingMenuProps {
-  status: ListingStatus;
-  listingId: number;
-}
-
-const ListingMenu: FC<ListingMenuProps> = ({ listingId, status }) => {
+const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
+  listing,
+  isOwnListing,
+}) => {
   const mutation = useMutation({
     mutationFn: (listingId: number) =>
       fetcher({ route: '/listing/delete', method: 'POST', body: { listingId } }),
@@ -56,7 +61,7 @@ const ListingMenu: FC<ListingMenuProps> = ({ listingId, status }) => {
   const openConfirmationModal = () => {
     Alert.alert('Ви впевнені, що хочете видалити оголошення?', '', [
       { text: 'Ні', onPress: () => {}, style: 'cancel' },
-      { text: 'Так', onPress: () => mutation.mutate(listingId) },
+      { text: 'Так', onPress: () => mutation.mutate(listing.id) },
     ]);
   };
 
@@ -75,12 +80,20 @@ const ListingMenu: FC<ListingMenuProps> = ({ listingId, status }) => {
     <Stack.Screen
       options={{
         headerRight: () => {
+          if (isOwnListing && listing.status === 'AVAILABLE') {
+            return (
+              <MenuView onPressAction={onPressAction} actions={menuActionsUi}>
+                <TouchableOpacity className="pl-2 py-1">
+                  <SimpleLineIcons name="options" size={22} />
+                </TouchableOpacity>
+              </MenuView>
+            );
+          }
+
           return (
-            <MenuView onPressAction={onPressAction} actions={menuActionsUi}>
-              <TouchableOpacity className="pl-2 py-1">
-                <SimpleLineIcons name="options" size={22} />
-              </TouchableOpacity>
-            </MenuView>
+            <TouchableOpacity className="pl-2 py-1">
+              <EvilIcons name="share-apple" size={36} />
+            </TouchableOpacity>
           );
         },
       }}
@@ -132,12 +145,7 @@ const ListingImages: FC<ListingImagesProps> = ({ imageUrls }) => {
 
 export default function ListingPage() {
   const { listingId } = useLocalSearchParams();
-  const { data, isLoading } = useQuery<{
-    listing: TListing;
-    isOwnListing: boolean;
-    sellerSoldListingsCount: boolean;
-    sellerAvailableListingsCount: boolean;
-  }>({
+  const { data, isLoading } = useQuery<ListingResponse>({
     queryKey: ['listing', listingId],
     queryFn: () => fetcher({ body: { listingId }, route: '/listing/get' }),
   });
@@ -148,7 +156,7 @@ export default function ListingPage() {
 
   return (
     <View className="flex-1">
-      <ListingMenu status={listing.status} listingId={listing.id} />
+      <ListingMenu listing={listing} isOwnListing={isOwnListing} />
       <ScrollView className="flex-1">
         <ListingImages imageUrls={listing.imageUrls} />
         <View className="mt-4 px-3 mb-20">
