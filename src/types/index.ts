@@ -14,7 +14,7 @@ export interface TUser {
 
 export type ListingStatus = 'AVAILABLE' | 'SOLD' | 'ORDER';
 
-export type TListing = {
+export type TListing<IdType = string> = {
   imageUrls: string[];
   designer: string;
   size: keyof typeof SHORT_SIZES;
@@ -22,7 +22,7 @@ export type TListing = {
   price: number;
   status: ListingStatus;
   condition: string;
-  id: number;
+  id: IdType;
   tags: string[];
   description: string;
   User: {

@@ -21,7 +21,7 @@ interface ListingImagesProps {
 }
 
 interface ListingResponse {
-  listing: TListing;
+  listing: TListing<number>;
   isOwnListing: boolean;
   sellerSoldListingsCount: boolean;
   sellerAvailableListingsCount: boolean;
