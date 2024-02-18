@@ -15,6 +15,7 @@ import { mainColor } from '../../../tamagui.config';
 import { RFunc, TListing } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
+import { shareLink } from '../../utils/share';
 
 interface ListingImagesProps {
   imageUrls: string[];
@@ -59,23 +60,25 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
   isOwnListing,
 }) => {
   const mutation = useMutation({
-    mutationFn: (listingId: number) =>
-      fetcher({ route: '/listing/delete', method: 'POST', body: { listingId } }),
+    mutationFn: () =>
+      fetcher({ route: '/listing/delete', method: 'POST', body: { listingId: listing.id } }),
     onSuccess: () => router.back(),
   });
 
   const openConfirmationModal = () => {
     Alert.alert('Ви впевнені, що хочете видалити оголошення?', '', [
       { text: 'Ні', onPress: () => {}, style: 'cancel' },
-      { text: 'Так', onPress: () => mutation.mutate(listing.id) },
+      { text: 'Так', onPress: () => mutation.mutate() },
     ]);
   };
+
+  const shareListing = () => shareLink(`listing/${listing.id}`);
 
   const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
     const menuActions: RFunc = {
       delete: openConfirmationModal,
       edit: () => console.log('edit'),
-      share: () => console.log('share'),
+      share: shareListing,
     };
 
     const action = menuActions[nativeEvent.event];
@@ -101,7 +104,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
           }
 
           return (
-            <TouchableOpacity className="pl-2 py-1">
+            <TouchableOpacity onPress={shareListing} className="pl-2 py-1">
               <EvilIcons name="share-apple" size={36} />
             </TouchableOpacity>
           );
