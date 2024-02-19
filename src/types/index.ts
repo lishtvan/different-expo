@@ -18,6 +18,7 @@ export type TListing<IdType = string> = {
   imageUrls: string[];
   designer: string;
   size: keyof typeof SHORT_SIZES;
+  category: string;
   title: string;
   price: number;
   status: ListingStatus;
@@ -44,3 +45,10 @@ export interface RefinementListItem {
 }
 
 export type RFunc = Record<string, () => void>;
+
+export interface ListingResponse {
+  listing: TListing<number>;
+  isOwnListing: boolean;
+  sellerSoldListingsCount: boolean;
+  sellerAvailableListingsCount: boolean;
+}

@@ -12,6 +12,7 @@ export default function SellLayoutNav() {
         headerShadowVisible: false,
         animation: 'simple_push',
         headerTitleAlign: 'center',
+        fullScreenGestureEnabled: true,
       }}>
       <Stack.Screen
         name="index"
@@ -33,6 +34,13 @@ export default function SellLayoutNav() {
         options={{
           headerBackTitleVisible: false,
           headerTitle: 'Оберіть дизайнера',
+        }}
+      />
+      <Stack.Screen
+        name="select_category_and_size"
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: 'Оберіть категорію та розмір',
         }}
       />
     </Stack>

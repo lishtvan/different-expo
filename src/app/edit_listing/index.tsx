@@ -1,30 +1,23 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import validateCard from 'card-validator';
-import { Link, Redirect, router, useLocalSearchParams } from 'expo-router';
+import { Link, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { FC, useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
-import { Keyboard, Pressable, TouchableOpacity } from 'react-native';
+import { Keyboard, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
-import { Adapt, Button, Input, ListItem, Select, Separator, Sheet, Text, View } from 'tamagui';
+import { Adapt, Button, Input, Select, Separator, Sheet, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import Photos from '../../components/sell/Photos';
 import { InputValidationError, validationErrors } from '../../components/ui/InputValidationErrors';
 import TextArea from '../../components/ui/TextArea';
-import { CATEGORIES, CONDITIONS, SIZES, Section, TAGS } from '../../constants/listing';
-import { SelectedImage } from '../../types';
+import { CONDITIONS, TAGS } from '../../constants/listing';
+import { ListingResponse, SelectedImage, TListing } from '../../types';
 import { fetcher } from '../../utils/fetcher';
-
-const getSectionByCategory = (category: string) => {
-  const section = Object.keys(CATEGORIES).find((key) =>
-    CATEGORIES[key as Section].includes(category)
-  );
-  return section;
-};
 
 const transformPhone = {
   output: (text: string) => {
@@ -32,40 +25,54 @@ const transformPhone = {
   },
 };
 
-export default function SellScreen() {
-  const params = useLocalSearchParams<{ designer: string }>();
-  const user = useQuery({
-    queryKey: ['auth_me'],
-    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
-  });
+type EditListingParams = {
+  designer: string;
+  listingId: string;
+  size: string;
+  category: string;
+};
+
+interface SaveListingProps {
+  listing: Partial<TListing<number>>;
+  user: {
+    phone: string;
+    cardNumber: string;
+  };
+}
+
+const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
+  const params = useLocalSearchParams<EditListingParams>();
 
   const {
     control,
     handleSubmit,
     getValues,
     formState: { errors },
-    watch,
     setValue,
     reset,
-    resetField,
     clearErrors,
     setError,
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      designer: '',
-      title: '',
-      price: '',
-      description: '',
-      condition: '',
-      category: '',
-      size: '',
-      phone: user.data?.phone ? transformPhone.output('+' + user.data.phone) : '+380',
-      cardNumber: (user.data?.cardNumber as string) || '',
+      designer: listing.designer,
+      title: listing.title,
+      price: listing.price?.toString(),
+      description: listing.description,
+      condition: listing.condition,
+      category: listing.category,
+      size: listing.size,
+      phone: user.phone ? transformPhone.output('+' + user.phone) : '+380',
+      cardNumber: user.cardNumber,
     },
   });
 
-  const [selectedImages, setSelectedImages] = useState<SelectedImage[]>([]);
+  const [selectedImages, setSelectedImages] = useState<SelectedImage[]>(() =>
+    listing.imageUrls!.map((i) => ({
+      isPreview: false,
+      imageUrl: i,
+    }))
+  );
   const updateSelectedImages = useCallback((urls: SelectedImage[]) => {
     setSelectedImages(urls);
   }, []);
@@ -93,26 +100,28 @@ export default function SellScreen() {
   });
 
   const [open, setOpen] = useState(false);
-  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [selectedTags, setSelectedTags] = useState<string[]>(listing.tags || []);
   const [tags, setTags] = useState(() => TAGS.map((tag) => ({ label: tag, value: tag })));
-  const [selectedSection, setSelectedSection] = useState<Section | null>(null);
-
-  const watchCategory = watch('category');
-  const sectionByCategory = useMemo(() => getSectionByCategory(watchCategory), [watchCategory]);
 
   useEffect(() => {
     if (selectedTags.length === 3) setOpen(false);
   }, [selectedTags]);
 
   useEffect(() => {
-    if (!params.designer) return;
-    setValue('designer', params.designer);
-    if (errors.designer) clearErrors('designer');
-  }, [params]);
+    if (params.designer) {
+      setValue('designer', params.designer);
+      if (errors.designer) clearErrors('designer');
+    }
+    if (params.size && params.category) {
+      console.log(params);
+      setValue('category', params.category);
+      // @ts-expect-error its okay
+      setValue('size', params.size);
 
-  useEffect(() => {
-    if (watchCategory) resetField('size');
-  }, [watchCategory]);
+      if (errors.category) clearErrors('category');
+      if (errors.size) clearErrors('size');
+    }
+  }, [params]);
 
   const onSubmit = (data: Record<string, unknown>) => {
     const { isValid } = validateCard.number(data.cardNumber);
@@ -146,9 +155,6 @@ export default function SellScreen() {
   const hideKeyboardIfVisible = () => {
     if (Keyboard.isVisible()) Keyboard.dismiss();
   };
-
-  if (user.isLoading) return null;
-  if (!user.data) return <Redirect href="/auth" />;
 
   return (
     <KeyboardAwareScrollView
@@ -204,182 +210,35 @@ export default function SellScreen() {
         </Link>
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Категорія *</Text>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
+        <Text className="mb-1 ml-2 text-base">Категорія та розмір *</Text>
+        <Link
+          href={{
+            pathname: '/edit_listing/select_category_and_size',
+            params: { listingId: params.listingId },
           }}
-          name="category"
-          render={({ field: { onChange, value } }) => (
-            <Select onOpenChange={hideKeyboardIfVisible} value={value} onValueChange={onChange}>
-              <Select.Trigger
-                borderRadius="$main"
-                iconAfter={<Entypo name="chevron-thin-down" size={16} />}>
-                <Select.Value
-                  className={`${getValues().category ? 'text-black' : 'text-[#979797]'}`}
-                  placeholder="Оберіть категорію"
-                />
-              </Select.Trigger>
-              <Adapt when="sm" platform="native">
-                <Sheet
-                  native
-                  snapPoints={[50]}
-                  modal
-                  dismissOnSnapToBottom
-                  animationConfig={{
-                    type: 'spring',
-                    damping: 150,
-                    mass: 1.2,
-                    stiffness: 450,
-                  }}>
-                  <Sheet.Frame className="rounded-none">
-                    <Sheet.ScrollView>
-                      <Adapt.Contents />
-                    </Sheet.ScrollView>
-                  </Sheet.Frame>
-                  <Sheet.Handle />
-                  <Sheet.Overlay
-                    animation="lazy"
-                    enterStyle={{ opacity: 0 }}
-                    exitStyle={{ opacity: 0 }}
+          asChild>
+          <Pressable>
+            <View pointerEvents="none">
+              <Controller
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value } }) => (
+                  <Input
+                    size="$4"
+                    autoCorrect={false}
+                    borderRadius="$main"
+                    placeholder="Оберіть категорію та розмір"
+                    className="w-full"
+                    value={`${getValues('category')}, ${value}`}
                   />
-                </Sheet>
-              </Adapt>
-              <Select.Content>
-                <Select.Viewport>
-                  <Select.Group>
-                    {!selectedSection && (
-                      <>
-                        <View className="p-4">
-                          <Text className="text-lg font-bold">Оберіть секцію</Text>
-                        </View>
-
-                        {(Object.keys(CATEGORIES) as Section[]).map((section) => (
-                          <View key={section}>
-                            <ListItem
-                              className="bg-[#f8f8f8] py-2"
-                              pressStyle={{ backgroundColor: '#f0f0f0' }}
-                              onPress={() => setSelectedSection(section)}>
-                              <ListItem.Text className="text-base">{section}</ListItem.Text>
-                            </ListItem>
-                            <Separator borderWidth={1} />
-                          </View>
-                        ))}
-                      </>
-                    )}
-                    {selectedSection && (
-                      <>
-                        <View className="flex-row items-center justify-between p-4">
-                          <Text className="text-lg font-bold">Оберіть категорію</Text>
-                          <TouchableOpacity onPress={() => setSelectedSection(null)}>
-                            <Text className="text-base text-main">Повернутись</Text>
-                          </TouchableOpacity>
-                        </View>
-
-                        {CATEGORIES[selectedSection].map((item, i) => (
-                          <View key={item}>
-                            <Select.Item className="py-2" index={i} value={item}>
-                              <Select.ItemText className="text-base">{item}</Select.ItemText>
-                              <Select.ItemIndicator marginLeft="auto">
-                                <AntDesign color={mainColor} name="check" size={25} />
-                              </Select.ItemIndicator>
-                            </Select.Item>
-                            <Separator borderWidth={1} />
-                          </View>
-                        ))}
-                      </>
-                    )}
-                  </Select.Group>
-                </Select.Viewport>
-                <Select.ScrollDownButton />
-              </Select.Content>
-            </Select>
-          )}
-        />
-        {errors.category && validationErrors[errors.category.type as keyof typeof validationErrors]}
-      </View>
-      <View>
-        <Text className="mb-1 ml-2 text-base">Розмір *</Text>
-        <Controller
-          control={control}
-          rules={{
-            required: true,
-          }}
-          name="size"
-          render={({ field: { onChange, value } }) => (
-            <Select onOpenChange={hideKeyboardIfVisible} value={value} onValueChange={onChange}>
-              <Select.Trigger
-                disabled={!watchCategory}
-                borderRadius="$main"
-                opacity={100}
-                iconAfter={<Entypo name="chevron-thin-down" size={16} />}>
-                <Select.Value
-                  className={`${getValues().size ? 'text-black' : 'text-[#979797]'}`}
-                  placeholder={
-                    !watchCategory ? 'Будь ласка, спершу оберіть категорію' : 'Оберіть розмір'
-                  }
-                />
-              </Select.Trigger>
-              <Adapt when="sm" platform="native">
-                <Sheet
-                  native
-                  snapPoints={[50]}
-                  modal
-                  dismissOnSnapToBottom
-                  animationConfig={{
-                    type: 'spring',
-                    damping: 150,
-                    mass: 1.2,
-                    stiffness: 450,
-                  }}>
-                  <Sheet.Frame className="rounded-none">
-                    <Sheet.ScrollView>
-                      <Adapt.Contents />
-                    </Sheet.ScrollView>
-                  </Sheet.Frame>
-                  <Sheet.Handle />
-                  <Sheet.Overlay
-                    animation="lazy"
-                    enterStyle={{ opacity: 0 }}
-                    exitStyle={{ opacity: 0 }}
-                  />
-                </Sheet>
-              </Adapt>
-              <Select.Content>
-                <Select.ScrollUpButton
-                  alignItems="center"
-                  justifyContent="center"
-                  position="relative"
-                  width="100%"
-                  height="$3">
-                  Close
-                </Select.ScrollUpButton>
-
-                <Select.Viewport height={30}>
-                  <Select.Group>
-                    {sectionByCategory &&
-                      SIZES[sectionByCategory as Section].map((item, i) => {
-                        return (
-                          <View key={item}>
-                            <Select.Item className="py-2" index={i} value={item}>
-                              <Select.ItemText className="text-base">{item}</Select.ItemText>
-                              <Select.ItemIndicator marginLeft="auto">
-                                <AntDesign color={mainColor} name="check" size={25} />
-                              </Select.ItemIndicator>
-                            </Select.Item>
-                            <Separator borderWidth={1} />
-                          </View>
-                        );
-                      })}
-                  </Select.Group>
-                </Select.Viewport>
-                <Select.ScrollDownButton />
-              </Select.Content>
-            </Select>
-          )}
-        />
-        {errors.size && validationErrors[errors.size.type as keyof typeof validationErrors]}
+                )}
+                name="size"
+              />
+              {errors.designer &&
+                validationErrors[errors.designer.type as keyof typeof validationErrors]}
+            </View>
+          </Pressable>
+        </Link>
       </View>
       <View>
         <Photos
@@ -449,10 +308,7 @@ export default function SellScreen() {
               <Select.Trigger
                 borderRadius="$main"
                 iconAfter={<Entypo name="chevron-thin-down" size={16} />}>
-                <Select.Value
-                  className={`${getValues().condition ? 'text-black' : 'text-[#979797]'}`}
-                  placeholder="Будьте чесними"
-                />
+                <Select.Value className="text-black" placeholder="Будьте чесними" />
               </Select.Trigger>
               <Adapt when="sm" platform="native">
                 <Sheet
@@ -617,5 +473,29 @@ export default function SellScreen() {
         Створити
       </Button>
     </KeyboardAwareScrollView>
+  );
+};
+
+export default function EditListing() {
+  const params = useLocalSearchParams<EditListingParams>();
+
+  const user = useQuery({
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
+  });
+
+  const listingResponse = useQuery<ListingResponse>({
+    queryKey: ['listing', params.listingId],
+    queryFn: () => fetcher({ body: { listingId: params.listingId }, route: '/listing/get' }),
+  });
+
+  if (listingResponse.isLoading || user.isLoading || !listingResponse.data || !user.data)
+    return null;
+
+  return (
+    <SaveListing
+      listing={listingResponse.data.listing}
+      user={{ cardNumber: user.data.cardNumber, phone: user.data.phone }}
+    />
   );
 }

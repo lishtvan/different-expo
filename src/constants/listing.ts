@@ -792,6 +792,15 @@ export const SHORT_SIZES = {
 
 export type Section = 'Верх' | 'Низ' | 'Верхній одяг' | 'Взуття' | 'Офіційний одяг' | 'Аксесуари';
 
+export const SECTIONS: Section[] = [
+  'Верх',
+  'Низ',
+  'Верхній одяг',
+  'Взуття',
+  'Офіційний одяг',
+  'Аксесуари',
+];
+
 type Categories = Record<Section, string[]>;
 
 export const CATEGORIES: Categories = {

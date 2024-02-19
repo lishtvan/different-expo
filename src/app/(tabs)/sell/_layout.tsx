@@ -9,6 +9,7 @@ export default function SellLayoutNav() {
         headerShadowVisible: false,
         animation: 'simple_push',
         headerTitleAlign: 'center',
+        fullScreenGestureEnabled: true,
       }}>
       <Stack.Screen name="index" options={{ headerTitle: 'Створіть нове оголошення' }} />
       <Stack.Screen

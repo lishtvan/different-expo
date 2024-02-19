@@ -12,20 +12,13 @@ import Carousel from 'react-native-reanimated-carousel';
 import { Button, Separator, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
-import { RFunc, TListing } from '../../types';
+import { ListingResponse, RFunc } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
 
 interface ListingImagesProps {
   imageUrls: string[];
-}
-
-interface ListingResponse {
-  listing: TListing<number>;
-  isOwnListing: boolean;
-  sellerSoldListingsCount: boolean;
-  sellerAvailableListingsCount: boolean;
 }
 
 const menuActionsUi = [
@@ -77,7 +70,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
   const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
     const menuActions: RFunc = {
       delete: openConfirmationModal,
-      edit: () => router.navigate('/edit_listing'),
+      edit: () => router.navigate({ pathname: '/edit_listing', params: { listingId: listing.id } }),
       share: shareListing,
     };
 
