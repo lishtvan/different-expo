@@ -120,7 +120,16 @@ function RootLayoutNav() {
                   headerShadowVisible: false,
                 }}
               />
+              <Stack.Screen
+                name="edit_listing"
+                options={{
+                  presentation: 'modal',
+                  headerShown: false,
+                  headerShadowVisible: false,
+                }}
+              />
             </Stack>
+
             <Toast config={toastConfig} />
           </ThemeProvider>
         </Theme>

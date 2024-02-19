@@ -77,7 +77,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
   const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
     const menuActions: RFunc = {
       delete: openConfirmationModal,
-      edit: () => console.log('edit'),
+      edit: () => router.navigate('/edit_listing'),
       share: shareListing,
     };
 
