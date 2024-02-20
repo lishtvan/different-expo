@@ -185,7 +185,12 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       </View>
       <View>
         <Text className="mb-1 ml-2 text-base">Дизайнер *</Text>
-        <Link href="/edit_listing/designer_search" asChild>
+        <Link
+          href={{
+            pathname: '/edit_listing/designer_search',
+            params: { listingId: params.listingId },
+          }}
+          asChild>
           <Pressable>
             <View pointerEvents="none">
               <Controller

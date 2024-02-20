@@ -1,5 +1,5 @@
 import { EvilIcons } from '@expo/vector-icons';
-import { Link } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack } from 'tamagui';
@@ -7,8 +7,13 @@ import { Button, Input, Text, View, XStack } from 'tamagui';
 import { DESIGNERS } from '../../constants/listing';
 import { isAndroid } from '../../utils/platform';
 
-const RenderDesigner = ({ item }: { item: string }) => (
-  <Link href={{ pathname: '/sell', params: { designer: item } }} asChild>
+const RenderDesigner = ({ item, listingId }: { item: string; listingId: string }) => (
+  <Link
+    href={{
+      pathname: listingId ? '/edit_listing/' : '/sell',
+      params: { designer: item, listingId },
+    }}
+    asChild>
     <TouchableOpacity className="p-2">
       <Text className="text-lg">{item}</Text>
     </TouchableOpacity>
@@ -18,7 +23,7 @@ const RenderDesigner = ({ item }: { item: string }) => (
 export default function DesignerSearch() {
   const [searchText, onChangeSearch] = useState('');
   const [filteredData, setFilteredData] = useState<string[]>([]);
-
+  const params = useLocalSearchParams();
   useEffect(() => {
     if (!searchText) {
       setFilteredData(DESIGNERS);
@@ -63,7 +68,9 @@ export default function DesignerSearch() {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={filteredData}
-        renderItem={RenderDesigner}
+        renderItem={(object) => (
+          <RenderDesigner item={object.item} listingId={params.listingId as string} />
+        )}
         keyExtractor={(item) => item}
       />
     </View>

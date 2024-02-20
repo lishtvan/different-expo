@@ -13,6 +13,7 @@ import {
   Section,
 } from '../../constants/listing';
 
+// TODO: fix link and use it in sell page
 export default function SelectCategoryAndSize() {
   const scrollRef = useRef<ScrollView>(null);
   const [selectedSection, setSelectedSection] = useState<Section | ''>('');
