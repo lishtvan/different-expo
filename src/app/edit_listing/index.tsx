@@ -1,4 +1,5 @@
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
+import { MenuView } from '@react-native-menu/menu';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import validateCard from 'card-validator';
 import { Link, router, useLocalSearchParams } from 'expo-router';
@@ -9,7 +10,7 @@ import { Keyboard, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
-import { Adapt, Button, Input, Select, Separator, Sheet, Text, View } from 'tamagui';
+import { Button, Input, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import Photos from '../../components/sell/Photos';
@@ -222,7 +223,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
             params: { listingId: params.listingId },
           }}
           asChild>
-          <Pressable>
+          <Pressable onPress={hideKeyboardIfVisible}>
             <View pointerEvents="none">
               <Controller
                 control={control}
@@ -230,7 +231,6 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
                 render={({ field: { value } }) => (
                   <Input
                     size="$4"
-                    autoCorrect={false}
                     borderRadius="$main"
                     placeholder="Оберіть категорію та розмір"
                     className="w-full"
@@ -309,67 +309,23 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
           }}
           name="condition"
           render={({ field: { onChange, value } }) => (
-            <Select onOpenChange={hideKeyboardIfVisible} value={value} onValueChange={onChange}>
-              <Select.Trigger
-                borderRadius="$main"
-                iconAfter={<Entypo name="chevron-thin-down" size={16} />}>
-                <Select.Value className="text-black" placeholder="Будьте чесними" />
-              </Select.Trigger>
-              <Adapt when="sm" platform="native">
-                <Sheet
-                  native
-                  snapPoints={[25]}
-                  modal
-                  dismissOnSnapToBottom
-                  animationConfig={{
-                    type: 'spring',
-                    damping: 150,
-                    mass: 1.2,
-                    stiffness: 450,
-                  }}>
-                  <Sheet.Frame className="rounded-none">
-                    <Sheet.ScrollView>
-                      <Adapt.Contents />
-                    </Sheet.ScrollView>
-                  </Sheet.Frame>
-                  <Sheet.Handle />
-                  <Sheet.Overlay
-                    animation="lazy"
-                    enterStyle={{ opacity: 0 }}
-                    exitStyle={{ opacity: 0 }}
+            <MenuView
+              onPressAction={({ nativeEvent }) => {
+                onChange(nativeEvent.event);
+              }}
+              actions={CONDITIONS.map((c) => ({ id: c, title: c }))}>
+              <Pressable>
+                <View pointerEvents="none">
+                  <Input
+                    size="$4"
+                    borderRadius="$main"
+                    placeholder="Будьте чесними"
+                    className="w-full"
+                    value={value}
                   />
-                </Sheet>
-              </Adapt>
-              <Select.Content>
-                <Select.ScrollUpButton
-                  alignItems="center"
-                  justifyContent="center"
-                  position="relative"
-                  width="100%"
-                  height="$3">
-                  Close
-                </Select.ScrollUpButton>
-
-                <Select.Viewport height={30}>
-                  <Select.Group>
-                    {CONDITIONS.map((item, i) => {
-                      return (
-                        <View key={item}>
-                          <Select.Item className="py-2" index={i} value={item}>
-                            <Select.ItemText className="text-base">{item}</Select.ItemText>
-                            <Select.ItemIndicator marginLeft="auto">
-                              <AntDesign color={mainColor} name="check" size={25} />
-                            </Select.ItemIndicator>
-                          </Select.Item>
-                          <Separator borderWidth={1} />
-                        </View>
-                      );
-                    })}
-                  </Select.Group>
-                </Select.Viewport>
-                <Select.ScrollDownButton />
-              </Select.Content>
-            </Select>
+                </View>
+              </Pressable>
+            </MenuView>
           )}
         />
         {errors.condition &&
