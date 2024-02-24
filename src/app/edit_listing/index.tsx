@@ -362,14 +362,19 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
               placeholder="Введіть ціну в гривнях"
               className="w-full"
               onBlur={onBlur}
-              onChangeText={onChange}
               value={value}
+              onChangeText={(text) => {
+                if (text.length === 1 && text === '0') return;
+                onChange(text);
+              }}
             />
           )}
           name="price"
         />
         {errors.price?.message && <InputValidationError message={errors.price.message} />}
-        {errors.price && validationErrors[errors.price.type as keyof typeof validationErrors]}
+        {errors.price &&
+          errors.price.type !== 'pattern' &&
+          validationErrors[errors.price.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Text className="mb-1 ml-2 text-base">Номер телефону *</Text>
