@@ -430,7 +430,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         theme="active"
         fontSize="$6"
         borderRadius="$main"
-        className="mb-12">
+        className="mb-24">
         Створити
       </Button>
     </KeyboardAwareScrollView>
