@@ -1,6 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { MenuView } from '@react-native-menu/menu';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import validateCard from 'card-validator';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
@@ -27,10 +27,10 @@ const transformPhone = {
 };
 
 type EditListingParams = {
-  designer: string;
+  designer?: string;
   listingId: string;
-  size: string;
-  category: string;
+  size?: string;
+  category?: string;
 };
 
 interface SaveListingProps {
@@ -78,10 +78,13 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
     setSelectedImages(urls);
   }, []);
 
+  const [selectedTags, setSelectedTags] = useState<string[]>(listing.tags || []);
+
+  const queryClient = useQueryClient();
   const mutation = useMutation({
     mutationFn: (data: unknown) =>
       fetcher({
-        route: '/listing/create',
+        route: !listing.id ? '/listing/create' : '/listing/update',
         method: 'POST',
         body: data,
       }),
@@ -94,14 +97,20 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         return;
       }
 
-      reset();
-      updateSelectedImages([]);
-      router.navigate({ pathname: `/listing/${res.listingId}` });
+      if (!listing.id) {
+        router.setParams({ designer: '', size: '', category: '' });
+        reset();
+        setSelectedTags([]);
+        updateSelectedImages([]);
+        router.navigate({ pathname: `/listing/${res.listingId}` });
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ['listing', listing.id.toString()] });
+        router.back();
+      }
     },
   });
 
   const [open, setOpen] = useState(false);
-  const [selectedTags, setSelectedTags] = useState<string[]>(listing.tags || []);
   const [tags, setTags] = useState(() => TAGS.map((tag) => ({ label: tag, value: tag })));
 
   useEffect(() => {
@@ -114,7 +123,6 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       if (errors.designer) clearErrors('designer');
     }
     if (params.size && params.category) {
-      console.log(params);
       setValue('category', params.category);
       // @ts-expect-error its okay
       setValue('size', params.size);
@@ -150,6 +158,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       cardNumber,
       phone,
       tags: selectedTags,
+      listingId: listing.id,
     });
   };
 
@@ -431,7 +440,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         fontSize="$6"
         borderRadius="$main"
         className="mb-24">
-        Створити
+        {listing.id ? 'Зберегти' : 'Створити'}
       </Button>
     </KeyboardAwareScrollView>
   );
