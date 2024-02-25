@@ -13,13 +13,15 @@ import {
   Section,
 } from '../../constants/listing';
 
-// TODO: fix link and use it in sell page
+// TODO: use it in sell page
 const SelectCategoryAndSize = () => {
   const scrollRef = useRef<ScrollView>(null);
   const [selectedSection, setSelectedSection] = useState<Section | ''>('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
   const { listingId } = useLocalSearchParams();
+
+  const pathname = listingId ? '/edit_listing' : '/sell';
 
   return (
     <ScrollView ref={scrollRef} className="flex-1 px-1">
@@ -51,7 +53,7 @@ const SelectCategoryAndSize = () => {
                 onPress={() => {
                   if (selectedSection === 'Аксесуари') {
                     router.navigate({
-                      pathname: '/edit_listing',
+                      pathname,
                       params: { listingId, size: 'ONE SIZE', category },
                     });
                     return;
@@ -81,7 +83,7 @@ const SelectCategoryAndSize = () => {
                 key={size}
                 onPress={() =>
                   router.navigate({
-                    pathname: '/edit_listing',
+                    pathname,
                     params: { listingId, size, category: selectedCategory },
                   })
                 }
