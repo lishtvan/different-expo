@@ -7,11 +7,11 @@ import { Button, Input, Text, View, XStack } from 'tamagui';
 import { DESIGNERS } from '../../constants/listing';
 import { isAndroid } from '../../utils/platform';
 
-const RenderDesigner = ({ item, listingId }: { item: string; listingId: string }) => (
+const RenderDesigner = ({ item, listingId }: { item: string; listingId?: string }) => (
   <Link
     href={{
       pathname: listingId ? '/edit_listing/' : '/sell',
-      params: { designer: item, listingId },
+      params: { designer: item, listingId: listingId || '' },
     }}
     asChild>
     <TouchableOpacity className="p-2">
@@ -23,7 +23,7 @@ const RenderDesigner = ({ item, listingId }: { item: string; listingId: string }
 export default function DesignerSearch() {
   const [searchText, onChangeSearch] = useState('');
   const [filteredData, setFilteredData] = useState<string[]>([]);
-  const params = useLocalSearchParams();
+  const params = useLocalSearchParams<{ listingId?: string }>();
   useEffect(() => {
     if (!searchText) {
       setFilteredData(DESIGNERS);
@@ -68,9 +68,7 @@ export default function DesignerSearch() {
       <FlatList
         keyboardShouldPersistTaps="always"
         data={filteredData}
-        renderItem={(object) => (
-          <RenderDesigner item={object.item} listingId={params.listingId as string} />
-        )}
+        renderItem={(object) => <RenderDesigner item={object.item} listingId={params.listingId} />}
         keyExtractor={(item) => item}
       />
     </View>
