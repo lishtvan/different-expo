@@ -19,6 +19,13 @@ export default function SellLayoutNav() {
           headerTitle: 'Оберіть дизайнера',
         }}
       />
+      <Stack.Screen
+        name="select_category_and_size"
+        options={{
+          headerBackTitleVisible: false,
+          headerTitle: 'Оберіть категорію та розмір',
+        }}
+      />
     </Stack>
   );
 }

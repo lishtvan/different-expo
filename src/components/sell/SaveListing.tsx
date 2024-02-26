@@ -36,6 +36,8 @@ interface SaveListingProps {
 const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
   const params = useLocalSearchParams<EditListingParams>();
 
+  const currentPath = listing.id ? '/edit_listing' : '/sell';
+
   const {
     control,
     handleSubmit,
@@ -192,7 +194,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         <Text className="mb-1 ml-2 text-base">Дизайнер *</Text>
         <Link
           href={{
-            pathname: '/edit_listing/designer_search',
+            pathname: `${currentPath}/designer_search`,
             params: { listingId: params.listingId },
           }}
           asChild>
@@ -223,7 +225,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         <Text className="mb-1 ml-2 text-base">Категорія та розмір *</Text>
         <Link
           href={{
-            pathname: '/edit_listing/select_category_and_size',
+            pathname: `${currentPath}/select_category_and_size`,
             params: { listingId: params.listingId },
           }}
           asChild>
