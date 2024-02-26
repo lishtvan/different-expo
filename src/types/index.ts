@@ -52,3 +52,10 @@ export interface ListingResponse {
   sellerSoldListingsCount: boolean;
   sellerAvailableListingsCount: boolean;
 }
+
+export type EditListingParams = {
+  designer?: string;
+  listingId: string;
+  size?: string;
+  category?: string;
+};
