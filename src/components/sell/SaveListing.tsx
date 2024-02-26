@@ -10,7 +10,7 @@ import { Keyboard, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
-import { Button, Input, Text, TextArea, View } from 'tamagui';
+import { Button, Input, Text, View } from 'tamagui';
 
 import Photos from './Photos';
 import { mainColor } from '../../../tamagui.config';
@@ -18,6 +18,7 @@ import { CONDITIONS, TAGS } from '../../constants/listing';
 import { EditListingParams, SelectedImage, TListing } from '../../types';
 import { fetcher } from '../../utils/fetcher';
 import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
+import TextArea from '../ui/TextArea';
 
 const transformPhone = {
   output: (text: string) => {
@@ -94,6 +95,8 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         return;
       }
 
+      await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
+
       if (!listing.id) {
         router.setParams({ designer: '', size: '', category: '' });
         reset();
@@ -166,8 +169,10 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
   return (
     <KeyboardAwareScrollView
       enableOnAndroid
+      viewIsInsideTabBar={Boolean(listing.id)}
       keyboardShouldPersistTaps="handled"
-      extraScrollHeight={100}
+      extraScrollHeight={listing.id ? 150 : 100}
+      keyboardOpeningTime={0}
       className="flex-1 gap-y-3 p-3">
       <View>
         <Text className="mb-1 ml-2 text-base">Заголовок *</Text>
