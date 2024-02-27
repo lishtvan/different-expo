@@ -1,5 +1,10 @@
 import * as FileSystem from 'expo-file-system';
-import { ImagePickerAsset, PermissionResponse, PermissionStatus } from 'expo-image-picker';
+import {
+  ImagePickerAsset,
+  PermissionResponse,
+  PermissionStatus,
+  getCameraPermissionsAsync,
+} from 'expo-image-picker';
 import { Alert, Linking } from 'react-native';
 
 import { getSession } from './secureStorage';
@@ -29,15 +34,17 @@ export const uploadImages = async (images: ImagePickerAsset[]) => {
 };
 
 export const verifyPermission = async (
-  permission: PermissionResponse | null,
   requestPermission: () => Promise<PermissionResponse>
 ): Promise<boolean> => {
-  if (!permission || permission.status === PermissionStatus.UNDETERMINED) {
+  const permission = await getCameraPermissionsAsync();
+  if (permission.status === PermissionStatus.UNDETERMINED) {
     const permissionResponse = await requestPermission();
     return permissionResponse.granted;
-  }
-  if (permission.status === PermissionStatus.DENIED) {
-    await Linking.openSettings();
+  } else if (permission.status === PermissionStatus.DENIED) {
+    Alert.alert('', 'Потрібно надати доступ до камери', [
+      { text: 'Скасувати', onPress: () => {}, style: 'cancel' },
+      { text: 'Надати доступ', onPress: () => Linking.openSettings() },
+    ]);
     return false;
   }
   return true;

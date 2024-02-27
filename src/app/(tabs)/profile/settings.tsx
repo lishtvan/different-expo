@@ -32,7 +32,7 @@ const SettingsScreen = () => {
   const queryClient = useQueryClient();
   const [previewImage, setPreviewImage] = useState<string>();
 
-  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
+  const [, requestPermission] = ImagePicker.useCameraPermissions();
   const { data: user, isLoading } = useQuery({
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
@@ -81,7 +81,7 @@ const SettingsScreen = () => {
   };
 
   const pickImage = async () => {
-    const hasPermission = await verifyPermission(permission, requestPermission);
+    const hasPermission = await verifyPermission(requestPermission);
     if (!hasPermission) return;
 
     try {

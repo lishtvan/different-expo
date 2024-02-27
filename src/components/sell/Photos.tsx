@@ -22,10 +22,10 @@ interface Props {
 }
 
 const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
-  const [permission, requestPermission] = ImagePicker.useCameraPermissions();
+  const [, requestPermission] = ImagePicker.useCameraPermissions();
 
   const pickImages = async () => {
-    const hasPermission = await verifyPermission(permission, requestPermission);
+    const hasPermission = await verifyPermission(requestPermission);
     if (!hasPermission) return;
 
     try {

@@ -25,6 +25,7 @@ export default function TabLayout() {
         tabBarActiveTintColor: Colors['light'].tint,
         headerShadowVisible: false,
         headerTitleAlign: 'center',
+        tabBarHideOnKeyboard: true,
       }}>
       <Tabs.Screen
         name="(index)"

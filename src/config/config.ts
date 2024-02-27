@@ -6,7 +6,7 @@ export const config = {
   local: {
     typesense: {
       server: {
-        nodes: [{ host: isAndroid ? '192.168.1.117' : '127.0.0.1', port: 8108, protocol: 'http' }],
+        nodes: [{ host: isAndroid ? '192.168.1.101' : '127.0.0.1', port: 8108, protocol: 'http' }],
         apiKey: 'xyz',
       },
       additionalSearchParameters,
