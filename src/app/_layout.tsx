@@ -128,6 +128,15 @@ function RootLayoutNav() {
                   headerShadowVisible: false,
                 }}
               />
+              <Stack.Screen
+                name="chat"
+                options={{
+                  fullScreenGestureEnabled: true,
+                  headerTitle: 'John doe',
+                  headerBackTitleVisible: false,
+                  headerShadowVisible: false,
+                }}
+              />
             </Stack>
 
             <Toast config={toastConfig} />

@@ -1,10 +1,12 @@
-import { Text } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Link } from 'expo-router';
+import { View } from 'tamagui';
 
 export default function MessagesScreen() {
   return (
-    <SafeAreaView>
-      <Text>Messages tab</Text>
-    </SafeAreaView>
+    <View>
+      <Link className="text-2xl" href="/chat">
+        Chat
+      </Link>
+    </View>
   );
 }
