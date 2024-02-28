@@ -1,4 +1,8 @@
 export const DESIGNERS = [
+  'Vintage',
+  'Custom',
+  'Noname',
+  'Merch',
   'A Cold Wall',
   'A.P.C.',
   'Ami',
@@ -576,9 +580,6 @@ export const DESIGNERS = [
   'George Gina & Lucy',
   'Kipling',
   'Regatta',
-  'Custom',
-  'Vintage',
-  'Unknown',
 ];
 
 export const TAGS = [

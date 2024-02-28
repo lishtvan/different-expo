@@ -40,6 +40,9 @@ export default function DesignerSearch() {
 
   return (
     <View className="flex-1 px-3 py-1">
+      <Text className="pb-2">
+        Якщо ви не знайшли потрібного дизайнера, оберіть Noname, Vintage, Merch або Custom.
+      </Text>
       <XStack alignItems="center">
         <Button
           size="$4"
