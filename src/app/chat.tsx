@@ -1,6 +1,15 @@
-import { Entypo } from '@expo/vector-icons';
+import { Entypo, EvilIcons } from '@expo/vector-icons';
 import React, { useState, useCallback, useEffect } from 'react';
-import { Bubble, Day, GiftedChat, IMessage, InputToolbar, Time } from 'react-native-gifted-chat';
+import {
+  Bubble,
+  Composer,
+  Day,
+  GiftedChat,
+  IMessage,
+  InputToolbar,
+  Send,
+  Time,
+} from 'react-native-gifted-chat';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { View } from 'tamagui';
 
@@ -84,7 +93,7 @@ export default function MessagesScreen() {
           messages={messages}
           timeTextStyle={getFontSizeStyle(11)}
           renderBubble={(props) => (
-            <Bubble textStyle={getFontSizeStyle(16)} wrapperStyle={bubbleWrapperStyle} {...props} />
+            <Bubble textStyle={getFontSizeStyle(18)} wrapperStyle={bubbleWrapperStyle} {...props} />
           )}
           renderTime={(props) => (
             <Time
@@ -95,7 +104,7 @@ export default function MessagesScreen() {
               {...props}
             />
           )}
-          bottomOffset={insets.bottom}
+          bottomOffset={insets.bottom - 10}
           renderDay={(props) => (
             <Day
               dateFormat={formatDateToUkrainian(props.currentMessage?.createdAt as Date)}
@@ -105,8 +114,44 @@ export default function MessagesScreen() {
           placeholder="Напишіть повідомлення..."
           onSend={(messages) => onSend(messages)}
           renderAvatar={null}
-          isKeyboardInternallyHandled
-          renderInputToolbar={(props) => <InputToolbar {...props} />}
+          renderComposer={(props) => (
+            <Composer
+              {...props}
+              textInputStyle={{
+                borderRadius: 5,
+                paddingTop: 8.5,
+                paddingHorizontal: 12,
+                marginLeft: 0,
+              }}
+            />
+          )}
+          renderInputToolbar={(props) => (
+            <InputToolbar
+              {...props}
+              renderSend={(props) => (
+                <Send
+                  {...props}
+                  containerStyle={{
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: 0,
+                  }}>
+                  <EvilIcons name="arrow-up" size={40} />
+                </Send>
+              )}
+              primaryStyle={{
+                borderColor: '#E8E8E8',
+                borderWidth: 2,
+                marginHorizontal: 10,
+                borderRadius: 20,
+              }}
+              containerStyle={{
+                paddingTop: 1,
+                borderTopWidth: 0,
+              }}
+            />
+          )}
           user={{ _id: 1 }}
         />
       </View>
