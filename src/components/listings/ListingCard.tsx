@@ -1,5 +1,5 @@
 import { Image } from 'expo-image';
-import { Link, useSegments } from 'expo-router';
+import { Link } from 'expo-router';
 import React, { FC, memo } from 'react';
 import { Text, View } from 'tamagui';
 
@@ -8,13 +8,12 @@ import { TListing } from '../../types';
 
 interface Props {
   listing: TListing;
+  segment?: string;
 }
-// TODO: move use segment higher
-const MyListing: FC<Props> = ({ listing }) => {
-  const segments = useSegments();
 
+const MyListing: FC<Props> = ({ listing, segment }) => {
   return (
-    <Link push href={`/${segments[1]}/listing/${listing.id}`} asChild>
+    <Link push href={`/${segment}/listing/${listing.id}`} asChild>
       <View>
         <Image
           className="aspect-[0.83] w-full object-cover "
@@ -41,6 +40,6 @@ const MyListing: FC<Props> = ({ listing }) => {
   );
 };
 
-const Listing = memo(MyListing);
+const ListingCard = memo(MyListing);
 
-export default Listing;
+export default ListingCard;

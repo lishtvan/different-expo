@@ -1,7 +1,7 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams, useSegments } from 'expo-router';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
   useInfiniteHits,
@@ -18,7 +18,7 @@ import { TListing, TUser } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
-import Listing from '../listings/ListingCard';
+import ListingCard from '../listings/ListingCard';
 import Delayed from '../wrappers/Delayed';
 
 // TODO: implement refresh on reopen app after user route is implemented
@@ -66,10 +66,10 @@ interface Props {
   user: TUser;
 }
 
-const renderItem = ({ item }: { item: TListing }) => {
+const RenderItem = ({ item, segment }: { item: TListing; segment?: string }) => {
   return (
     <View className="w-[49.5%]">
-      <Listing listing={item} />
+      <ListingCard segment={segment} listing={item} />
     </View>
   );
 };
@@ -166,6 +166,7 @@ const Header = memo(MyHeader);
 const UserContent: FC<Props> = ({ refreshControl, user }) => {
   const scrollRef = useRef(null);
   useScrollToTop(scrollRef);
+  const segments = useSegments();
 
   const { hits, isLastPage, showMore } = useInfiniteHits<TListing>();
 
@@ -188,7 +189,7 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         numColumns={2}
         ItemSeparatorComponent={() => <View className="h-3" />}
-        renderItem={renderItem}
+        renderItem={(object) => <RenderItem item={object.item} segment={segments[1]} />}
         keyExtractor={(item) => item.id}
         ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
       />

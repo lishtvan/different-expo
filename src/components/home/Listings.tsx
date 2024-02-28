@@ -1,5 +1,5 @@
 import { useScrollToTop } from '@react-navigation/native';
-import { useFocusEffect } from 'expo-router';
+import { useFocusEffect, useSegments } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInfiniteHits } from 'react-instantsearch-core';
 import { FlatList, RefreshControlProps } from 'react-native';
@@ -7,13 +7,13 @@ import { Spinner, Text, View } from 'tamagui';
 
 import { TListing } from '../../types';
 import { getDynamicEndingForListingsCount } from '../../utils/common';
-import Listing from '../listings/ListingCard';
+import ListingCard from '../listings/ListingCard';
 import Delayed from '../wrappers/Delayed';
 
-const renderItem = ({ item }: { item: TListing }) => {
+const RenderItem = ({ item, segment }: { item: TListing; segment?: string }) => {
   return (
     <View className="w-[49.5%]">
-      <Listing listing={item} />
+      <ListingCard segment={segment} listing={item} />
     </View>
   );
 };
@@ -28,6 +28,7 @@ interface Props {
 const HomeListings: React.FC<Props> = ({ refreshControl }) => {
   const scrollRef = useRef<FlatList>(null);
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false);
+  const segments = useSegments();
 
   const { hits, isLastPage, showMore, results } = useInfiniteHits<TListing>();
 
@@ -72,7 +73,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         numColumns={2}
         ItemSeparatorComponent={() => <View className="h-3" />}
-        renderItem={renderItem}
+        renderItem={(object) => <RenderItem item={object.item} segment={segments[1]} />}
         keyExtractor={(item) => item.id}
         ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
       />
