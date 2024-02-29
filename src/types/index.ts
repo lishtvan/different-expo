@@ -12,6 +12,11 @@ export interface TUser {
   isOwnAccount: boolean;
 }
 
+export interface Participants {
+  recipient: TUser;
+  sender: TUser;
+}
+
 export type ListingStatus = 'AVAILABLE' | 'SOLD' | 'ORDER';
 
 export type TListing<IdType = string> = {
@@ -59,3 +64,12 @@ export type EditListingParams = {
   size?: string;
   category?: string;
 };
+
+export interface Message {
+  text: string;
+  id: number;
+  senderId: number;
+  relatedListingId: string;
+  relatedListingTitle: string;
+  createdAt: string;
+}

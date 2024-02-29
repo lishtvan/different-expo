@@ -1,4 +1,5 @@
 import { Entypo, EvilIcons } from '@expo/vector-icons';
+import { useLocalSearchParams } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   Bubble,
@@ -11,18 +12,11 @@ import {
   Time,
 } from 'react-native-gifted-chat';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
+import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { View } from 'tamagui';
 
 import { mainColor } from '../../tamagui.config';
-
-const msgs = Array.from({ length: 20 }, (_, index) => ({
-  _id: index + 1,
-  text: 'Hello developer',
-  createdAt: new Date(),
-  user: {
-    _id: index % 2 === 0 ? 1 : 2,
-  },
-}));
+import { Message, Participants } from '../types';
 
 const BUBBLE_WRAPPER_RADIUS = 14;
 const bubbleWrapperStyle = {
@@ -72,12 +66,58 @@ export default function MessagesScreen() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const insets = useSafeAreaInsets();
   const ref = useRef<any>(null);
+  const { chatId } = useLocalSearchParams<{ chatId: string }>();
+  const [participants, setParticipants] = useState<Participants>();
+
+  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
+    'ws://localhost:8000/chat/message',
+    {
+      share: true,
+      options: {
+        headers: {
+          Cookie: 'token=rPCemAtq6kZeDMgSumbvthCQ6KfZjpDwinFZTOdFijaultaYosmq2NIWTMB9f76f',
+        },
+      },
+    }
+  );
+
   useEffect(() => {
-    setMessages(msgs);
-  }, []);
+    if (readyState !== ReadyState.OPEN) return;
+    sendJsonMessage({ chatId, isConnect: true });
+  }, [chatId, readyState]);
+
+  useEffect(() => {
+    if (!lastMessage.data) return;
+    const msg = JSON.parse(lastMessage.data);
+    if (msg.chat) {
+      setMessages(
+        msg.chat.Messages.map((m: Message) => ({
+          _id: m.id,
+          text: m.text,
+          createdAt: new Date(m.createdAt),
+          user: {
+            _id: m.senderId,
+          },
+        }))
+      );
+      setParticipants(msg.chat.Users);
+    }
+    if (msg.text) {
+      setMessages([
+        {
+          _id: msg.id,
+          text: msg.text,
+          createdAt: new Date(msg.createdAt),
+          user: { _id: msg.senderId },
+        },
+        ...messages,
+      ]);
+    }
+  }, [lastMessage]);
 
   const onSend = useCallback((messages: IMessage[] = []) => {
-    setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+    const { text } = messages[0];
+    sendJsonMessage({ text, chatId });
     if (ref.current) {
       ref.current._listRef._scrollRef.scrollTo({ y: 0, animated: true });
     }
@@ -156,7 +196,7 @@ export default function MessagesScreen() {
               }}
             />
           )}
-          user={{ _id: 1 }}
+          user={{ _id: participants?.sender.id || 0 }}
         />
       </View>
     </SafeAreaView>
