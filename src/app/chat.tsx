@@ -118,6 +118,7 @@ export default function MessagesScreen() {
           placeholder="Напишіть повідомлення..."
           onSend={(messages) => onSend(messages)}
           renderAvatar={null}
+          maxInputLength={800}
           renderComposer={(props) => (
             <Composer
               {...props}
