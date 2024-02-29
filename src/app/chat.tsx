@@ -16,6 +16,7 @@ import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { View } from 'tamagui';
 
 import { mainColor } from '../../tamagui.config';
+import { useSession } from '../hooks/useSession';
 import { Message, Participants } from '../types';
 
 const BUBBLE_WRAPPER_RADIUS = 14;
@@ -62,7 +63,7 @@ const getFontSizeStyle = (fontSize: number) => {
   return { left: { fontSize }, right: { fontSize } };
 };
 
-export default function MessagesScreen() {
+const Chat = ({ token }: { token: string }) => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const insets = useSafeAreaInsets();
   const ref = useRef<any>(null);
@@ -71,14 +72,7 @@ export default function MessagesScreen() {
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     'ws://localhost:8000/chat/message',
-    {
-      share: true,
-      options: {
-        headers: {
-          Cookie: 'token=rPCemAtq6kZeDMgSumbvthCQ6KfZjpDwinFZTOdFijaultaYosmq2NIWTMB9f76f',
-        },
-      },
-    }
+    { share: true, options: { headers: { Cookie: `token=${token}` } } }
   );
 
   useEffect(() => {
@@ -201,4 +195,13 @@ export default function MessagesScreen() {
       </View>
     </SafeAreaView>
   );
-}
+};
+
+const ChatScreen = () => {
+  const token = useSession();
+  if (!token) return;
+
+  return <Chat token={token} />;
+};
+
+export default ChatScreen;
