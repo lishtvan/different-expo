@@ -1,7 +1,7 @@
 import { Entypo, Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { Tabs, router } from 'expo-router';
+import { Tabs, router, useSegments } from 'expo-router';
 
 import Colors from '../../constants/colors';
 import { fetcher } from '../../utils/fetcher';
@@ -16,6 +16,8 @@ export default function TabLayout() {
     e.preventDefault();
     router.navigate('/auth');
   };
+
+  const segments = useSegments();
 
   if (isLoading) return null;
 
@@ -72,6 +74,8 @@ export default function TabLayout() {
         name="messages"
         listeners={{ tabPress: onAuthTabPress }}
         options={{
+          tabBarStyle: { display: segments[2] === 'chat' ? 'none' : 'flex' },
+          headerShown: false,
           title: 'Повідомлення',
           tabBarIcon: ({ color }) => (
             <Feather size={32} name="message-circle" color={color} style={{ marginBottom: -3 }} />
