@@ -1,5 +1,5 @@
 import { Entypo, EvilIcons } from '@expo/vector-icons';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useRef } from 'react';
 import {
   Bubble,
   Composer,
@@ -71,13 +71,16 @@ const getFontSizeStyle = (fontSize: number) => {
 export default function MessagesScreen() {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const insets = useSafeAreaInsets();
-
+  const ref = useRef<any>(null);
   useEffect(() => {
     setMessages(msgs);
   }, []);
 
   const onSend = useCallback((messages: IMessage[] = []) => {
     setMessages((previousMessages) => GiftedChat.append(previousMessages, messages));
+    if (ref.current) {
+      ref.current._listRef._scrollRef.scrollTo({ y: 0, animated: true });
+    }
   }, []);
 
   return (
@@ -111,6 +114,7 @@ export default function MessagesScreen() {
               {...props}
             />
           )}
+          messageContainerRef={ref}
           placeholder="Напишіть повідомлення..."
           onSend={(messages) => onSend(messages)}
           renderAvatar={null}
@@ -118,7 +122,6 @@ export default function MessagesScreen() {
             <Composer
               {...props}
               textInputStyle={{
-                borderRadius: 5,
                 paddingTop: 8.5,
                 paddingHorizontal: 12,
                 marginLeft: 0,
