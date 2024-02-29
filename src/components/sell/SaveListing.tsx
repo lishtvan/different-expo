@@ -169,6 +169,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
   return (
     <KeyboardAwareScrollView
       enableOnAndroid
+      enableResetScrollToCoords={false}
       viewIsInsideTabBar={Boolean(listing.id)}
       keyboardShouldPersistTaps="handled"
       extraScrollHeight={listing.id ? 150 : 100}
