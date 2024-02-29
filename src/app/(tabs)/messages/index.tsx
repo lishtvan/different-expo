@@ -19,7 +19,7 @@ export default function MessagesScreen() {
     <ScrollView className="p-7">
       <Link
         href={{
-          pathname: '/rchat',
+          pathname: '/chat',
           params: { chatId: chats[0].id },
         }}>
         <View className="flex-row gap-x-2">
