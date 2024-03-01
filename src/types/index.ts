@@ -4,8 +4,8 @@ export interface TUser {
   id: number;
   nickname: string;
   avatarUrl?: string;
-  bio: string;
-  location: string;
+  bio?: string;
+  location?: string;
   phone?: string;
   availableListingsCount: number;
   soldListingsCount: number;
@@ -65,11 +65,18 @@ export type EditListingParams = {
   category?: string;
 };
 
+export interface Chat {
+  id: string;
+  notification: boolean;
+  Users: TUser[];
+  Messages: Message[];
+}
+
 export interface Message {
   text: string;
   id: number;
   senderId: number;
-  relatedListingId: string;
-  relatedListingTitle: string;
+  relatedListingId?: string;
+  relatedListingTitle?: string;
   createdAt: string;
 }
