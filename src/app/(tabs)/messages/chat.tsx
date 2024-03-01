@@ -1,7 +1,7 @@
 import { Entypo, EvilIcons } from '@expo/vector-icons';
-import { useLocalSearchParams } from 'expo-router';
+import { Stack, useLocalSearchParams, Link } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { KeyboardAvoidingView } from 'react-native';
+import { KeyboardAvoidingView, TouchableOpacity } from 'react-native';
 import {
   Bubble,
   Composer,
@@ -14,10 +14,12 @@ import {
 } from 'react-native-gifted-chat';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
+import { Avatar, Text } from 'tamagui';
 
 import { mainColor } from '../../../../tamagui.config';
 import { useSession } from '../../../hooks/useSession';
 import { Message, Participants } from '../../../types';
+import { avatarFb } from '../../../utils/avatarUrlFallback';
 
 const BUBBLE_WRAPPER_RADIUS = 14;
 const bubbleWrapperStyle = {
@@ -117,11 +119,35 @@ const Chat = ({ token }: { token: string }) => {
     }
   }, []);
 
+  const userLink = `/messages/user/${participants?.recipient.nickname}` as `${string}:${string}`;
+
   return (
     <SafeAreaView
       style={{ paddingBottom: 0 }}
       edges={['right', 'left', 'bottom']}
       className="flex-1">
+      <Stack.Screen
+        options={{
+          headerTitle: () => (
+            <Link asChild href={userLink}>
+              <TouchableOpacity>
+                <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
+                  {participants?.recipient.nickname}
+                </Text>
+              </TouchableOpacity>
+            </Link>
+          ),
+          headerRight: () => (
+            <Link asChild href={userLink}>
+              <TouchableOpacity className="pb-2">
+                <Avatar circular size="$3.5">
+                  <Avatar.Image src={avatarFb(participants?.recipient.avatarUrl)} />
+                </Avatar>
+              </TouchableOpacity>
+            </Link>
+          ),
+        }}
+      />
       <KeyboardAvoidingView style={{ flex: 1 }}>
         <GiftedChat
           forceGetKeyboardHeight={false}

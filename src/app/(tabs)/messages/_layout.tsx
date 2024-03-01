@@ -13,14 +13,13 @@ export default function SellLayoutNav() {
       <Stack.Screen name="index" options={{ headerTitle: 'Повідомлення' }} />
       <Stack.Screen
         name="chat"
-        options={{ headerBackTitleVisible: false, headerTitle: 'John doe' }}
+        options={{ headerBackTitleVisible: false, headerTitle: '', headerShadowVisible: true }}
       />
       <Stack.Screen
         name="listing/[listingId]"
         options={{
           headerTitle: '',
           headerBackTitleVisible: false,
-          headerShadowVisible: false,
         }}
       />
       <Stack.Screen
@@ -28,7 +27,6 @@ export default function SellLayoutNav() {
         options={{
           headerTitle: '',
           headerBackTitleVisible: false,
-          headerShadowVisible: false,
         }}
       />
     </Stack>
