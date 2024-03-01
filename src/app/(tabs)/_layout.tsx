@@ -20,11 +20,11 @@ export default function TabLayout() {
   const path = usePathname();
 
   if (isLoading) return null;
-
+  const hideTabBar = path === '/messages/chat' || path.includes('/messages/user');
   return (
     <Tabs
       screenOptions={{
-        tabBarStyle: { display: path === '/messages/chat' ? 'none' : 'flex' },
+        tabBarStyle: { display: hideTabBar ? 'none' : 'flex' },
         tabBarActiveTintColor: Colors['light'].tint,
         headerShadowVisible: false,
         headerTitleAlign: 'center',

@@ -15,6 +15,22 @@ export default function SellLayoutNav() {
         name="chat"
         options={{ headerBackTitleVisible: false, headerTitle: 'John doe' }}
       />
+      <Stack.Screen
+        name="listing/[listingId]"
+        options={{
+          headerTitle: '',
+          headerBackTitleVisible: false,
+          headerShadowVisible: false,
+        }}
+      />
+      <Stack.Screen
+        name="user/[nickname]"
+        options={{
+          headerTitle: '',
+          headerBackTitleVisible: false,
+          headerShadowVisible: false,
+        }}
+      />
     </Stack>
   );
 }

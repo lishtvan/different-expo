@@ -2,7 +2,7 @@ import { EvilIcons, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { Link, Stack, router, useLocalSearchParams } from 'expo-router';
+import { Link, Stack, router, useLocalSearchParams, useSegments } from 'expo-router';
 import { FC, useState } from 'react';
 import { Alert, Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
@@ -155,6 +155,7 @@ export default function ListingPage() {
     queryKey: ['listing', listingId],
     queryFn: () => fetcher({ body: { listingId }, route: '/listing/get' }),
   });
+  const segments = useSegments();
 
   if (isLoading || !data) return null;
 
@@ -201,7 +202,9 @@ export default function ListingPage() {
               ))}
             </View>
           )}
-          <Link asChild href={isOwnListing ? '/profile' : `/user/${listing.User.nickname}`}>
+          <Link
+            asChild
+            href={isOwnListing ? '/profile' : `/${segments[1]}/user/${listing.User.nickname}`}>
             <Pressable className="flex-row mt-4 gap-x-3">
               <Image
                 className="h-14 w-14 rounded-full object-cover"
