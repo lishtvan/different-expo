@@ -1,7 +1,7 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useLocalSearchParams, useSegments } from 'expo-router';
+import { Link, useLocalSearchParams, usePathname, useSegments } from 'expo-router';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
   useInfiniteHits,
@@ -10,6 +10,7 @@ import {
   useToggleRefinement,
 } from 'react-instantsearch-core';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
+import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
@@ -35,26 +36,31 @@ const User = () => {
 
   const { refreshing, handleRefresh } = useRefresh(refetch);
   const { refresh, setUiState } = useInstantSearch();
+  const path = usePathname();
 
   if (isLoading || refreshing) return null;
 
+  const edges: Edges = path.includes('messages') ? ['bottom', 'left', 'right'] : ['left', 'right'];
+
   return (
-    <UserContent
-      user={user}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={() => {
-            setUiState((state) => {
-              state.listings.page = 0;
-              return state;
-            });
-            refresh();
-            handleRefresh();
-          }}
-        />
-      }
-    />
+    <SafeAreaView edges={edges}>
+      <UserContent
+        user={user}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={() => {
+              setUiState((state) => {
+                state.listings.page = 0;
+                return state;
+              });
+              refresh();
+              handleRefresh();
+            }}
+          />
+        }
+      />
+    </SafeAreaView>
   );
 };
 
@@ -174,7 +180,7 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
 
   useEffect(() => {
     refineSeller(user.id.toString());
-  }, []);
+  }, [refreshControl.key]);
 
   return (
     <Delayed waitBeforeShow={100}>
