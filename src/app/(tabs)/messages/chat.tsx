@@ -139,7 +139,7 @@ const Chat = ({ token }: { token: string }) => {
           ),
           headerRight: () => (
             <Link asChild href={userLink}>
-              <TouchableOpacity className="pb-2">
+              <TouchableOpacity className="pb-2 pl-4">
                 <Avatar circular size="$3.5">
                   <Avatar.Image src={avatarFb(participants?.recipient.avatarUrl)} />
                 </Avatar>
