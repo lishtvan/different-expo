@@ -58,8 +58,15 @@ export default function MessagesScreen() {
 
   const { chats } = data;
 
-  // TODO: implement epty messages screen
-  if (!chats.length) return null;
+  if (!chats.length) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <View className="rounded-3xl bg-[#ebebeb] px-4 py-1.5">
+          <Text className="text-lg ">Повідомлення відсутні</Text>
+        </View>
+      </View>
+    );
+  }
 
   return (
     <FlashList
