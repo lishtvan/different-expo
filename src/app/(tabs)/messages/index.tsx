@@ -1,8 +1,10 @@
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { Link } from 'expo-router';
+import { RefreshControl } from 'react-native';
 import { Avatar, Text, View } from 'tamagui';
 
+import { useRefresh } from '../../../hooks/useRefresh';
 import { Chat } from '../../../types';
 import { avatarFb } from '../../../utils/avatarUrlFallback';
 import { getLastMsgDate } from '../../../utils/date';
@@ -39,20 +41,24 @@ const RenderChat = ({ item }: { item: Chat }) => {
 };
 
 export default function MessagesScreen() {
-  const { data, isLoading } = useQuery<GetChatsResponse>({
+  const { data, isLoading, refetch } = useQuery<GetChatsResponse>({
     queryKey: ['chats'],
     queryFn: () => fetcher({ route: '/chat/getMany' }),
   });
+  const { refreshing, handleRefresh } = useRefresh(refetch);
+
   if (isLoading || !data) return null;
 
   const { chats } = data;
 
-  // TODO: implement refresh control
+  // TODO: implement epty messages screen
+  if (!chats.length) return null;
+
   return (
     <FlashList
       data={chats}
       estimatedItemSize={80}
-      // refreshControl={<RefreshControl refreshing={false} />}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
       contentContainerStyle={{ paddingTop: 12 }}
       renderItem={RenderChat}
       keyExtractor={(item) => item.id}
