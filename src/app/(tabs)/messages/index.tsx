@@ -1,6 +1,7 @@
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
-import { Link } from 'expo-router';
+import { Link, useFocusEffect } from 'expo-router';
+import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
 import { Avatar, Text, View } from 'tamagui';
 
@@ -46,6 +47,12 @@ export default function MessagesScreen() {
     queryFn: () => fetcher({ route: '/chat/getMany' }),
   });
   const { refreshing, handleRefresh } = useRefresh(refetch);
+
+  useFocusEffect(
+    useCallback(() => {
+      refetch();
+    }, [refetch])
+  );
 
   if (isLoading || !data) return null;
 
