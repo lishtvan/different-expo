@@ -580,6 +580,9 @@ export const DESIGNERS = [
   'George Gina & Lucy',
   'Kipling',
   'Regatta',
+  'Maje',
+  'Pinko',
+  'Polene',
 ];
 
 export const TAGS = [
