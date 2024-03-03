@@ -100,7 +100,7 @@ const StatusSwitcher: FC<StatusSwitcherProps> = ({ value, refine }) => {
   );
 };
 
-const MyHeader = ({ user }: { user: TUser }) => {
+const MyHeader = ({ user, segment }: { user: TUser; segment?: string }) => {
   const { refine, value } = useToggleRefinement({
     attribute: 'status',
     on: 'SOLD',
@@ -148,11 +148,24 @@ const MyHeader = ({ user }: { user: TUser }) => {
         )}
       </View>
       <View className="mb-3 mt-4 w-full flex-row items-center gap-x-4 px-2">
-        <Link href={`${user.isOwnAccount ? '/profile/settings' : '/'}`} asChild>
-          <Button size="$3" theme="active" className="w-[47%]" fontSize="$5" borderRadius="$main">
-            {user.isOwnAccount ? 'Редагувати' : 'Повідомлення'}
-          </Button>
-        </Link>
+        {user.isOwnAccount ? (
+          <Link href="/profile/settings" asChild>
+            <Button size="$3" theme="active" className="w-[47%]" fontSize="$5" borderRadius="$main">
+              Редагувати
+            </Button>
+          </Link>
+        ) : (
+          <Link
+            href={{
+              pathname: `/${segment}/chat`,
+              params: { chatId: 'bee7bfa0-ed6a-4c5f-b610-d0bda9cd25c3' },
+            }}
+            asChild>
+            <Button size="$3" theme="active" className="w-[47%]" fontSize="$5" borderRadius="$main">
+              Повідомлення
+            </Button>
+          </Link>
+        )}
         <Button
           onPress={() => shareLink(user.nickname)}
           size="$3"
@@ -188,7 +201,7 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
         ref={scrollRef}
         data={hits}
         refreshControl={refreshControl}
-        ListHeaderComponent={<Header user={user} />}
+        ListHeaderComponent={<Header user={user} segment={segments[1]} />}
         onEndReached={() => {
           if (!isLastPage) showMore();
         }}
