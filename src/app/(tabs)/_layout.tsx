@@ -20,7 +20,8 @@ export default function TabLayout() {
   const path = usePathname();
 
   if (isLoading) return null;
-  const hideTabBar = path === '/messages/chat' || path.includes('/messages/user');
+
+  const hideTabBar = path.includes('chat') || path.includes('/messages/user');
   return (
     <Tabs
       screenOptions={{

@@ -25,6 +25,10 @@ export default function IndexLayoutNav() {
           }}
         />
         <Stack.Screen
+          name="chat"
+          options={{ headerBackTitleVisible: false, headerTitle: '', headerShadowVisible: true }}
+        />
+        <Stack.Screen
           name="user/[nickname]"
           options={{
             headerTitle: '',
