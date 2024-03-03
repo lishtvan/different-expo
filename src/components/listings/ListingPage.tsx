@@ -44,7 +44,7 @@ const menuActionsUi = [
 ];
 
 const headerTitleStatusMapper = {
-  ORDER: { text: 'Створено замовлення', color: 'red' },
+  ORDER: { text: 'Створено замовлення', color: '#ff8f00' },
   SOLD: { text: 'Продано', color: mainColor },
   AVAILABLE: { text: 'В наявності', color: 'black' },
 };
@@ -238,15 +238,17 @@ export default function ListingPage() {
             Написати
           </MessageButton>
           {listing.status === 'AVAILABLE' && (
-            <Button
-              icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
-              size="$4"
-              className="flex-1 mx-1.5"
-              theme="active"
-              fontSize="$6"
-              borderRadius="$main">
-              Замовити
-            </Button>
+            <Link asChild href={{ pathname: '/create_order', params: { listingId: listing.id } }}>
+              <Button
+                icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
+                size="$4"
+                className="flex-1 mx-1.5"
+                theme="active"
+                fontSize="$6"
+                borderRadius="$main">
+                Замовити
+              </Button>
+            </Link>
           )}
         </View>
       )}

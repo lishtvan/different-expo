@@ -29,6 +29,13 @@ export default function IndexLayoutNav() {
           options={{ headerBackTitleVisible: false, headerTitle: '', headerShadowVisible: true }}
         />
         <Stack.Screen
+          name="create_order"
+          options={{
+            headerBackTitleVisible: false,
+            headerTitle: 'Створіть замовлення',
+          }}
+        />
+        <Stack.Screen
           name="user/[nickname]"
           options={{
             headerTitle: '',
