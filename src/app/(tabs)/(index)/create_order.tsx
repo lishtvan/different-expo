@@ -1,18 +1,3 @@
-import { useLocalSearchParams } from 'expo-router';
-import { Text, View } from 'tamagui';
+import CreateOrder from '../../../components/order/CreateOrder';
 
-type CreateOrderParams = {
-  listingId: string;
-  CityRecipient: string;
-  RecipientAddress: string;
-};
-
-export default function CreateOrderScreen() {
-  const params = useLocalSearchParams<CreateOrderParams>();
-
-  return (
-    <View className="flex-1">
-      <Text>Замовлення {params.listingId}</Text>
-    </View>
-  );
-}
+export default CreateOrder;

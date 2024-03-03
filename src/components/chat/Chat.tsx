@@ -74,6 +74,7 @@ const Chat = ({ token }: { token: string }) => {
   const segments = useSegments();
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
+    // TODO: move it to config
     'ws://localhost:8000/chat/message',
     { share: true, options: { headers: { Cookie: `token=${token}` } } }
   );
