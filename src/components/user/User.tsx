@@ -19,6 +19,7 @@ import { TListing, TUser } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
+import MessageButton from '../chat/MessageButton';
 import ListingCard from '../listings/ListingCard';
 import Delayed from '../wrappers/Delayed';
 
@@ -155,16 +156,16 @@ const MyHeader = ({ user, segment }: { user: TUser; segment?: string }) => {
             </Button>
           </Link>
         ) : (
-          <Link
-            href={{
-              pathname: `/${segment}/chat`,
-              params: { chatId: 'bee7bfa0-ed6a-4c5f-b610-d0bda9cd25c3' },
-            }}
-            asChild>
-            <Button size="$3" theme="active" className="w-[47%]" fontSize="$5" borderRadius="$main">
-              Повідомлення
-            </Button>
-          </Link>
+          <MessageButton
+            recipientId={user.id}
+            pathname={`/${segment}/chat`}
+            size="$3"
+            theme="active"
+            className="w-[47%]"
+            fontSize="$5"
+            borderRadius="$main">
+            Повідомлення
+          </MessageButton>
         )}
         <Button
           onPress={() => shareLink(user.nickname)}

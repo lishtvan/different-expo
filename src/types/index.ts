@@ -31,7 +31,9 @@ export type TListing<IdType = string> = {
   id: IdType;
   tags: string[];
   description: string;
+  userId: number;
   User: {
+    id: number;
     nickname: string;
     avatarUrl: string;
   };

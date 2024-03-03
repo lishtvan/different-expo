@@ -16,6 +16,7 @@ import { ListingResponse, RFunc } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
 import { fetcher } from '../../utils/fetcher';
 import { shareLink } from '../../utils/share';
+import MessageButton from '../chat/MessageButton';
 
 interface ListingImagesProps {
   imageUrls: string[];
@@ -226,21 +227,16 @@ export default function ListingPage() {
       </ScrollView>
       {!isOwnListing && (
         <View flexGrow={1} className="absolute bottom-0 w-full flex-row px-2 py-2">
-          <Link
-            asChild
-            href={{
-              pathname: `/${segments[1]}/chat`,
-              params: { chatId: 'bee7bfa0-ed6a-4c5f-b610-d0bda9cd25c3' },
-            }}>
-            <Button
-              icon={() => <Feather name="send" color="#737373" size={20} />}
-              size="$4"
-              className="flex-1 mx-1.5"
-              fontSize="$6"
-              borderRadius="$main">
-              Написати
-            </Button>
-          </Link>
+          <MessageButton
+            icon={() => <Feather name="send" color="#737373" size={20} />}
+            size="$4"
+            className="flex-1 mx-1.5"
+            fontSize="$6"
+            borderRadius="$main"
+            pathname={`/${segments[1]}/chat`}
+            recipientId={listing.userId}>
+            Написати
+          </MessageButton>
           {listing.status === 'AVAILABLE' && (
             <Button
               icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
