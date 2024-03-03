@@ -44,7 +44,7 @@ const User = () => {
   const edges: Edges = path.includes('messages') ? ['bottom', 'left', 'right'] : ['left', 'right'];
 
   return (
-    <SafeAreaView edges={edges}>
+    <SafeAreaView edges={edges} className="flex-1">
       <UserContent
         user={user}
         refreshControl={
