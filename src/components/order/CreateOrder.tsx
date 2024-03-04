@@ -1,8 +1,13 @@
-import { useLocalSearchParams } from 'expo-router';
-import { AsYouType } from 'libphonenumber-js';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Link, router, useLocalSearchParams } from 'expo-router';
+import parsePhoneNumberFromString, { AsYouType } from 'libphonenumber-js';
 import { Controller, useForm } from 'react-hook-form';
+import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Input, View } from 'tamagui';
+import { Button, Input, View } from 'tamagui';
+
+import { TUser } from '../../types';
+import { fetcher } from '../../utils/fetcher';
 
 type CreateOrderParams = {
   listingId: string;
@@ -18,26 +23,58 @@ const transformPhone = {
 };
 
 export default function CreateOrder() {
+  const { data: user } = useQuery<TUser>({
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
+  });
+
   const params = useLocalSearchParams<CreateOrderParams>();
-  const {
-    control,
-    handleSubmit,
-    getValues,
-    formState: { errors },
-    setValue,
-    reset,
-    clearErrors,
-    setError,
-  } = useForm({
+
+  const { control, handleSubmit, setError } = useForm({
     mode: 'onChange',
     defaultValues: {
       firstName: '',
       lastName: '',
-      CityRecipient: '',
-      RecipientAddress: '',
-      phone: '+380',
+      CityRecipient: { ref: '', name: '' },
+      RecipientAddress: { ref: '', name: '' },
+      phone: user?.phone ? transformPhone.output('+' + user.phone) : '+380',
     },
   });
+
+  const queryClient = useQueryClient();
+  const mutation = useMutation({
+    mutationFn: (data: unknown) => fetcher({ route: '/order/create', method: 'POST', body: data }),
+    onSuccess: async (res) => {
+      if (res.error) {
+        // Toast.show({
+        //   type: 'error',
+        //   text1: 'Будь ласка, виправіть помилки',
+        // });
+        return;
+      }
+
+      await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
+
+      await queryClient.invalidateQueries({ queryKey: ['listing', params.listingId] });
+      router.navigate({ pathname: '/orders' });
+    },
+  });
+
+  const onSubmit = (data: Record<string, unknown>) => {
+    const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
+
+    if (!phoneNumberString?.isValid()) {
+      setError('phone', { type: 'validate' });
+      return;
+    }
+
+    const phone = parseInt(phoneNumberString!.number, 10);
+    mutation.mutate({
+      ...data,
+      phone,
+      listingId: params.listingId,
+    });
+  };
 
   return (
     <KeyboardAwareScrollView
@@ -46,8 +83,8 @@ export default function CreateOrder() {
       viewIsInsideTabBar
       keyboardShouldPersistTaps="handled"
       keyboardOpeningTime={0}
-      className="flex-1 gap-y-3 p-3">
-      <View className=" animate-ping">
+      className="flex-1 space-y-3 p-3">
+      <View>
         <Controller
           control={control}
           rules={{ required: true, maxLength: 80 }}
@@ -85,6 +122,52 @@ export default function CreateOrder() {
         />
       </View>
       <View>
+        <Link href={{ pathname: '/create_order/select_city' }} asChild>
+          <Pressable>
+            <View pointerEvents="none">
+              <Controller
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value } }) => (
+                  <Input
+                    size="$4"
+                    autoCorrect={false}
+                    borderRadius="$main"
+                    placeholder="Населений пункт"
+                    className="w-full"
+                    value={value}
+                  />
+                )}
+                name="CityRecipient.name"
+              />
+            </View>
+          </Pressable>
+        </Link>
+      </View>
+      <View>
+        <Link href={{ pathname: '/create_order/select_department' }} asChild>
+          <Pressable>
+            <View pointerEvents="none">
+              <Controller
+                control={control}
+                rules={{ required: true }}
+                render={({ field: { value } }) => (
+                  <Input
+                    size="$4"
+                    autoCorrect={false}
+                    borderRadius="$main"
+                    placeholder="Відділення Нової Пошти"
+                    className="w-full"
+                    value={value}
+                  />
+                )}
+                name="RecipientAddress.name"
+              />
+            </View>
+          </Pressable>
+        </Link>
+      </View>
+      <View>
         <Controller
           control={control}
           rules={{ required: true, maxLength: 80 }}
@@ -106,6 +189,17 @@ export default function CreateOrder() {
           )}
           name="phone"
         />
+      </View>
+      <View>
+        <Button
+          onPress={handleSubmit(onSubmit)}
+          size="$4"
+          theme="active"
+          fontSize="$6"
+          borderRadius="$main"
+          className="mt-2">
+          Створити замовлення
+        </Button>
       </View>
     </KeyboardAwareScrollView>
   );

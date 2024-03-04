@@ -128,6 +128,15 @@ function RootLayoutNav() {
                   headerShadowVisible: false,
                 }}
               />
+              <Stack.Screen
+                name="create_order"
+                options={{
+                  headerShadowVisible: false,
+                  headerShown: false,
+                  headerBackTitleVisible: false,
+                  fullScreenGestureEnabled: true,
+                }}
+              />
             </Stack>
 
             <Toast config={toastConfig} />
