@@ -8,7 +8,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import { Button, Input, View } from 'tamagui';
 
 import { TUser } from '../../types';
-import { transformPhone } from '../../utils/common';
+import { fixedEncodeURIComponent, transformPhone } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
 import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
 
@@ -76,7 +76,7 @@ export default function CreateOrder() {
     }
   }, [params]);
 
-  const onSubmit = (data: Record<string, unknown>) => {
+  const onSubmit = (data: any) => {
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
 
     if (!phoneNumberString?.isValid()) {
@@ -84,10 +84,14 @@ export default function CreateOrder() {
       return;
     }
 
-    const phone = parseInt(phoneNumberString!.number, 10);
+    const phone = parseInt(phoneNumberString.number, 10).toString();
+
     mutation.mutate({
-      ...data,
-      phone,
+      CityRecipient: data.CityRecipient.ref,
+      RecipientAddress: data.RecipientAddress.name,
+      RecipientsPhone: phone,
+      firstName: data.firstName,
+      lastName: data.lastName,
       listingId: params.listingId,
     });
   };
@@ -168,7 +172,18 @@ export default function CreateOrder() {
           validationErrors[errors.CityRecipient.name.type as keyof typeof validationErrors]}
       </View>
       <View>
-        <Link href={{ pathname: '/create_order/select_department' }} asChild>
+        <Link
+          href={{
+            pathname: params.cityRef
+              ? '/create_order/select_department'
+              : '/create_order/select_city',
+            params: {
+              listingId: params.listingId,
+              cityRef: params.cityRef!,
+              cityName: fixedEncodeURIComponent(params.cityName as string),
+            },
+          }}
+          asChild>
           <Pressable>
             <View pointerEvents="none">
               <Controller
