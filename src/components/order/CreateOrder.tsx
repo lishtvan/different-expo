@@ -1,6 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
+import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -13,8 +14,10 @@ import { InputValidationError, validationErrors } from '../ui/InputValidationErr
 
 type CreateOrderParams = {
   listingId: string;
-  CityRecipient: string;
-  RecipientAddress: string;
+  cityRef?: string;
+  cityName?: string;
+  departmentName?: string;
+  departmentRef?: string;
 };
 
 export default function CreateOrder() {
@@ -29,6 +32,8 @@ export default function CreateOrder() {
     control,
     handleSubmit,
     setError,
+    setValue,
+    clearErrors,
     formState: { errors },
   } = useForm({
     mode: 'onChange',
@@ -59,6 +64,17 @@ export default function CreateOrder() {
       router.navigate({ pathname: '/orders' });
     },
   });
+
+  useEffect(() => {
+    if (params.cityRef && params.cityName) {
+      setValue('CityRecipient', { name: params.cityName, ref: params.cityRef });
+      if (errors.CityRecipient?.name) clearErrors('CityRecipient.name');
+    }
+    if (params.departmentRef && params.departmentName) {
+      setValue('RecipientAddress', { name: params.departmentName, ref: params.departmentRef });
+      if (errors.RecipientAddress?.name) clearErrors('RecipientAddress.name');
+    }
+  }, [params]);
 
   const onSubmit = (data: Record<string, unknown>) => {
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
@@ -125,7 +141,9 @@ export default function CreateOrder() {
         {errors.lastName && validationErrors[errors.lastName.type as keyof typeof validationErrors]}
       </View>
       <View>
-        <Link href={{ pathname: '/create_order/select_city' }} asChild>
+        <Link
+          href={{ pathname: '/create_order/select_city', params: { listingId: params.listingId } }}
+          asChild>
           <Pressable>
             <View pointerEvents="none">
               <Controller
@@ -146,6 +164,8 @@ export default function CreateOrder() {
             </View>
           </Pressable>
         </Link>
+        {errors.CityRecipient?.name &&
+          validationErrors[errors.CityRecipient.name.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Link href={{ pathname: '/create_order/select_department' }} asChild>
@@ -169,6 +189,8 @@ export default function CreateOrder() {
             </View>
           </Pressable>
         </Link>
+        {errors.RecipientAddress?.name &&
+          validationErrors[errors.RecipientAddress.name.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Controller

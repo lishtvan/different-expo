@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, Text, View, XStack } from 'tamagui';
 
+import { fixedEncodeURIComponent } from '../../utils/common';
 import { searchCity } from '../../utils/novaposhta';
 import { isAndroid } from '../../utils/platform';
 
@@ -18,7 +19,11 @@ const RenderDesigner = ({ item, listingId }: { item: City; listingId: string }) 
   <Link
     href={{
       pathname: '/create_order/select_department',
-      params: { cityRef: item.DeliveryCity, listingId, cityName: item.Present },
+      params: {
+        cityRef: item.DeliveryCity,
+        listingId,
+        cityName: fixedEncodeURIComponent(item.Present),
+      },
     }}
     asChild>
     <TouchableOpacity className="p-2">

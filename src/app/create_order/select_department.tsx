@@ -5,6 +5,7 @@ import { FC, useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, Text, View, XStack } from 'tamagui';
 
+import { fixedEncodeURIComponent } from '../../utils/common';
 import { DepartmentNP, searchDepartments } from '../../utils/novaposhta';
 import { isAndroid } from '../../utils/platform';
 
@@ -20,10 +21,10 @@ const RenderDesigner: FC<Props> = ({ item, listingId, cityRef, cityName }) => (
     href={{
       pathname: '/create_order',
       params: {
-        cityRef,
         listingId,
-        cityName,
-        departmentName: item.Description,
+        cityRef,
+        cityName: fixedEncodeURIComponent(cityName),
+        departmentName: fixedEncodeURIComponent(item.Description),
         departmentRef: item.Ref,
       },
     }}
