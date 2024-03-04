@@ -1,14 +1,15 @@
 import { EvilIcons } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { FC, useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, Text, View, XStack } from 'tamagui';
 
-import { DESIGNERS } from '../../constants/listing';
+import { DepartmentNP, searchDepartments } from '../../utils/novaposhta';
 import { isAndroid } from '../../utils/platform';
 
 interface Props {
-  item: string;
+  item: DepartmentNP;
   listingId: string;
   cityRef: string;
   cityName: string;
@@ -22,33 +23,39 @@ const RenderDesigner: FC<Props> = ({ item, listingId, cityRef, cityName }) => (
         cityRef,
         listingId,
         cityName,
-        departmentName: item,
-        departmentRef: item,
+        departmentName: item.Description,
+        departmentRef: item.Ref,
       },
     }}
     asChild>
     <TouchableOpacity className="p-2">
-      <Text className="text-lg">{item}</Text>
+      <Text className="text-lg">{item.Description}</Text>
     </TouchableOpacity>
   </Link>
 );
 
 export default function SelectDepartment() {
   const [searchText, onChangeSearch] = useState('');
-  const [filteredData, setFilteredData] = useState<string[]>([]);
   const params = useLocalSearchParams<Omit<Props, 'item'>>();
+  const [filteredDepartments, setFilteredDepartments] = useState<DepartmentNP[]>([]);
+
+  const { data } = useQuery<DepartmentNP[]>({
+    queryKey: ['search_department', params.cityRef],
+    queryFn: () => searchDepartments(params.cityRef),
+  });
 
   useEffect(() => {
+    if (!data) return;
     if (!searchText) {
-      setFilteredData(DESIGNERS);
+      setFilteredDepartments(data);
       return;
     }
-    const filtered = DESIGNERS.filter((item) =>
-      item.toLowerCase().includes(searchText.toLowerCase())
+    const filtered = data.filter((item) =>
+      item.Description.toLowerCase().includes(searchText.toLowerCase())
     );
 
-    setFilteredData(filtered);
-  }, [searchText]);
+    setFilteredDepartments(filtered);
+  }, [searchText, data]);
 
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1 bg-[#f8f8f8]' : 'p-0 pl-2  bg-[#f8f8f8]';
 
@@ -81,7 +88,7 @@ export default function SelectDepartment() {
       </XStack>
       <FlatList
         keyboardShouldPersistTaps="always"
-        data={filteredData}
+        data={filteredDepartments}
         ItemSeparatorComponent={() => <Separator />}
         renderItem={(object) => (
           <RenderDesigner
@@ -91,7 +98,7 @@ export default function SelectDepartment() {
             listingId={params.listingId}
           />
         )}
-        keyExtractor={(item) => item}
+        keyExtractor={(item) => item.Ref}
       />
     </View>
   );
