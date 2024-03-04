@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, router, useLocalSearchParams } from 'expo-router';
-import parsePhoneNumberFromString, { AsYouType } from 'libphonenumber-js';
+import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
@@ -8,6 +8,7 @@ import { Button, Input, View } from 'tamagui';
 
 import { TUser } from '../../types';
 import { fetcher } from '../../utils/fetcher';
+import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
 
 type CreateOrderParams = {
   listingId: string;
@@ -30,7 +31,12 @@ export default function CreateOrder() {
 
   const params = useLocalSearchParams<CreateOrderParams>();
 
-  const { control, handleSubmit, setError } = useForm({
+  const {
+    control,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm({
     mode: 'onChange',
     defaultValues: {
       firstName: '',
@@ -87,7 +93,7 @@ export default function CreateOrder() {
       <View>
         <Controller
           control={control}
-          rules={{ required: true, maxLength: 80 }}
+          rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               size="$4"
@@ -101,11 +107,13 @@ export default function CreateOrder() {
           )}
           name="firstName"
         />
+        {errors.firstName &&
+          validationErrors[errors.firstName.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Controller
           control={control}
-          rules={{ required: true, maxLength: 80 }}
+          rules={{ required: true }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               size="$4"
@@ -120,6 +128,7 @@ export default function CreateOrder() {
           )}
           name="lastName"
         />
+        {errors.lastName && validationErrors[errors.lastName.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Link href={{ pathname: '/create_order/select_city' }} asChild>
@@ -170,7 +179,13 @@ export default function CreateOrder() {
       <View>
         <Controller
           control={control}
-          rules={{ required: true, maxLength: 80 }}
+          rules={{
+            validate: (value) => {
+              if (value.length < 16) return true;
+              const valid = isValidPhoneNumber(value, 'UA');
+              return valid;
+            },
+          }}
           render={({ field: { onChange, onBlur, value } }) => (
             <Input
               size="$4"
@@ -189,6 +204,7 @@ export default function CreateOrder() {
           )}
           name="phone"
         />
+        {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
       <View>
         <Button
