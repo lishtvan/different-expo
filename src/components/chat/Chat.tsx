@@ -1,4 +1,4 @@
-import { Entypo, SimpleLineIcons } from '@expo/vector-icons';
+import { Entypo, EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, Link, useSegments } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, TouchableOpacity } from 'react-native';
@@ -20,6 +20,7 @@ import { mainColor } from '../../../tamagui.config';
 import { useSession } from '../../hooks/useSession';
 import { Message, Participants } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
+import { isAndroid } from '../../utils/platform';
 
 const BUBBLE_WRAPPER_RADIUS = 14;
 const bubbleWrapperStyle = {
@@ -75,7 +76,7 @@ const Chat = ({ token }: { token: string }) => {
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     // TODO: move it to config
-    'wss://a1eb-176-36-11-52.ngrok-free.app/chat/message',
+    'ws://localhost:8000/chat/message',
     { share: true, options: { headers: { Cookie: `token=${token}` } } }
   );
 
@@ -124,6 +125,8 @@ const Chat = ({ token }: { token: string }) => {
   const userLink =
     `/${segments[1]}/user/${participants?.recipient.nickname}` as `${string}:${string}`;
 
+  const headerClassname = isAndroid ? 'pl-4' : 'pb-2 pl-4';
+
   return (
     <SafeAreaView
       style={{ paddingBottom: 0 }}
@@ -142,7 +145,7 @@ const Chat = ({ token }: { token: string }) => {
           ),
           headerRight: () => (
             <Link asChild href={userLink}>
-              <TouchableOpacity className="pl-4">
+              <TouchableOpacity className={headerClassname}>
                 <Avatar circular size="$3.5">
                   <Avatar.Image src={avatarFb(participants?.recipient.avatarUrl)} />
                 </Avatar>
@@ -151,14 +154,14 @@ const Chat = ({ token }: { token: string }) => {
           ),
         }}
       />
-      <KeyboardAvoidingView style={{ flex: 1, paddingBottom: 10 }}>
+      <KeyboardAvoidingView style={{ flex: 1, paddingBottom: isAndroid ? 10 : 0 }}>
         <GiftedChat
           forceGetKeyboardHeight={false}
           scrollToBottomComponent={() => <Entypo size={23} name="chevron-thin-down" />}
           scrollToBottom
           scrollToBottomStyle={{ backgroundColor: '#eeefe9' }}
           messages={messages}
-          keyboardShouldPersistTaps="never"
+          keyboardShouldPersistTaps={isAndroid ? 'never' : 'handled'}
           timeTextStyle={getFontSizeStyle(11)}
           renderBubble={(props) => (
             <Bubble textStyle={getFontSizeStyle(18)} wrapperStyle={bubbleWrapperStyle} {...props} />
@@ -188,7 +191,7 @@ const Chat = ({ token }: { token: string }) => {
             <Composer
               {...props}
               textInputStyle={{
-                paddingTop: 4,
+                paddingTop: isAndroid ? 4 : 8.5,
                 paddingHorizontal: 12,
                 marginLeft: 0,
               }}
@@ -204,10 +207,13 @@ const Chat = ({ token }: { token: string }) => {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    marginRight: 7,
                     padding: 0,
                   }}>
-                  <SimpleLineIcons name="arrow-up-circle" size={30} />
+                  {isAndroid ? (
+                    <SimpleLineIcons name="arrow-up-circle" size={30} />
+                  ) : (
+                    <EvilIcons name="arrow-up" size={40} />
+                  )}
                 </Send>
               )}
               primaryStyle={{
