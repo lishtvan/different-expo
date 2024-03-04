@@ -1,7 +1,7 @@
 import { Entypo, EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, Link, useSegments } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
-import { KeyboardAvoidingView, TouchableOpacity } from 'react-native';
+import { KeyboardAvoidingView, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import {
   Bubble,
   Composer,
@@ -10,11 +10,10 @@ import {
   IMessage,
   InputToolbar,
   Send,
-  Time,
 } from 'react-native-gifted-chat';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
-import { Avatar, Text } from 'tamagui';
+import { Avatar } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { useSession } from '../../hooks/useSession';
@@ -37,6 +36,31 @@ const bubbleWrapperStyle = {
     borderBottomRightRadius: BUBBLE_WRAPPER_RADIUS,
     borderTopRightRadius: BUBBLE_WRAPPER_RADIUS,
   },
+};
+
+const { containerStyle } = StyleSheet.create({
+  containerStyle: {
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 5,
+  },
+});
+const { textStyle } = StyleSheet.create({
+  textStyle: {
+    fontSize: 10,
+    textAlign: 'right',
+  },
+});
+
+const styles = {
+  left: StyleSheet.create({
+    container: { ...containerStyle },
+    text: { color: '#8c8c91', ...textStyle },
+  }),
+  right: StyleSheet.create({
+    container: { ...containerStyle },
+    text: { color: 'white', ...textStyle },
+  }),
 };
 
 const months = [
@@ -76,7 +100,7 @@ const Chat = ({ token }: { token: string }) => {
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     // TODO: move it to config
-    'ws://localhost:8000/chat/message',
+    'wss://a1eb-176-36-11-52.ngrok-free.app/chat/message',
     { share: true, options: { headers: { Cookie: `token=${token}` } } }
   );
 
@@ -166,15 +190,18 @@ const Chat = ({ token }: { token: string }) => {
           renderBubble={(props) => (
             <Bubble textStyle={getFontSizeStyle(18)} wrapperStyle={bubbleWrapperStyle} {...props} />
           )}
-          renderTime={(props) => (
-            <Time
-              timeFormat={(props.currentMessage?.createdAt as Date).toLocaleTimeString([], {
-                hour: '2-digit',
-                minute: '2-digit',
-              })}
-              {...props}
-            />
-          )}
+          renderTime={(props) => {
+            return (
+              <View style={styles[props.position!].container}>
+                <Text style={styles[props.position!].text}>
+                  {(props.currentMessage?.createdAt as Date).toLocaleTimeString('uk-UA', {
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </Text>
+              </View>
+            );
+          }}
           bottomOffset={insets.bottom - 10}
           renderDay={(props) => (
             <Day
