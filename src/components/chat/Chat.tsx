@@ -1,4 +1,4 @@
-import { Entypo, EvilIcons } from '@expo/vector-icons';
+import { Entypo, SimpleLineIcons } from '@expo/vector-icons';
 import { Stack, useLocalSearchParams, Link, useSegments } from 'expo-router';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, TouchableOpacity } from 'react-native';
@@ -75,7 +75,7 @@ const Chat = ({ token }: { token: string }) => {
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     // TODO: move it to config
-    'ws://localhost:8000/chat/message',
+    'wss://a1eb-176-36-11-52.ngrok-free.app/chat/message',
     { share: true, options: { headers: { Cookie: `token=${token}` } } }
   );
 
@@ -142,7 +142,7 @@ const Chat = ({ token }: { token: string }) => {
           ),
           headerRight: () => (
             <Link asChild href={userLink}>
-              <TouchableOpacity className="pb-2 pl-4">
+              <TouchableOpacity className="pl-4">
                 <Avatar circular size="$3.5">
                   <Avatar.Image src={avatarFb(participants?.recipient.avatarUrl)} />
                 </Avatar>
@@ -151,13 +151,14 @@ const Chat = ({ token }: { token: string }) => {
           ),
         }}
       />
-      <KeyboardAvoidingView style={{ flex: 1 }}>
+      <KeyboardAvoidingView style={{ flex: 1, paddingBottom: 10 }}>
         <GiftedChat
           forceGetKeyboardHeight={false}
           scrollToBottomComponent={() => <Entypo size={23} name="chevron-thin-down" />}
           scrollToBottom
           scrollToBottomStyle={{ backgroundColor: '#eeefe9' }}
           messages={messages}
+          keyboardShouldPersistTaps="never"
           timeTextStyle={getFontSizeStyle(11)}
           renderBubble={(props) => (
             <Bubble textStyle={getFontSizeStyle(18)} wrapperStyle={bubbleWrapperStyle} {...props} />
@@ -187,7 +188,7 @@ const Chat = ({ token }: { token: string }) => {
             <Composer
               {...props}
               textInputStyle={{
-                paddingTop: 8.5,
+                paddingTop: 4,
                 paddingHorizontal: 12,
                 marginLeft: 0,
               }}
@@ -203,9 +204,10 @@ const Chat = ({ token }: { token: string }) => {
                     flexDirection: 'row',
                     justifyContent: 'center',
                     alignItems: 'center',
+                    marginRight: 7,
                     padding: 0,
                   }}>
-                  <EvilIcons name="arrow-up" size={40} />
+                  <SimpleLineIcons name="arrow-up-circle" size={30} />
                 </Send>
               )}
               primaryStyle={{

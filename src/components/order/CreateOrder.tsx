@@ -158,6 +158,7 @@ export default function CreateOrder() {
                     size="$4"
                     autoCorrect={false}
                     borderRadius="$main"
+                    selection={{ start: 0 }}
                     placeholder="Населений пункт"
                     className="w-full"
                     value={value}
@@ -194,6 +195,7 @@ export default function CreateOrder() {
                     size="$4"
                     autoCorrect={false}
                     borderRadius="$main"
+                    selection={{ start: 0 }}
                     placeholder="Відділення Нової Пошти"
                     className="w-full"
                     value={value}
