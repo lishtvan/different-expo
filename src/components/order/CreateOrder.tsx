@@ -1,12 +1,13 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Link, router, useLocalSearchParams } from 'expo-router';
-import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
+import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Button, Input, View } from 'tamagui';
 
 import { TUser } from '../../types';
+import { transformPhone } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
 import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
 
@@ -14,13 +15,6 @@ type CreateOrderParams = {
   listingId: string;
   CityRecipient: string;
   RecipientAddress: string;
-};
-
-// TODO: move this to utils
-const transformPhone = {
-  output: (text: string) => {
-    return new AsYouType().input(text);
-  },
 };
 
 export default function CreateOrder() {

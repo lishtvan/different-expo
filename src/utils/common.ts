@@ -1,3 +1,4 @@
+import { AsYouType } from 'libphonenumber-js';
 import { NativeScrollEvent } from 'react-native';
 
 export const isCloseToBottom = ({
@@ -55,4 +56,10 @@ export const getDynamicEndingForListingsCount = (listingsCount: number, sold = f
   return sold
     ? getDynamicEndingSoldListings(listingsCount)
     : getDynamicEndingAvailableListings(listingsCount);
+};
+
+export const transformPhone = {
+  output: (text: string) => {
+    return new AsYouType().input(text);
+  },
 };

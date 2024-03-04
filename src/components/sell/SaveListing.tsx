@@ -3,7 +3,7 @@ import { MenuView } from '@react-native-menu/menu';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import validateCard from 'card-validator';
 import { Link, router, useLocalSearchParams } from 'expo-router';
-import parsePhoneNumberFromString, { AsYouType, isValidPhoneNumber } from 'libphonenumber-js';
+import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { FC, useCallback, useEffect, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Pressable } from 'react-native';
@@ -16,15 +16,10 @@ import Photos from './Photos';
 import { mainColor } from '../../../tamagui.config';
 import { CONDITIONS, TAGS } from '../../constants/listing';
 import { EditListingParams, SelectedImage, TListing } from '../../types';
+import { transformPhone } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
 import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
 import TextArea from '../ui/TextArea';
-
-const transformPhone = {
-  output: (text: string) => {
-    return new AsYouType().input(text);
-  },
-};
 
 interface SaveListingProps {
   listing: Partial<TListing<number>>;
