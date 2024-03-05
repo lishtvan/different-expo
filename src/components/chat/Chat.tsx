@@ -16,6 +16,7 @@ import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { Avatar } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
+import { WS_DOMAIN } from '../../config/config';
 import { useSession } from '../../hooks/useSession';
 import { Message, Participants } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
@@ -100,7 +101,7 @@ const Chat = ({ token }: { token: string }) => {
 
   const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
     // TODO: move it to config
-    'wss://a1eb-176-36-11-52.ngrok-free.app/chat/message',
+    `${WS_DOMAIN}/chat/message`,
     { share: true, options: { headers: { Cookie: `token=${token}` } } }
   );
 
@@ -235,6 +236,7 @@ const Chat = ({ token }: { token: string }) => {
                     justifyContent: 'center',
                     alignItems: 'center',
                     padding: 0,
+                    marginRight: isAndroid ? 7 : 0,
                   }}>
                   {isAndroid ? (
                     <SimpleLineIcons name="arrow-up-circle" size={30} />

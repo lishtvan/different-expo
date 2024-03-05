@@ -11,7 +11,7 @@ export const config = {
       },
       additionalSearchParameters,
     },
-    wsDomain: 'ws://localhost:8000',
+    wsDomain: isAndroid ? 'wss://a1eb-176-36-11-52.ngrok-free.app' : 'ws://localhost:8000',
   },
   production: {
     typesense: {
@@ -24,3 +24,5 @@ export const config = {
     wsDomain: 'wss://api.different.to',
   },
 };
+
+export const WS_DOMAIN = config[process.env.EXPO_PUBLIC_ENVIRONMENT].wsDomain;
