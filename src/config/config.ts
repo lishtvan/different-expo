@@ -4,25 +4,27 @@ const additionalSearchParameters = { query_by: 'title,designer' };
 
 export const config = {
   local: {
-    typesense: {
+    TYPESENSE: {
       server: {
         nodes: [{ host: isAndroid ? '192.168.1.113' : '127.0.0.1', port: 8108, protocol: 'http' }],
         apiKey: 'xyz',
       },
       additionalSearchParameters,
     },
-    wsDomain: isAndroid ? 'wss://a1eb-176-36-11-52.ngrok-free.app' : 'ws://localhost:8000',
+    WS_URL: isAndroid ? 'wss://a1eb-176-36-11-52.ngrok-free.app' : 'ws://localhost:8000',
+    API_URL: isAndroid ? 'https://a1eb-176-36-11-52.ngrok-free.app' : 'http://localhost:8000',
   },
   production: {
-    typesense: {
+    TYPESENSE: {
       server: {
         nodes: [{ host: 'o2by0uh958xjn1igp-1.a1.typesense.net', port: 443, protocol: 'https' }],
         apiKey: 'LStsJHZnSoNFwVXzyfJU3D9xxvvjQcyg',
       },
       additionalSearchParameters,
     },
-    wsDomain: 'wss://api.different.to',
+    WS_URL: 'wss://api.different.to',
+    API_URL: 'https://api.different.to',
   },
 };
 
-export const WS_DOMAIN = config[process.env.EXPO_PUBLIC_ENVIRONMENT].wsDomain;
+export const { WS_URL, TYPESENSE, API_URL } = config[process.env.EXPO_PUBLIC_ENVIRONMENT];

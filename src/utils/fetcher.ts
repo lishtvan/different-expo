@@ -1,20 +1,16 @@
 import { getSession } from './secureStorage';
+import { API_URL } from '../config/config';
 
 interface Fetcher {
   (input: {
     route: string;
     method?: 'GET' | 'POST' | 'PUT' | 'DELETE';
     body?: { [key: string]: unknown } | unknown;
-    domain?: string;
+    baseURL?: string;
   }): Promise<any>;
 }
 
-export const fetcher: Fetcher = async ({
-  route,
-  body,
-  method = 'POST',
-  domain = process.env.EXPO_PUBLIC_API_URL,
-}) => {
+export const fetcher: Fetcher = async ({ route, body, method = 'POST', baseURL = API_URL }) => {
   console.log('fetching', route);
   const headers = new Headers();
 
@@ -25,12 +21,8 @@ export const fetcher: Fetcher = async ({
 
   if (body) {
     headers.append('Content-type', 'application/json');
-    response = await fetch(`${domain}${route}`, {
-      method,
-      headers,
-      body: JSON.stringify(body),
-    });
-  } else response = await fetch(`${domain}${route}`, { method, headers });
+    response = await fetch(`${baseURL}${route}`, { method, headers, body: JSON.stringify(body) });
+  } else response = await fetch(`${baseURL}${route}`, { method, headers });
 
   if (response.status === 401) {
     if (route === '/auth/me') return null;

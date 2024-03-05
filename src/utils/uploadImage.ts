@@ -8,19 +8,16 @@ import {
 import { Alert, Linking } from 'react-native';
 
 import { getSession } from './secureStorage';
+import { API_URL } from '../config/config';
 
 export const uploadImage = async (image: ImagePickerAsset) => {
   const token = await getSession();
-  const uploadResult = await FileSystem.uploadAsync(
-    `${process.env.EXPO_PUBLIC_API_URL}/images/upload`,
-    image.uri,
-    {
-      httpMethod: 'POST',
-      headers: { Cookie: `token=${token}` },
-      uploadType: FileSystem.FileSystemUploadType.MULTIPART,
-      fieldName: 'image',
-    }
-  );
+  const uploadResult = await FileSystem.uploadAsync(`${API_URL}/images/upload`, image.uri, {
+    httpMethod: 'POST',
+    headers: { Cookie: `token=${token}` },
+    uploadType: FileSystem.FileSystemUploadType.MULTIPART,
+    fieldName: 'image',
+  });
 
   const { statusCode, imageUrl } = JSON.parse(uploadResult.body);
   if (statusCode === 413) Alert.alert('', 'Розмір фото не повинен перевищувати 10 Мб');
