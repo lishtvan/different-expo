@@ -79,13 +79,13 @@ const months = [
   'грудня',
 ];
 
-function formatDateToUkrainian(date: Date) {
+const formatDateToUkrainian = (date: Date) => {
   const day = date.getDate();
   const month = months[date.getMonth()];
   const year = date.getFullYear();
 
   return `${day} ${month} ${year}`;
-}
+};
 
 const getFontSizeStyle = (fontSize: number) => {
   return { left: { fontSize }, right: { fontSize } };
@@ -99,11 +99,10 @@ const Chat = ({ token }: { token: string }) => {
   const [participants, setParticipants] = useState<Participants>();
   const segments = useSegments();
 
-  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(
-    // TODO: move it to config
-    `${WS_URL}/chat/message`,
-    { share: true, options: { headers: { Cookie: `token=${token}` } } }
-  );
+  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {
+    share: true,
+    options: { headers: { Cookie: `token=${token}` } },
+  });
 
   useEffect(() => {
     if (readyState !== ReadyState.OPEN) return;
