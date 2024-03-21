@@ -121,6 +121,23 @@ function RootLayoutNav() {
                 }}
               />
               <Stack.Screen
+                name="buyer_sf_details"
+                options={{
+                  headerRight: () => {
+                    return (
+                      <TouchableOpacity onPress={() => router.back()}>
+                        <Circle backgroundColor="#e1e1e1" size="$2.5">
+                          <AntDesign size={22} name="close" />
+                        </Circle>
+                      </TouchableOpacity>
+                    );
+                  },
+                  presentation: 'modal',
+                  headerTitle: 'Сейф-сервіс для покупця',
+                  headerShadowVisible: false,
+                }}
+              />
+              <Stack.Screen
                 name="edit_listing"
                 options={{
                   presentation: 'modal',

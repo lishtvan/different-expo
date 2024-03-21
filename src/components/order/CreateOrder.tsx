@@ -1,11 +1,13 @@
+import { Foundation } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Image } from 'expo-image';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Button, Input, View } from 'tamagui';
+import { Button, Input, Text, View } from 'tamagui';
 
 import { TUser } from '../../types';
 import { fixedEncodeURIComponent, transformPhone } from '../../utils/common';
@@ -239,6 +241,23 @@ export default function CreateOrder() {
         />
         {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
+      <View className="flex-1 flex-row items-center justify-between px-3">
+        <Foundation name="shield" size={38} />
+        <Image
+          style={{ width: 53, height: 53 }}
+          source={require('../../../assets/images/novaposhta.png')}
+        />
+        <Text className="text-base px-4">
+          Ваші покупки захищені послугою {'\n'}
+          <Text className="font-semibold">Cейф-сервіс</Text> від Нової Пошти.{'\n'}
+          <Link
+            style={{ textDecorationLine: 'underline' }}
+            className="font-semibold text-blue-600 "
+            href="/buyer_sf_details">
+            Як це працює?
+          </Link>
+        </Text>
+      </View>
       <View>
         <Button
           onPress={handleSubmit(onSubmit)}
@@ -246,7 +265,7 @@ export default function CreateOrder() {
           theme="active"
           fontSize="$6"
           borderRadius="$main"
-          className="mt-2">
+          className="mt-2 mb-20">
           Створити замовлення
         </Button>
       </View>
