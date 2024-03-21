@@ -1,7 +1,8 @@
-import { AntDesign } from '@expo/vector-icons';
+import { AntDesign, Foundation } from '@expo/vector-icons';
 import { MenuView } from '@react-native-menu/menu';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import validateCard from 'card-validator';
+import { Image } from 'expo-image';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { FC, useCallback, useEffect, useState } from 'react';
@@ -441,10 +442,29 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         size="$4"
         theme="active"
         fontSize="$6"
-        borderRadius="$main"
-        className="mb-24">
+        borderRadius="$main">
         {listing.id ? 'Зберегти' : 'Створити'}
       </Button>
+      {!listing.id && (
+        <View className="flex-1 flex-row items-center justify-between px-3">
+          <Foundation name="shield" size={38} />
+          <Image
+            style={{ width: 53, height: 53 }}
+            source={require('../../../assets/images/novaposhta.png')}
+          />
+          <Text className="text-base px-4">
+            Ваші продажі захищені послугою {'\n'}
+            <Text className="font-semibold">Cейф-сервіс</Text> від Нової Пошти.{'\n'}
+            <Link
+              style={{ textDecorationLine: 'underline' }}
+              className="font-semibold text-blue-600 "
+              href="/seller_sf_details">
+              Як це працює?
+            </Link>
+          </Text>
+        </View>
+      )}
+      <View className="mb-24 w-full" />
     </KeyboardAwareScrollView>
   );
 };
