@@ -241,13 +241,13 @@ export default function CreateOrder() {
         />
         {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
-      <View className="flex-1 flex-row items-center justify-between px-3">
+      <View className="flex-1 flex-row items-center justify-between p-3 bg-card rounded-xl">
         <Foundation name="shield" size={38} />
         <Image
           style={{ width: 53, height: 53 }}
           source={require('../../../assets/images/novaposhta.png')}
         />
-        <Text className="text-base px-4">
+        <Text className="text-base px-2">
           Ваші покупки захищені послугою {'\n'}
           <Text className="font-semibold">Cейф-сервіс</Text> від Нової Пошти.{'\n'}
           <Link

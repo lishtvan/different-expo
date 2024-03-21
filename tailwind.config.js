@@ -5,6 +5,7 @@ module.exports = {
       colors: {
         main: '#168c94',
         dark: '#167994',
+        card: '#f4f4f4',
       },
     },
   },
