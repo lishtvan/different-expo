@@ -1,7 +1,7 @@
 import { Foundation } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { Link, router, useLocalSearchParams } from 'expo-router';
+import { Link, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
 import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
@@ -9,6 +9,7 @@ import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import { Button, Input, Text, View } from 'tamagui';
 
+import OrderSuccess from './OrderSuccess';
 import { TUser } from '../../types';
 import { fixedEncodeURIComponent, transformPhone } from '../../utils/common';
 import { fetcher } from '../../utils/fetcher';
@@ -63,7 +64,7 @@ export default function CreateOrder() {
       await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
 
       await queryClient.invalidateQueries({ queryKey: ['listing', params.listingId] });
-      router.navigate({ pathname: '/orders' });
+      // router.navigate({ pathname: '/orders' });
     },
   });
 
@@ -97,6 +98,8 @@ export default function CreateOrder() {
       listingId: params.listingId,
     });
   };
+
+  if (mutation.isSuccess) return <OrderSuccess />;
 
   return (
     <KeyboardAwareScrollView
