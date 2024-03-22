@@ -1,7 +1,7 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Image } from 'expo-image';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, View, Text } from 'tamagui';
@@ -12,7 +12,7 @@ import { saveSession } from '../utils/secureStorage';
 
 const AuthScreen = () => {
   const queryClient = useQueryClient();
-
+  const params = useLocalSearchParams();
   const mutation = useMutation({
     mutationFn: (accessToken: string) =>
       fetcher({
@@ -23,6 +23,9 @@ const AuthScreen = () => {
     onSuccess: async ({ token }) => {
       await saveSession(token);
       await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
+      if (params.listingId) {
+        await queryClient.invalidateQueries({ queryKey: ['listing', params.listingId] });
+      }
       router.back();
     },
   });

@@ -156,6 +156,10 @@ export default function ListingPage() {
     queryKey: ['listing', listingId],
     queryFn: () => fetcher({ body: { listingId }, route: '/listing/get' }),
   });
+  const { data: user } = useQuery({
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
+  });
   const segments = useSegments();
 
   if (isLoading || !data) return null;
@@ -238,7 +242,12 @@ export default function ListingPage() {
             Написати
           </MessageButton>
           {listing.status === 'AVAILABLE' && (
-            <Link asChild href={{ pathname: '/create_order', params: { listingId: listing.id } }}>
+            <Link
+              asChild
+              href={{
+                pathname: user ? '/create_order' : '/auth',
+                params: { listingId: listing.id },
+              }}>
               <Button
                 icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
                 size="$4"
