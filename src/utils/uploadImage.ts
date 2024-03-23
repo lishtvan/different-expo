@@ -38,9 +38,9 @@ export const verifyPermission = async (
     const permissionResponse = await requestPermission();
     return permissionResponse.granted;
   } else if (permission.status === PermissionStatus.DENIED) {
-    Alert.alert('', 'Потрібно надати доступ до камери', [
-      { text: 'Скасувати', onPress: () => {}, style: 'cancel' },
-      { text: 'Надати доступ', onPress: () => Linking.openSettings() },
+    Alert.alert('Потрібно надати доступ до галереї', '', [
+      { text: 'Відкрити налаштування', onPress: () => Linking.openSettings(), isPreferred: true },
+      { text: 'Скасувати', onPress: () => {} },
     ]);
     return false;
   }
