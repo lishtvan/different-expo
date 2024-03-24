@@ -10,6 +10,12 @@ export interface TUser {
   availableListingsCount: number;
   soldListingsCount: number;
   isOwnAccount: boolean;
+  npCityRef: string;
+  npCityName: string;
+  npDepartmentRef: string;
+  npDepartmentName: string;
+  firstName: string;
+  lastName: string;
 }
 
 export interface Participants {

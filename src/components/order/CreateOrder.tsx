@@ -8,7 +8,7 @@ import { Controller, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
-import { Button, Input, Text, View } from 'tamagui';
+import { Button, Input, Spinner, Text, View } from 'tamagui';
 
 import OrderSuccess from './OrderSuccess';
 import { TUser } from '../../types';
@@ -42,10 +42,10 @@ export default function CreateOrder() {
   } = useForm({
     mode: 'onChange',
     defaultValues: {
-      firstName: '',
-      lastName: '',
-      city: { ref: '', name: '' },
-      department: { ref: '', name: '' },
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      city: { ref: user?.npCityRef, name: user?.npCityName },
+      department: { ref: user?.npDepartmentRef, name: user?.npDepartmentName },
       phone: user?.phone ? transformPhone.output('+' + user.phone) : '+380',
     },
   });
@@ -267,11 +267,16 @@ export default function CreateOrder() {
         <Button
           onPress={handleSubmit(onSubmit)}
           size="$4"
+          icon={
+            mutation.isPending
+              ? () => <Spinner className="absolute right-5" color="white" />
+              : undefined
+          }
           theme="active"
           fontSize="$6"
           borderRadius="$main"
           className="mt-2 mb-20">
-          Створити замовлення
+          {mutation.isPending ? 'Замовлення створюється...' : 'Створити замовлення'}
         </Button>
       </View>
     </KeyboardAwareScrollView>
