@@ -16,7 +16,7 @@ interface Props {
   cityName: string;
 }
 
-const RenderDesigner: FC<Props> = ({ item, listingId, cityRef, cityName }) => (
+const RenderDepartment: FC<Props> = ({ item, listingId, cityRef, cityName }) => (
   <Link
     href={{
       pathname: '/create_order',
@@ -92,7 +92,7 @@ export default function SelectDepartment() {
         data={filteredDepartments}
         ItemSeparatorComponent={() => <Separator />}
         renderItem={(object) => (
-          <RenderDesigner
+          <RenderDepartment
             cityName={params.cityName}
             cityRef={params.cityRef}
             item={object.item}

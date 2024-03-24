@@ -15,7 +15,7 @@ interface City {
   Ref: string;
 }
 
-const RenderDesigner = ({ item, listingId }: { item: City; listingId: string }) => (
+const RenderCity = ({ item, listingId }: { item: City; listingId: string }) => (
   <Link
     href={{
       pathname: '/create_order/select_department',
@@ -74,7 +74,7 @@ export default function SelectCity() {
         keyboardShouldPersistTaps="always"
         data={isLoading || !data ? [] : data}
         ItemSeparatorComponent={() => <Separator />}
-        renderItem={(object) => <RenderDesigner item={object.item} listingId={params.listingId} />}
+        renderItem={(object) => <RenderCity item={object.item} listingId={params.listingId} />}
         keyExtractor={(item) => item.Ref}
       />
     </View>

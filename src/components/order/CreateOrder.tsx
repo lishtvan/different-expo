@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import Toast from 'react-native-toast-message';
 import { Button, Input, Text, View } from 'tamagui';
 
 import OrderSuccess from './OrderSuccess';
@@ -43,8 +44,8 @@ export default function CreateOrder() {
     defaultValues: {
       firstName: '',
       lastName: '',
-      CityRecipient: { ref: '', name: '' },
-      RecipientAddress: { ref: '', name: '' },
+      city: { ref: '', name: '' },
+      department: { ref: '', name: '' },
       phone: user?.phone ? transformPhone.output('+' + user.phone) : '+380',
     },
   });
@@ -54,28 +55,27 @@ export default function CreateOrder() {
     mutationFn: (data: unknown) => fetcher({ route: '/order/create', method: 'POST', body: data }),
     onSuccess: async (res) => {
       if (res.error) {
-        // Toast.show({
-        //   type: 'error',
-        //   text1: 'Будь ласка, виправіть помилки',
-        // });
+        Toast.show({
+          type: 'error',
+          text1: 'Щось пішло не так, будь ласка, зв`яжіться з підтримкою',
+        });
         return;
       }
 
       await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
 
       await queryClient.invalidateQueries({ queryKey: ['listing', params.listingId] });
-      // router.navigate({ pathname: '/orders' });
     },
   });
 
   useEffect(() => {
     if (params.cityRef && params.cityName) {
-      setValue('CityRecipient', { name: params.cityName, ref: params.cityRef });
-      if (errors.CityRecipient?.name) clearErrors('CityRecipient.name');
+      setValue('city', { name: params.cityName, ref: params.cityRef });
+      if (errors.city?.name) clearErrors('city.name');
     }
     if (params.departmentRef && params.departmentName) {
-      setValue('RecipientAddress', { name: params.departmentName, ref: params.departmentRef });
-      if (errors.RecipientAddress?.name) clearErrors('RecipientAddress.name');
+      setValue('department', { name: params.departmentName, ref: params.departmentRef });
+      if (errors.department?.name) clearErrors('department.name');
     }
   }, [params]);
 
@@ -90,8 +90,10 @@ export default function CreateOrder() {
     const phone = parseInt(phoneNumberString.number, 10).toString();
 
     mutation.mutate({
-      CityRecipient: data.CityRecipient.ref,
-      RecipientAddress: data.RecipientAddress.name,
+      CityRecipientRef: data.city.ref,
+      CityRecipientName: data.city.name,
+      RecipientDepartmentRef: data.department.ref,
+      RecipientDepartmentName: data.department.name,
       RecipientsPhone: phone,
       firstName: data.firstName,
       lastName: data.lastName,
@@ -169,13 +171,13 @@ export default function CreateOrder() {
                     value={value}
                   />
                 )}
-                name="CityRecipient.name"
+                name="city.name"
               />
             </View>
           </Pressable>
         </Link>
-        {errors.CityRecipient?.name &&
-          validationErrors[errors.CityRecipient.name.type as keyof typeof validationErrors]}
+        {errors.city?.name &&
+          validationErrors[errors.city.name.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Link
@@ -206,13 +208,13 @@ export default function CreateOrder() {
                     value={value}
                   />
                 )}
-                name="RecipientAddress.name"
+                name="department.name"
               />
             </View>
           </Pressable>
         </Link>
-        {errors.RecipientAddress?.name &&
-          validationErrors[errors.RecipientAddress.name.type as keyof typeof validationErrors]}
+        {errors.department?.name &&
+          validationErrors[errors.department.name.type as keyof typeof validationErrors]}
       </View>
       <View>
         <Controller
