@@ -242,10 +242,10 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
                     borderRadius="$main"
                     placeholder="Оберіть категорію та розмір"
                     className="w-full"
-                    value={value ? `${getValues('category')}, ${value}` : ''}
+                    value={value ? `${value} | ${getValues('size')}` : ''}
                   />
                 )}
-                name="size"
+                name="category"
               />
               {errors.designer &&
                 validationErrors[errors.designer.type as keyof typeof validationErrors]}
