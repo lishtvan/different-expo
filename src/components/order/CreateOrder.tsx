@@ -54,10 +54,11 @@ export default function CreateOrder() {
   const mutation = useMutation({
     mutationFn: (data: unknown) => fetcher({ route: '/order/create', method: 'POST', body: data }),
     onSuccess: async (res) => {
-      if (res.error) {
+      if (res.errors) {
         Toast.show({
+          props: { height: 70 },
           type: 'error',
-          text1: 'Щось пішло не так, будь ласка, зв`яжіться з підтримкою',
+          text1: res.errors.expected || 'Щось пішло не так, будь ласка, зв`яжіться з підтримкою',
         });
         return;
       }
@@ -101,7 +102,7 @@ export default function CreateOrder() {
     });
   };
 
-  if (mutation.isSuccess) return <OrderSuccess />;
+  if (mutation.isSuccess && !mutation.data.error) return <OrderSuccess />;
 
   return (
     <KeyboardAwareScrollView

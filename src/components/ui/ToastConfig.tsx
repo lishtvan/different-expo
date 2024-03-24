@@ -12,11 +12,12 @@ export const toastConfig = {
     />
   ),
 
-  error: (props: BaseToastProps) => {
+  error: (props: BaseToastProps & { props: any }) => {
     return (
       <ErrorToast
         {...props}
         style={{
+          height: props.props.height || 60,
           borderLeftColor: 'white',
           borderRadius: 15,
           justifyContent: 'center',
@@ -28,6 +29,7 @@ export const toastConfig = {
           paddingHorizontal: 25,
           marginTop: 25,
         }}
+        text1NumberOfLines={5}
         contentContainerStyle={{
           paddingHorizontal: 0,
         }}
