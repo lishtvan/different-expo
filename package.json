@@ -68,7 +68,6 @@
     "react-native-screens": "~3.29.0",
     "react-native-toast-message": "^2.2.0",
     "react-native-use-websocket": "^0.2.6",
-    "react-native-web": "~0.19.6",
     "tamagui": "^1.61.3",
     "typesense-instantsearch-adapter": "^2.8.0"
   },
