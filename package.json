@@ -73,18 +73,18 @@
     "typesense-instantsearch-adapter": "^2.8.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.23.9",
-    "@tanstack/eslint-plugin-query": "^5.20.1",
-    "@types/react": "~18.2.64",
+    "@babel/core": "^7.24.3",
+    "@tanstack/eslint-plugin-query": "^5.28.6",
+    "@types/react": "~18.2.69",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "eslint": "^8.57.0",
     "eslint-config-universe": "^12.0.0",
-    "postcss": "^8.4.35",
+    "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "^3.3.2",
-    "typescript": "^5.4.2"
+    "typescript": "^5.4.3"
   },
   "overrides": {
     "react-refresh": "~0.14.0"
