@@ -1,12 +1,16 @@
 import { Ionicons } from '@expo/vector-icons';
 import { Link, useNavigation } from 'expo-router';
-import { useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { Button } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 
-const OrderSuccess = () => {
+interface Props {
+  orderId: string;
+}
+
+const OrderSuccess: FC<Props> = ({ orderId }) => {
   const navigation = useNavigation();
   useEffect(() => {
     navigation.setOptions({
@@ -44,7 +48,7 @@ const OrderSuccess = () => {
             На головну
           </Button>
         </Link>
-        <Link href="/orders" asChild>
+        <Link href={{ pathname: '/order', params: { orderId } }} asChild>
           <Button size="$4" theme="active" fontSize="$6" borderRadius="$main">
             Переглянути замовлення
           </Button>

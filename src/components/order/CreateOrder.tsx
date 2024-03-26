@@ -102,7 +102,9 @@ export default function CreateOrder() {
     });
   };
 
-  if (mutation.isSuccess && !mutation.data.error) return <OrderSuccess />;
+  if (mutation.isSuccess && !mutation.data.error) {
+    return <OrderSuccess orderId={mutation.data.orderId} />;
+  }
 
   return (
     <KeyboardAwareScrollView
