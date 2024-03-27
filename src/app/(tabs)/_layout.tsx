@@ -46,6 +46,7 @@ export default function TabLayout() {
         listeners={{ tabPress: onAuthTabPress }}
         options={{
           title: 'Замовлення',
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
               size={35}

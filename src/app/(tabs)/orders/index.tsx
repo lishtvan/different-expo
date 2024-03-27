@@ -1,8 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
+import { Link } from 'expo-router';
 import { Text } from 'react-native';
 import { View } from 'tamagui';
 
-import { fetcher } from '../../utils/fetcher';
+import { fetcher } from '../../../utils/fetcher';
 
 export default function OrdersScreen() {
   const { data, isLoading } = useQuery({
@@ -11,9 +12,11 @@ export default function OrdersScreen() {
   });
   if (isLoading) return null;
   if (!data) return null;
+
   return (
     <View>
-      <Text>order tab</Text>
+      <Text>orders tab</Text>
+      <Link href={{ pathname: '/orders/order', params: { orderId: 1 } }}>go to order</Link>
     </View>
   );
 }
