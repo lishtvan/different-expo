@@ -1,7 +1,13 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
+import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
-import { Pressable } from 'react-native';
+import * as WebBrowser from 'expo-web-browser';
+import { useState } from 'react';
+import { Pressable, TouchableOpacity } from 'react-native';
+import ReactNativeModal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
 import { View, Text, Separator } from 'tamagui';
 
 import { avatarFb } from '../../../utils/avatarUrlFallback';
@@ -15,6 +21,25 @@ export default function OrderScreen() {
     queryFn: () => fetcher({ body: { orderId }, route: '/order/get' }),
   });
 
+  const [isOpen, setIsOpen] = useState(false);
+
+  const copyTrackingNumber = async (text: string) => {
+    await Clipboard.setStringAsync(text);
+    Toast.show({
+      visibilityTime: 1500,
+      type: 'success',
+      text1: 'Текст скопійовано',
+    });
+    setIsOpen(false);
+  };
+
+  const openTrackingPage = async () => {
+    await WebBrowser.openBrowserAsync(
+      `https://novaposhta.ua/tracking/?cargo_number=${order.trackingNumber}`
+    );
+    setIsOpen(false);
+  };
+
   if (isLoading) return null;
   const { order, orderType } = data;
 
@@ -25,6 +50,30 @@ export default function OrderScreen() {
           headerRight: () => <Text>30 березня 16:45</Text>,
         }}
       />
+      <ReactNativeModal
+        style={{ justifyContent: 'flex-end', margin: 0 }}
+        onBackdropPress={() => setIsOpen(false)}
+        isVisible={isOpen}
+        backdropOpacity={0.2}
+        swipeDirection={['down']}>
+        <View className="mx-4 mb-16 rounded-2xl bg-white">
+          <TouchableOpacity
+            onPress={() => copyTrackingNumber(order.trackingNumber)}
+            className="flex-row justify-center border-b-2 border-b-[#eeeeee] p-3.5 gap-x-2">
+            <Ionicons name="copy-outline" size={25} />
+            <Text className="text-xl mr-8">Скопіювати</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={openTrackingPage}
+            className="flex-row justify-center items-center p-2 gap-x-1.5">
+            <Image
+              style={{ width: 40, height: 40 }}
+              source={require('../../../../assets/images/novaposhta.png')}
+            />
+            <Text className="text-xl mr-10">Відстежити</Text>
+          </TouchableOpacity>
+        </View>
+      </ReactNativeModal>
       <View className="flex-row gap-x-3">
         <Image
           className="aspect-[0.83] w-20 rounded-lg"
@@ -53,8 +102,10 @@ export default function OrderScreen() {
         <Text className="text-lg mt-1">
           <Text className="text-[#737373]">Номер накладної: </Text>
           <Text
+            pressStyle={{ opacity: 0.7 }}
+            onPress={() => setIsOpen(true)}
             style={{ textDecorationLine: 'underline' }}
-            className="font-semibold text-blue-600 ">
+            className="font-semibold text-blue-400">
             {order.trackingNumber}
           </Text>
         </Text>

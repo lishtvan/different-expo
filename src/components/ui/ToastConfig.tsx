@@ -1,23 +1,52 @@
-import { MaterialIcons } from '@expo/vector-icons';
-import { BaseToast, BaseToastProps, ErrorToast } from 'react-native-toast-message';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { BaseToastProps, ErrorToast, SuccessToast } from 'react-native-toast-message';
+
+import { mainColor } from '../../../tamagui.config';
 
 export const toastConfig = {
-  success: (props: BaseToastProps) => (
-    <BaseToast
-      {...props}
-      text1Style={{
-        fontSize: 16,
-        fontWeight: '600',
-      }}
-    />
-  ),
+  success: (props: BaseToastProps & { props: any }) => {
+    return (
+      <SuccessToast
+        {...props}
+        style={{
+          height: props.props.height || 50,
+          borderLeftColor: 'white',
+          borderRadius: 15,
+          justifyContent: 'center',
+          shadowOffset: { width: 0, height: 0 },
+          shadowOpacity: 0.4,
+          shadowRadius: 6,
+          elevation: 2,
+          alignItems: 'center',
+          paddingHorizontal: 25,
+          marginTop: 25,
+        }}
+        text1NumberOfLines={5}
+        contentContainerStyle={{
+          paddingHorizontal: 0,
+        }}
+        renderTrailingIcon={() => (
+          <Ionicons
+            name="checkmark-circle-sharp"
+            style={{ marginBottom: 1 }}
+            size={28}
+            color={mainColor}
+          />
+        )}
+        text1Style={{
+          fontSize: 16,
+          fontWeight: '500',
+        }}
+      />
+    );
+  },
 
   error: (props: BaseToastProps & { props: any }) => {
     return (
       <ErrorToast
         {...props}
         style={{
-          height: props.props.height || 60,
+          height: props.props.height || 50,
           borderLeftColor: 'white',
           borderRadius: 15,
           justifyContent: 'center',
