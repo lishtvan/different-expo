@@ -16,7 +16,13 @@ export default function OrdersScreen() {
   return (
     <View>
       <Text>orders tab</Text>
-      <Link href={{ pathname: '/orders/order', params: { orderId: 1 } }}>go to order</Link>
+      <Link
+        href={{
+          pathname: '/orders/order',
+          params: { orderId: '379b9bf4-1110-48de-a2ac-ffad57d61555' },
+        }}>
+        go to order
+      </Link>
     </View>
   );
 }

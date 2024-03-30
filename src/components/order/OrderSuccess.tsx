@@ -48,7 +48,7 @@ const OrderSuccess: FC<Props> = ({ orderId }) => {
             На головну
           </Button>
         </Link>
-        <Link href={{ pathname: '/order', params: { orderId } }} asChild>
+        <Link href={{ pathname: '/orders/order', params: { orderId } }} asChild>
           <Button size="$4" theme="active" fontSize="$6" borderRadius="$main">
             Переглянути замовлення
           </Button>
