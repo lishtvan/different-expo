@@ -2,6 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
 import * as Clipboard from 'expo-clipboard';
 import { Image } from 'expo-image';
+import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
@@ -124,12 +125,21 @@ export default function OrderScreen() {
             />
             <View className="flex-1">
               <Text className="text-lg">{order.seller.nickname}</Text>
-              <Link
-                href="/"
+              <Text
+                onLongPress={async () => {
+                  await Clipboard.setStringAsync(order.seller.phone);
+                  Toast.show({
+                    visibilityTime: 1500,
+                    type: 'success',
+                    text1: 'Текст скопійовано',
+                  });
+                }}
+                pressStyle={{ opacity: 0.7 }}
+                onPress={() => Linking.openURL(`tel:+${order.seller.phone}`)}
                 style={{ textDecorationLine: 'underline' }}
                 className="font-semibold text-[#507493] text-base mt-1.5">
                 {transformPhone.output('+' + order.seller.phone)}
-              </Link>
+              </Text>
             </View>
           </Pressable>
         </Link>

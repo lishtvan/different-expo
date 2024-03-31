@@ -32,6 +32,9 @@ const SelectCategoryAndSize = () => {
               onPress={() => {
                 setSelectedSection(section);
                 setSelectedCategory('');
+                setTimeout(() => {
+                  scrollRef.current?.scrollToEnd({ animated: true });
+                }, 200);
               }}
               className={`w-[45%] h-16 items-center justify-center rounded-xl border-[0.8px] ${section === selectedSection ? 'bg-main' : 'bg-white'}`}
               key={section}>
@@ -46,7 +49,7 @@ const SelectCategoryAndSize = () => {
       {selectedSection && (
         <Animated.View entering={FadeIn.duration(300)}>
           <Text className="font-medium text-xl pl-3 mb-3 mt-3">Категорія</Text>
-          <View className="flex-row flex-wrap gap-3 mx-auto">
+          <View className="flex-row flex-wrap gap-3 mx-auto mb-1">
             {CATEGORIES[selectedSection].map((category) => (
               <TouchableOpacity
                 onPress={() => {

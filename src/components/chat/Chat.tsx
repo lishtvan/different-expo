@@ -13,7 +13,7 @@ import {
 } from 'react-native-gifted-chat';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
-import { Avatar } from 'tamagui';
+import { Avatar, Spinner } from 'tamagui';
 
 import { mainColor } from '../../../tamagui.config';
 import { WS_URL } from '../../config/config';
@@ -151,6 +151,14 @@ const Chat = ({ token }: { token: string }) => {
 
   const headerClassname = isAndroid ? 'pl-4' : 'pb-2 pl-4';
 
+  if (!participants) {
+    return (
+      <View className="flex-1 justify-center items-center">
+        <Spinner size="large" />
+      </View>
+    );
+  }
+
   return (
     <SafeAreaView
       style={{ paddingBottom: 0 }}
@@ -162,7 +170,7 @@ const Chat = ({ token }: { token: string }) => {
             <Link asChild href={userLink}>
               <TouchableOpacity>
                 <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
-                  {participants?.recipient.nickname}
+                  {participants.recipient.nickname}
                 </Text>
               </TouchableOpacity>
             </Link>
@@ -171,7 +179,7 @@ const Chat = ({ token }: { token: string }) => {
             <Link asChild href={userLink}>
               <TouchableOpacity className={headerClassname}>
                 <Avatar circular size="$3.5">
-                  <Avatar.Image src={avatarFb(participants?.recipient.avatarUrl)} />
+                  <Avatar.Image src={avatarFb(participants.recipient.avatarUrl)} />
                 </Avatar>
               </TouchableOpacity>
             </Link>
@@ -256,7 +264,7 @@ const Chat = ({ token }: { token: string }) => {
               }}
             />
           )}
-          user={{ _id: participants?.sender.id || 0 }}
+          user={{ _id: participants.sender.id || 0 }}
         />
       </KeyboardAvoidingView>
     </SafeAreaView>

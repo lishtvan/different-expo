@@ -204,7 +204,7 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
         refreshControl={refreshControl}
         ListHeaderComponent={<Header user={user} segment={segments[1]} />}
         onEndReached={() => {
-          if (!isLastPage) showMore();
+          if (!isLastPage && hits.length) showMore();
         }}
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         numColumns={2}

@@ -1,7 +1,14 @@
-import { Entypo, Feather, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import {
+  Entypo,
+  Feather,
+  Ionicons,
+  MaterialCommunityIcons,
+  MaterialIcons,
+} from '@expo/vector-icons';
 import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { Tabs, router, usePathname } from 'expo-router';
+import { useMemo } from 'react';
 
 import Colors from '../../constants/colors';
 import { fetcher } from '../../utils/fetcher';
@@ -18,10 +25,13 @@ export default function TabLayout() {
   };
 
   const path = usePathname();
+  const hideTabBar = useMemo(
+    () => path.includes('chat') || path.includes('/messages/user'),
+    [path]
+  );
 
   if (isLoading) return null;
 
-  const hideTabBar = path.includes('chat') || path.includes('/messages/user');
   return (
     <Tabs
       screenOptions={{
@@ -49,7 +59,7 @@ export default function TabLayout() {
           headerShown: false,
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons
-              size={35}
+              size={36}
               name="truck-delivery-outline"
               color={color}
               style={{ marginBottom: -3 }}
@@ -64,8 +74,8 @@ export default function TabLayout() {
           title: 'Продати',
           headerShown: false,
           tabBarIcon: ({ color }) => (
-            <MaterialIcons
-              size={32}
+            <Ionicons
+              size={35}
               name="add-circle-outline"
               color={color}
               style={{ marginBottom: -3 }}
@@ -80,7 +90,7 @@ export default function TabLayout() {
           headerShown: false,
           title: 'Повідомлення',
           tabBarIcon: ({ color }) => (
-            <Feather size={32} name="message-circle" color={color} style={{ marginBottom: -3 }} />
+            <Feather size={33} name="message-circle" color={color} style={{ marginBottom: -3 }} />
           ),
         }}
       />
