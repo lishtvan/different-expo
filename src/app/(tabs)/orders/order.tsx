@@ -106,7 +106,7 @@ export default function OrderScreen() {
             pressStyle={{ opacity: 0.7 }}
             onPress={() => setIsOpen(true)}
             style={{ textDecorationLine: 'underline' }}
-            className="font-semibold text-blue-400">
+            className="font-semibold text-blue-600">
             {order.trackingNumber}
           </Text>
         </Text>
@@ -119,7 +119,7 @@ export default function OrderScreen() {
         <Link asChild href={`/user/${order.seller.nickname}`}>
           <Pressable className="flex-row mt-4 gap-x-3">
             <Image
-              className=" h-16 w-16 rounded-full object-cover"
+              className="h-16 w-16 rounded-full object-cover"
               source={{ uri: avatarFb(order.seller.avatarUrl) }}
               alt="selleravatar"
             />
