@@ -19,7 +19,7 @@ export default function OrdersScreen() {
       <Link
         href={{
           pathname: '/orders/order',
-          params: { orderId: '379b9bf4-1110-48de-a2ac-ffad57d61555' },
+          params: { orderId: '98c140ec-29a1-4f91-9fdd-766920864eeb' },
         }}>
         go to order
       </Link>
