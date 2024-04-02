@@ -1,5 +1,19 @@
 const weekInMillis = 7 * 24 * 60 * 60 * 1000; // Number of milliseconds in a week
 const days = ['Нд', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
+const months = [
+  'січня',
+  'лютого',
+  'березня',
+  'квітня',
+  'травня',
+  'червня',
+  'липня',
+  'серпня',
+  'вересня',
+  'жовтня',
+  'листопада',
+  'грудня',
+];
 
 export const isToday = (date: Date) => new Date().toDateString() === date.toDateString();
 
@@ -31,4 +45,12 @@ export const getLastMsgDate = (date: Date) => {
     return date.toLocaleDateString('uk-UA', { day: '2-digit', month: '2-digit' }).replace('.', '/');
   }
   return '';
+};
+
+export const formatDateToUkrainian = (date: Date) => {
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+  const year = date.getFullYear();
+
+  return `${day} ${month} ${year}`;
 };

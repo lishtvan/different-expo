@@ -12,6 +12,7 @@ import { View, Text, Separator } from 'tamagui';
 import { avatarFb } from '../../../utils/avatarUrlFallback';
 import { copyText } from '../../../utils/clipboard';
 import { transformPhone } from '../../../utils/common';
+import { formatDateToUkrainian } from '../../../utils/date';
 import { fetcher } from '../../../utils/fetcher';
 
 // LOW_PRIO: add types
@@ -28,6 +29,16 @@ const STATUS_MAPPER: any = {
     statusColor: 'text-cyan-600',
     statusText: 'Товар в дорозі',
   },
+};
+
+const getOrderDate = (createdAt: string) => {
+  const orderCreatedAtToDate = new Date(createdAt);
+
+  const dateInMinutes = orderCreatedAtToDate.toLocaleTimeString('uk-UA', {
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return `${formatDateToUkrainian(orderCreatedAtToDate)} ${dateInMinutes}`;
 };
 
 export default function OrderScreen() {
@@ -61,7 +72,7 @@ export default function OrderScreen() {
     <View className="flex-1 px-3 py-2">
       <Stack.Screen
         options={{
-          headerRight: () => <Text>30 березня 16:45</Text>,
+          headerRight: () => <Text>{getOrderDate(order.createdAt)}</Text>,
         }}
       />
       <ReactNativeModal

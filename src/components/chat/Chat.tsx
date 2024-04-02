@@ -20,6 +20,7 @@ import { WS_URL } from '../../config/config';
 import { useSession } from '../../hooks/useSession';
 import { Message, Participants } from '../../types';
 import { avatarFb } from '../../utils/avatarUrlFallback';
+import { formatDateToUkrainian } from '../../utils/date';
 import { isAndroid } from '../../utils/platform';
 
 const BUBBLE_WRAPPER_RADIUS = 14;
@@ -62,29 +63,6 @@ const styles = {
     container: { ...containerStyle },
     text: { color: 'white', ...textStyle },
   }),
-};
-
-const months = [
-  'січня',
-  'лютого',
-  'березня',
-  'квітня',
-  'травня',
-  'червня',
-  'липня',
-  'серпня',
-  'вересня',
-  'жовтня',
-  'листопада',
-  'грудня',
-];
-
-const formatDateToUkrainian = (date: Date) => {
-  const day = date.getDate();
-  const month = months[date.getMonth()];
-  const year = date.getFullYear();
-
-  return `${day} ${month} ${year}`;
 };
 
 const getFontSizeStyle = (fontSize: number) => {
