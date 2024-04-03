@@ -77,19 +77,21 @@ const Chat = ({ token }: { token: string }) => {
   const [participants, setParticipants] = useState<Participants>();
   const segments = useSegments();
 
-  const { sendJsonMessage, lastMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {
+  const {
+    sendJsonMessage,
+    lastJsonMessage: msg,
+    readyState,
+  } = useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
     options: { headers: { Cookie: `token=${token}` } },
   });
 
   useEffect(() => {
     if (readyState !== ReadyState.OPEN) return;
-    sendJsonMessage({ chatId, isConnect: true });
+    sendJsonMessage({ chatId, enterChat: true });
   }, [chatId, readyState]);
 
   useEffect(() => {
-    if (!lastMessage.data) return;
-    const msg = JSON.parse(lastMessage.data);
     if (msg.chat) {
       setMessages(
         msg.chat.Messages.map((m: Message) => ({
@@ -113,8 +115,11 @@ const Chat = ({ token }: { token: string }) => {
         },
         ...messages,
       ]);
+      if (msg.senderId !== participants?.sender.id) {
+        sendJsonMessage({ messageSeen: true, chatId });
+      }
     }
-  }, [lastMessage]);
+  }, [msg]);
 
   const onSend = useCallback((messages: IMessage[] = []) => {
     const { text } = messages[0];
