@@ -6,8 +6,8 @@ export const config = {
   local: {
     TYPESENSE: {
       server: {
-        nodes: [{ host: isAndroid ? '192.168.1.113' : '127.0.0.1', port: 8108, protocol: 'http' }],
-        apiKey: 'xyz',
+        nodes: [{ host: 'o2by0uh958xjn1igp-1.a1.typesense.net', port: 443, protocol: 'https' }],
+        apiKey: 'LStsJHZnSoNFwVXzyfJU3D9xxvvjQcyg',
       },
       additionalSearchParameters,
     },

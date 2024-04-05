@@ -1,7 +1,7 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { Link, useLocalSearchParams, usePathname, useSegments } from 'expo-router';
+import { Link, Stack, useLocalSearchParams, usePathname, useSegments } from 'expo-router';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
   useInfiniteHits,
@@ -45,6 +45,12 @@ const User = () => {
 
   return (
     <SafeAreaView edges={edges} className="flex-1">
+      <Stack.Screen
+        options={{
+          headerTitle: params.nickname,
+          headerTitleStyle: { fontWeight: 'bold', fontSize: 19 },
+        }}
+      />
       <UserContent
         user={user}
         refreshControl={

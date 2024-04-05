@@ -1,27 +1,12 @@
-import { Stack, useLocalSearchParams } from 'expo-router';
 import React from 'react';
-import { InstantSearch } from 'react-instantsearch-core';
 
 import User from '../../../components/user/User';
-import { LISTINGS_COLLECTION } from '../../../constants/listing';
-import { searchClient } from '../../../utils/searchClient';
+import SearchClient from '../../../components/wrappers/SearchClient';
 
-// TODO: move current user nickname to global state (async storage probably)
 export default function ProfileScreen() {
-  const params = useLocalSearchParams<{ nickname: string }>();
-
   return (
-    <InstantSearch
-      future={{ preserveSharedStateOnUnmount: true }}
-      indexName={LISTINGS_COLLECTION}
-      searchClient={searchClient}>
-      <Stack.Screen
-        options={{
-          headerTitle: params.nickname,
-          headerTitleStyle: { fontWeight: 'bold', fontSize: 19 },
-        }}
-      />
+    <SearchClient>
       <User />
-    </InstantSearch>
+    </SearchClient>
   );
 }
