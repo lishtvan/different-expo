@@ -1,6 +1,8 @@
 import { EvilIcons, Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import MessageButton from 'components/chat/MessageButton';
+import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import { Link, Stack, router, useLocalSearchParams, useSegments } from 'expo-router';
 import { FC, useState } from 'react';
@@ -10,13 +12,10 @@ import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 import Pinchable from 'react-native-pinchable';
 import Carousel from 'react-native-reanimated-carousel';
 import { Button, Separator, Text, View } from 'tamagui';
-
-import { mainColor } from '../../../tamagui.config';
-import { ListingResponse, RFunc } from '../../types';
-import { avatarFb } from '../../utils/avatarUrlFallback';
-import { fetcher } from '../../utils/fetcher';
-import { shareLink } from '../../utils/share';
-import MessageButton from '../chat/MessageButton';
+import { ListingResponse, RFunc } from 'types';
+import { avatarFb } from 'utils/avatarUrlFallback';
+import { fetcher } from 'utils/fetcher';
+import { shareLink } from 'utils/share';
 
 interface ListingImagesProps {
   imageUrls: string[];

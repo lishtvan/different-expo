@@ -1,3 +1,6 @@
+import ShowListingsButton from 'components/home/ShowListingsButton';
+import Delayed from 'components/wrappers/Delayed';
+import { INITIAL_PRICE } from 'constants/filter';
 import { Stack } from 'expo-router';
 import React, { useState } from 'react';
 import { useRange } from 'react-instantsearch-core';
@@ -10,11 +13,7 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native';
 import { Input, Separator, View } from 'tamagui';
-
-import ShowListingsButton from '../../../../components/home/ShowListingsButton';
-import Delayed from '../../../../components/wrappers/Delayed';
-import { INITIAL_PRICE } from '../../../../constants/filter';
-import { isAndroid } from '../../../../utils/platform';
+import { isAndroid } from 'utils/platform';
 
 const PriceFilter = () => {
   const keyboardVerticalOffset = isAndroid ? 80 : 120;

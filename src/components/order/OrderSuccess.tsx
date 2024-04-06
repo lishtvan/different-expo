@@ -1,10 +1,9 @@
 import { Ionicons } from '@expo/vector-icons';
+import { mainColor } from 'constants/colors';
 import { Link, useNavigation } from 'expo-router';
 import { FC, useEffect } from 'react';
 import { View, Text, SafeAreaView } from 'react-native';
 import { Button } from 'tamagui';
-
-import { mainColor } from '../../../tamagui.config';
 
 interface Props {
   orderId: string;

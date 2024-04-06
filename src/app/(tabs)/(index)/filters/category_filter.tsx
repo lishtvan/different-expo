@@ -1,14 +1,13 @@
 import { Entypo } from '@expo/vector-icons';
+import FilterItem from 'components/home/FilterItem';
+import ShowListingsButton from 'components/home/ShowListingsButton';
+import Delayed from 'components/wrappers/Delayed';
+import { CATEGORIES } from 'constants/listing';
 import { Stack } from 'expo-router';
 import React, { useMemo, useState } from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
 import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { ScrollView, Separator, Square, Text, View } from 'tamagui';
-
-import FilterItem from '../../../../components/home/FilterItem';
-import ShowListingsButton from '../../../../components/home/ShowListingsButton';
-import Delayed from '../../../../components/wrappers/Delayed';
-import { CATEGORIES } from '../../../../constants/listing';
 
 const Clear = () => {
   const { canRefine, refine: clearAllCategories } = useClearRefinements({

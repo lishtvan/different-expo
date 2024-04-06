@@ -1,11 +1,10 @@
 import { EvilIcons } from '@expo/vector-icons';
+import { DESIGNERS } from 'constants/listing';
 import { Link, useLocalSearchParams } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack } from 'tamagui';
-
-import { DESIGNERS } from '../../constants/listing';
-import { isAndroid } from '../../utils/platform';
+import { isAndroid } from 'utils/platform';
 
 const RenderDesigner = ({ item, listingId }: { item: string; listingId?: string }) => (
   <Link

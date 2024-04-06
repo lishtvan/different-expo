@@ -1,14 +1,13 @@
 import { Entypo } from '@expo/vector-icons';
+import ShowListingsButton from 'components/home/ShowListingsButton';
+import Delayed from 'components/wrappers/Delayed';
+import { EU_SIZES, SHORT_SIZES, SIZES } from 'constants/listing';
 import { Stack } from 'expo-router';
 import React, { FC, memo, useMemo, useState } from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { ScrollView, Separator, Square, View } from 'tamagui';
-
-import ShowListingsButton from '../../../../components/home/ShowListingsButton';
-import Delayed from '../../../../components/wrappers/Delayed';
-import { EU_SIZES, SHORT_SIZES, SIZES } from '../../../../constants/listing';
-import { RefinementListItem } from '../../../../types';
+import { RefinementListItem } from 'types';
 
 const Clear = () => {
   const { canRefine, refine: clearAllSizes } = useClearRefinements({

@@ -1,7 +1,6 @@
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { mainColor } from 'constants/colors';
 import { BaseToastProps, ErrorToast, SuccessToast } from 'react-native-toast-message';
-
-import { mainColor } from '../../../tamagui.config';
 
 export const toastConfig = {
   success: (props: BaseToastProps & { props: any }) => {

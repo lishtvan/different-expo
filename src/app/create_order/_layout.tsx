@@ -1,8 +1,7 @@
 import { Feather } from '@expo/vector-icons';
+import { mainColor } from 'constants/colors';
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
-
-import { mainColor } from '../../../tamagui.config';
 
 export const unstable_settings = { initialRouteName: 'index' };
 

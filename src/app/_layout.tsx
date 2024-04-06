@@ -7,19 +7,20 @@ import {
   QueryClientProvider,
   focusManager,
 } from '@tanstack/react-query';
+import { toastConfig } from 'components/ui/toastConfig';
+import { mainColor } from 'constants/colors';
 import { useFonts } from 'expo-font';
 import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
+import { useAppState } from 'hooks/useAppState';
+import { useOnlineManager } from 'hooks/useOnlineManager';
 import { useEffect } from 'react';
 import '../../global.css';
 import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Circle, TamaguiProvider, Theme } from 'tamagui';
 
-import tamaguiConfig, { mainColor } from '../../tamagui.config';
-import { toastConfig } from '../components/ui/ToastConfig';
-import { useAppState } from '../hooks/useAppState';
-import { useOnlineManager } from '../hooks/useOnlineManager';
+import tamaguiConfig from '../../tamagui.config';
 
 export { ErrorBoundary } from 'expo-router';
 

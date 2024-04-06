@@ -1,8 +1,7 @@
 import { Link } from 'expo-router';
 import { useHits } from 'react-instantsearch-core';
 import { Button } from 'tamagui';
-
-import { getDynamicEndingShowButton } from '../../utils/common';
+import { getDynamicEndingShowButton } from 'utils/common';
 
 const ShowListingsButton = () => {
   const { results } = useHits();

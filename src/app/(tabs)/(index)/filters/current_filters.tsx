@@ -1,23 +1,21 @@
 import { AntDesign, Entypo } from '@expo/vector-icons';
+import ShowListingsButton from 'components/home/ShowListingsButton';
+import Delayed from 'components/wrappers/Delayed';
+import { mainColor } from 'constants/colors';
+import { INITIAL_PRICE, sortItems } from 'constants/filter';
+import { SHORT_SIZES } from 'constants/listing';
 import { Link, Stack, router } from 'expo-router';
 import React, { FC, useEffect, useMemo, useState } from 'react';
 import {
   useClearRefinements,
   useCurrentRefinements,
   useRange,
-  useRefinementList,
   useSortBy,
   useToggleRefinement,
 } from 'react-instantsearch-core';
 import { SafeAreaView, TouchableOpacity } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 import { ListItem, Separator, Switch, Text, View } from 'tamagui';
-
-import { mainColor } from '../../../../../tamagui.config';
-import ShowListingsButton from '../../../../components/home/ShowListingsButton';
-import Delayed from '../../../../components/wrappers/Delayed';
-import { INITIAL_PRICE } from '../../../../constants/filter';
-import { SHORT_SIZES } from '../../../../constants/listing';
 
 interface FilterListItemProps {
   attribute: string;
@@ -129,12 +127,6 @@ const Clear = () => {
   );
 };
 
-const sortItems = [
-  { label: 'Спочатку нові', value: 'listings' },
-  { label: 'Спочатку дешеві', value: 'listings/sort/price:asc' },
-  { label: 'Спочатку дорогі', value: 'listings/sort/price:desc' },
-];
-
 const SortBy = () => {
   const sort = useSortBy({ items: sortItems });
   const [selectedSort, setSelectedSort] = useState('');
@@ -229,20 +221,6 @@ const CurrentFilters = () => {
       </SafeAreaView>
     </Delayed>
   );
-};
-
-export const VirtualFilter = () => {
-  useRefinementList({ attribute: 'category' });
-  useRefinementList({ attribute: 'designer' });
-  useRefinementList({ attribute: 'size' });
-  useRefinementList({ attribute: 'condition' });
-  useRefinementList({ attribute: 'status' });
-  useRefinementList({ attribute: 'tags' });
-  useSortBy({ items: sortItems });
-  useToggleRefinement({ attribute: 'status', on: 'SOLD', off: 'AVAILABLE' });
-  useRange({ attribute: 'price' });
-
-  return null;
 };
 
 const CurrentFiltersScreen = () => {

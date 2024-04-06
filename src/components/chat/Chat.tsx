@@ -1,5 +1,8 @@
 import { Entypo, EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
+import { WS_URL } from 'config';
+import { mainColor } from 'constants/colors';
 import { Stack, useLocalSearchParams, Link, useSegments } from 'expo-router';
+import { useSession } from 'hooks/useSession';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
 import {
@@ -14,14 +17,10 @@ import {
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { Avatar, Spinner } from 'tamagui';
-
-import { mainColor } from '../../../tamagui.config';
-import { WS_URL } from '../../config/config';
-import { useSession } from '../../hooks/useSession';
-import { Message, Participants } from '../../types';
-import { avatarFb } from '../../utils/avatarUrlFallback';
-import { formatDateToUkrainian } from '../../utils/date';
-import { isAndroid } from '../../utils/platform';
+import { Message, Participants } from 'types';
+import { avatarFb } from 'utils/avatarUrlFallback';
+import { formatDateToUkrainian } from 'utils/date';
+import { isAndroid } from 'utils/platform';
 
 const BUBBLE_WRAPPER_RADIUS = 14;
 const bubbleWrapperStyle = {

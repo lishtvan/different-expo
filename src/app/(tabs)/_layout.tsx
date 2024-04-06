@@ -7,14 +7,13 @@ import {
 } from '@expo/vector-icons';
 import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
+import { WS_URL } from 'config';
+import Colors from 'constants/colors';
 import { Tabs, router, usePathname } from 'expo-router';
+import { useSession } from 'hooks/useSession';
 import { useEffect, useMemo } from 'react';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
-
-import { WS_URL } from '../../config/config';
-import Colors from '../../constants/colors';
-import { useSession } from '../../hooks/useSession';
-import { fetcher } from '../../utils/fetcher';
+import { fetcher } from 'utils/fetcher';
 
 const WebsocketConnection = ({ refetch, session }: { refetch: () => void; session: string }) => {
   const { sendJsonMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {

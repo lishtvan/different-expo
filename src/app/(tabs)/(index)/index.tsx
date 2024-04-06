@@ -1,16 +1,15 @@
 import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import HomeListings from 'components/home/Listings';
+import { INITIAL_PRICE } from 'constants/filter';
 import { Link, Stack } from 'expo-router';
+import { useAppState } from 'hooks/useAppState';
+import { useRefresh } from 'hooks/useRefresh';
 import React, { useMemo } from 'react';
 import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
 import { Dimensions, AppStateStatus, RefreshControl, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack, debounce } from 'tamagui';
-
-import HomeListings from '../../../components/home/Listings';
-import { INITIAL_PRICE } from '../../../constants/filter';
-import { useAppState } from '../../../hooks/useAppState';
-import { useRefresh } from '../../../hooks/useRefresh';
-import { delay } from '../../../utils/common';
-import { isAndroid } from '../../../utils/platform';
+import { delay } from 'utils/common';
+import { isAndroid } from 'utils/platform';
 
 const HomeListingsWrapper = () => {
   const search = useInstantSearch();

@@ -1,17 +1,9 @@
+import { CATEGORIES, EU_SIZES, SECTIONS, SHORT_SIZES, SIZES, Section } from 'constants/listing';
 import { router, useLocalSearchParams } from 'expo-router';
 import { useRef, useState } from 'react';
 import { ScrollView, TouchableOpacity } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { Text, View } from 'tamagui';
-
-import {
-  CATEGORIES,
-  EU_SIZES,
-  SECTIONS,
-  SHORT_SIZES,
-  SIZES,
-  Section,
-} from '../../constants/listing';
 
 const SelectCategoryAndSize = () => {
   const scrollRef = useRef<ScrollView>(null);

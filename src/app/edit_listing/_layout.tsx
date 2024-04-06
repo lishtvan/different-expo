@@ -1,10 +1,9 @@
 import { AntDesign } from '@expo/vector-icons';
+import { toastConfig } from 'components/ui/toastConfig';
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Circle } from 'tamagui';
-
-import { toastConfig } from '../../components/ui/ToastConfig';
 
 export const unstable_settings = { initialRouteName: 'index' };
 

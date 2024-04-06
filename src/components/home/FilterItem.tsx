@@ -1,8 +1,7 @@
 import { FC, memo } from 'react';
 import { TouchableOpacity } from 'react-native';
 import { Text, View } from 'tamagui';
-
-import { RefinementListItem } from '../../types';
+import { RefinementListItem } from 'types';
 
 interface Props {
   item: RefinementListItem;

@@ -1,19 +1,14 @@
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { InputValidationError } from 'components/ui/InputValidationErrors';
+import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import React, { FC } from 'react';
 import { Alert, TouchableOpacity } from 'react-native';
 import { Text, View } from 'tamagui';
-
-import { mainColor } from '../../../tamagui.config';
-import { SelectedImage } from '../../types';
-import { isAndroid } from '../../utils/platform';
-import {
-  uploadImages,
-  validateMultipleImagesSize,
-  verifyPermission,
-} from '../../utils/uploadImage';
-import { InputValidationError } from '../ui/InputValidationErrors';
+import { SelectedImage } from 'types';
+import { isAndroid } from 'utils/platform';
+import { uploadImages, validateMultipleImagesSize, verifyPermission } from 'utils/uploadImage';
 
 interface Props {
   updateSelectedImages: (images: SelectedImage[]) => void;

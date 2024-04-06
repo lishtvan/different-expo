@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
-
-import SaveListing from '../../../components/sell/SaveListing';
-import { fetcher } from '../../../utils/fetcher';
+import SaveListing from 'components/sell/SaveListing';
+import { fetcher } from 'utils/fetcher';
 
 export default function SellScreen() {
   const user = useQuery({

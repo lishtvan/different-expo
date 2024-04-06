@@ -2,8 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { Text } from 'tamagui';
-
-import { fetcher } from '../../../utils/fetcher';
+import { fetcher } from 'utils/fetcher';
 
 export const unstable_settings = { initialRouteName: 'index' };
 

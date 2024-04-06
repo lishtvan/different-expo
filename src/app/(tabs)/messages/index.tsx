@@ -1,15 +1,14 @@
 import { FlashList } from '@shopify/flash-list';
 import { useQuery } from '@tanstack/react-query';
 import { Link, useFocusEffect } from 'expo-router';
+import { useRefresh } from 'hooks/useRefresh';
 import { useCallback } from 'react';
 import { RefreshControl } from 'react-native';
 import { Avatar, Text, View } from 'tamagui';
-
-import { useRefresh } from '../../../hooks/useRefresh';
-import { Chat } from '../../../types';
-import { avatarFb } from '../../../utils/avatarUrlFallback';
-import { getLastMsgDate } from '../../../utils/date';
-import { fetcher } from '../../../utils/fetcher';
+import { Chat } from 'types';
+import { avatarFb } from 'utils/avatarUrlFallback';
+import { getLastMsgDate } from 'utils/date';
+import { fetcher } from 'utils/fetcher';
 
 interface GetChatsResponse {
   chats: Chat[];

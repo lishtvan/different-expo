@@ -1,3 +1,3 @@
-import ChatScreen from '../../../components/chat/Chat';
+import ChatScreen from 'components/chat/Chat';
 
 export default ChatScreen;

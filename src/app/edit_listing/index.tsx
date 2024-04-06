@@ -1,9 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
+import SaveListing from 'components/sell/SaveListing';
 import { useLocalSearchParams } from 'expo-router';
-
-import SaveListing from '../../components/sell/SaveListing';
-import { EditListingParams, ListingResponse } from '../../types';
-import { fetcher } from '../../utils/fetcher';
+import { EditListingParams, ListingResponse } from 'types';
+import { fetcher } from 'utils/fetcher';
 
 export default function EditListingScreen() {
   const params = useLocalSearchParams<EditListingParams>();

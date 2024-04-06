@@ -8,12 +8,11 @@ import { useState } from 'react';
 import { Pressable, TouchableOpacity } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
 import { View, Text, Separator } from 'tamagui';
-
-import { avatarFb } from '../../../utils/avatarUrlFallback';
-import { copyText } from '../../../utils/clipboard';
-import { transformPhone } from '../../../utils/common';
-import { formatDateToUkrainian } from '../../../utils/date';
-import { fetcher } from '../../../utils/fetcher';
+import { avatarFb } from 'utils/avatarUrlFallback';
+import { copyText } from 'utils/clipboard';
+import { transformPhone } from 'utils/common';
+import { formatDateToUkrainian } from 'utils/date';
+import { fetcher } from 'utils/fetcher';
 
 // LOW_PRIO: add types
 const STATUS_MAPPER: any = {

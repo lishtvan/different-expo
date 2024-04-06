@@ -1,5 +1,8 @@
 import { Entypo } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { InputValidationError, validationErrors } from 'components/ui/InputValidationErrors';
+import TextArea from 'components/ui/TextArea';
+import { mainColor } from 'constants/colors';
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, router } from 'expo-router';
 import React, { useState } from 'react';
@@ -14,16 +17,9 @@ import {
 } from 'react-native';
 import Modal from 'react-native-modal';
 import { Text, Avatar, Input, View } from 'tamagui';
-
-import { mainColor } from '../../../../tamagui.config';
-import {
-  InputValidationError,
-  validationErrors,
-} from '../../../components/ui/InputValidationErrors';
-import TextArea from '../../../components/ui/TextArea';
-import { DEFAULT_AVATAR } from '../../../utils/avatarUrlFallback';
-import { fetcher } from '../../../utils/fetcher';
-import { uploadImage, validateSingleImageSize, verifyPermission } from '../../../utils/uploadImage';
+import { DEFAULT_AVATAR } from 'utils/avatarUrlFallback';
+import { fetcher } from 'utils/fetcher';
+import { uploadImage, validateSingleImageSize, verifyPermission } from 'utils/uploadImage';
 
 const SettingsScreen = () => {
   const [newAvatarUrl, setNewAvatarUrl] = useState<string | null>();

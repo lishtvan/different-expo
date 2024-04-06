@@ -2,8 +2,7 @@ import { useMutation } from '@tanstack/react-query';
 import { router } from 'expo-router';
 import React from 'react';
 import { Button, ButtonProps } from 'tamagui';
-
-import { fetcher } from '../../utils/fetcher';
+import { fetcher } from 'utils/fetcher';
 
 interface MessageButtonProps extends ButtonProps {
   recipientId: number;

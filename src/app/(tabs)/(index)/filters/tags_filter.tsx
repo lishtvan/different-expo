@@ -1,13 +1,12 @@
 import { FlashList } from '@shopify/flash-list';
+import FilterItem from 'components/home/FilterItem';
+import ShowListingsButton from 'components/home/ShowListingsButton';
+import Delayed from 'components/wrappers/Delayed';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
 import { SafeAreaView, Text, TouchableOpacity } from 'react-native';
 import { Separator, View } from 'tamagui';
-
-import FilterItem from '../../../../components/home/FilterItem';
-import ShowListingsButton from '../../../../components/home/ShowListingsButton';
-import Delayed from '../../../../components/wrappers/Delayed';
 
 const Clear = () => {
   const { canRefine, refine: clearAllTags } = useClearRefinements({

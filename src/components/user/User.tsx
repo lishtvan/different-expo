@@ -1,7 +1,12 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
+import MessageButton from 'components/chat/MessageButton';
+import ListingCard from 'components/listings/ListingCard';
+import Delayed from 'components/wrappers/Delayed';
+import { mainColor } from 'constants/colors';
 import { Link, Stack, useLocalSearchParams, usePathname, useSegments } from 'expo-router';
+import { useRefresh } from 'hooks/useRefresh';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
   useInfiniteHits,
@@ -12,16 +17,10 @@ import {
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
 import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
-
-import { mainColor } from '../../../tamagui.config';
-import { useRefresh } from '../../hooks/useRefresh';
-import { TListing, TUser } from '../../types';
-import { avatarFb } from '../../utils/avatarUrlFallback';
-import { fetcher } from '../../utils/fetcher';
-import { shareLink } from '../../utils/share';
-import MessageButton from '../chat/MessageButton';
-import ListingCard from '../listings/ListingCard';
-import Delayed from '../wrappers/Delayed';
+import { TListing, TUser } from 'types';
+import { avatarFb } from 'utils/avatarUrlFallback';
+import { fetcher } from 'utils/fetcher';
+import { shareLink } from 'utils/share';
 
 // TODO: implement refresh on reopen app after user route is implemented
 const User = () => {

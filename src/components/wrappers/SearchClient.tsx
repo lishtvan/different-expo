@@ -1,8 +1,7 @@
+import { LISTINGS_COLLECTION } from 'constants/listing';
 import React from 'react';
 import { InstantSearch } from 'react-instantsearch-core';
-
-import { LISTINGS_COLLECTION } from '../../constants/listing';
-import { searchClient } from '../../utils/searchClient';
+import { searchClient } from 'utils/searchClient';
 
 type Props = {
   children: React.ReactNode;

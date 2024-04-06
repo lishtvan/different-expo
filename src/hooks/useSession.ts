@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-import { getSession } from '../utils/secureStorage';
+import { getSession } from 'utils/secureStorage';
 
 export const useSession = () => {
   const [token, setToken] = useState<string | null>(null);

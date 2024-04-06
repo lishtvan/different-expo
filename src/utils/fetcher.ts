@@ -1,5 +1,5 @@
-import { getSession } from './secureStorage';
-import { API_URL } from '../config/config';
+import { API_URL } from 'config';
+import { getSession } from 'utils/secureStorage';
 
 interface Fetcher {
   (input: {

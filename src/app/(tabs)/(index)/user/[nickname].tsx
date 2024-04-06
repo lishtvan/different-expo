@@ -1,5 +1,5 @@
-import User from '../../../../components/user/User';
-import SearchClient from '../../../../components/wrappers/SearchClient';
+import User from 'components/user/User';
+import SearchClient from 'components/wrappers/SearchClient';
 
 export default function UserScreen() {
   return (

@@ -1,4 +1,5 @@
 const tintColorLight = '#168c94';
+export const mainColor = '#168c94';
 
 export default {
   light: {

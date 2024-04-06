@@ -1,15 +1,14 @@
 import { EvilIcons } from '@expo/vector-icons';
 import { FlashList } from '@shopify/flash-list';
+import FilterItem from 'components/home/FilterItem';
+import ShowListingsButton from 'components/home/ShowListingsButton';
+import Delayed from 'components/wrappers/Delayed';
 import { Stack } from 'expo-router';
 import React from 'react';
 import { useClearRefinements, useRefinementList } from 'react-instantsearch-core';
 import { SafeAreaView, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, Text, View, XStack } from 'tamagui';
-
-import FilterItem from '../../../../components/home/FilterItem';
-import ShowListingsButton from '../../../../components/home/ShowListingsButton';
-import Delayed from '../../../../components/wrappers/Delayed';
-import { isAndroid } from '../../../../utils/platform';
+import { isAndroid } from 'utils/platform';
 
 const Clear = () => {
   const { canRefine, refine: clearAllDesigners } = useClearRefinements({

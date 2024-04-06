@@ -1,14 +1,13 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, View, Text } from 'tamagui';
-
-import { mainColor } from '../../tamagui.config';
-import { fetcher } from '../utils/fetcher';
-import { saveSession } from '../utils/secureStorage';
+import { fetcher } from 'utils/fetcher';
+import { saveSession } from 'utils/secureStorage';
 
 const AuthScreen = () => {
   const queryClient = useQueryClient();

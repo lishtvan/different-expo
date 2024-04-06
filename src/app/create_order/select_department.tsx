@@ -4,10 +4,9 @@ import { Link, useLocalSearchParams } from 'expo-router';
 import { FC, useEffect, useState } from 'react';
 import { FlatList, TouchableOpacity } from 'react-native';
 import { Button, Input, Separator, Text, View, XStack } from 'tamagui';
-
-import { fixedEncodeURIComponent } from '../../utils/common';
-import { DepartmentNP, searchDepartments } from '../../utils/novaposhta';
-import { isAndroid } from '../../utils/platform';
+import { fixedEncodeURIComponent } from 'utils/common';
+import { DepartmentNP, searchDepartments } from 'utils/novaposhta';
+import { isAndroid } from 'utils/platform';
 
 interface Props {
   item: DepartmentNP;

@@ -1,5 +1,7 @@
 import { Foundation } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import OrderSuccess from 'components/order/OrderSuccess';
+import { InputValidationError, validationErrors } from 'components/ui/InputValidationErrors';
 import { Image } from 'expo-image';
 import { Link, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
@@ -9,12 +11,9 @@ import { Pressable } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
 import { Button, Input, Spinner, Text, View } from 'tamagui';
-
-import OrderSuccess from './OrderSuccess';
-import { TUser } from '../../types';
-import { fixedEncodeURIComponent, transformPhone } from '../../utils/common';
-import { fetcher } from '../../utils/fetcher';
-import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
+import { TUser } from 'types';
+import { fixedEncodeURIComponent, transformPhone } from 'utils/common';
+import { fetcher } from 'utils/fetcher';
 
 type CreateOrderParams = {
   listingId: string;

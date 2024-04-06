@@ -1,3 +1,4 @@
+import { API_URL } from 'config';
 import * as FileSystem from 'expo-file-system';
 import {
   ImagePickerAsset,
@@ -6,9 +7,7 @@ import {
   getCameraPermissionsAsync,
 } from 'expo-image-picker';
 import { Alert, Linking } from 'react-native';
-
-import { getSession } from './secureStorage';
-import { API_URL } from '../config/config';
+import { getSession } from 'utils/secureStorage';
 
 export const uploadImage = async (image: ImagePickerAsset) => {
   const token = await getSession();

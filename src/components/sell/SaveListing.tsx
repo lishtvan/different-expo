@@ -2,6 +2,11 @@ import { AntDesign, Foundation } from '@expo/vector-icons';
 import { MenuView } from '@react-native-menu/menu';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import validateCard from 'card-validator';
+import Photos from 'components/sell/Photos';
+import { InputValidationError, validationErrors } from 'components/ui/InputValidationErrors';
+import TextArea from 'components/ui/TextArea';
+import { mainColor } from 'constants/colors';
+import { CONDITIONS, TAGS } from 'constants/listing';
 import { Image } from 'expo-image';
 import { Link, router, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
@@ -12,15 +17,9 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Toast from 'react-native-toast-message';
 import { Button, Input, Text, View } from 'tamagui';
-
-import Photos from './Photos';
-import { mainColor } from '../../../tamagui.config';
-import { CONDITIONS, TAGS } from '../../constants/listing';
-import { EditListingParams, SelectedImage, TListing } from '../../types';
-import { transformPhone } from '../../utils/common';
-import { fetcher } from '../../utils/fetcher';
-import { InputValidationError, validationErrors } from '../ui/InputValidationErrors';
-import TextArea from '../ui/TextArea';
+import { EditListingParams, SelectedImage, TListing } from 'types';
+import { transformPhone } from 'utils/common';
+import { fetcher } from 'utils/fetcher';
 
 interface SaveListingProps {
   listing: Partial<TListing<number>>;

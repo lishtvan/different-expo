@@ -1,14 +1,13 @@
 import { useScrollToTop } from '@react-navigation/native';
+import ListingCard from 'components/listings/ListingCard';
+import Delayed from 'components/wrappers/Delayed';
 import { useFocusEffect, useSegments } from 'expo-router';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useInfiniteHits } from 'react-instantsearch-core';
 import { FlatList, RefreshControlProps } from 'react-native';
 import { Spinner, Text, View } from 'tamagui';
-
-import { TListing } from '../../types';
-import { getDynamicEndingForListingsCount } from '../../utils/common';
-import ListingCard from '../listings/ListingCard';
-import Delayed from '../wrappers/Delayed';
+import { TListing } from 'types';
+import { getDynamicEndingForListingsCount } from 'utils/common';
 
 const RenderItem = ({ item, segment }: { item: TListing; segment?: string }) => {
   return (

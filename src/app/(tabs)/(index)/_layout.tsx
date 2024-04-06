@@ -1,7 +1,6 @@
+import VirtualFilter from 'components/filters/VirtualFilter';
+import SearchClient from 'components/wrappers/SearchClient';
 import { Stack } from 'expo-router';
-
-import { VirtualFilter } from './filters/current_filters';
-import SearchClient from '../../../components/wrappers/SearchClient';
 
 export const unstable_settings = { initialRouteName: 'index' };
 

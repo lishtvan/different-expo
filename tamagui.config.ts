@@ -5,7 +5,7 @@ import { shorthands } from '@tamagui/shorthands';
 import { themes, tokens } from '@tamagui/themes';
 import { createTamagui } from 'tamagui';
 
-export const mainColor = '#168c94';
+const mainColor = '#168c94';
 
 const animations = createAnimations({
   bouncy: {

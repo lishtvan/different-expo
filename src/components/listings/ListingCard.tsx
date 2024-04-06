@@ -1,10 +1,9 @@
+import { SHORT_SIZES } from 'constants/listing';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import React, { FC, memo } from 'react';
 import { Text, View } from 'tamagui';
-
-import { SHORT_SIZES } from '../../constants/listing';
-import { TListing } from '../../types';
+import { TListing } from 'types';
 
 interface Props {
   listing: TListing;
