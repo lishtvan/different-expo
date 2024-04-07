@@ -28,6 +28,14 @@ const STATUS_MAPPER: any = {
     statusColor: 'text-cyan-600',
     statusText: 'Товар в дорозі',
   },
+  FINISHED: {
+    statusColor: 'text-main',
+    statusText: 'Завершено',
+  },
+  CANCELED: {
+    statusColor: 'text-red-500',
+    statusText: 'Скасовано',
+  },
 };
 
 const getOrderDate = (createdAt: string) => {
