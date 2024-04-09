@@ -68,7 +68,7 @@ const getFontSizeStyle = (fontSize: number) => {
   return { left: { fontSize }, right: { fontSize } };
 };
 
-const Chat = ({ token }: { token: string }) => {
+const Chat = () => {
   const [messages, setMessages] = useState<IMessage[]>([]);
   const insets = useSafeAreaInsets();
   const ref = useRef<any>(null);
@@ -76,13 +76,15 @@ const Chat = ({ token }: { token: string }) => {
   const [participants, setParticipants] = useState<Participants>();
   const segments = useSegments();
 
+  const session = useSession();
+
   const {
     sendJsonMessage,
     lastJsonMessage: msg,
     readyState,
   } = useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
-    options: { headers: { Cookie: `token=${token}` } },
+    options: { headers: { Cookie: `token=${session}` } },
   });
 
   useEffect(() => {
@@ -253,11 +255,4 @@ const Chat = ({ token }: { token: string }) => {
   );
 };
 
-const ChatScreen = () => {
-  const token = useSession();
-  if (!token) return;
-
-  return <Chat token={token} />;
-};
-
-export default ChatScreen;
+export default Chat;

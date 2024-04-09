@@ -6,13 +6,17 @@ export const config = {
   local: {
     TYPESENSE: {
       server: {
-        nodes: [{ host: isAndroid ? '192.168.1.113' : '127.0.0.1', port: 8108, protocol: 'http' }],
-        apiKey: 'xyz',
+        nodes: [{ host: 'o2by0uh958xjn1igp-1.a1.typesense.net', port: 443, protocol: 'https' }],
+        apiKey: 'LStsJHZnSoNFwVXzyfJU3D9xxvvjQcyg',
       },
       additionalSearchParameters,
     },
-    WS_URL: isAndroid ? 'wss://a1eb-176-36-11-52.ngrok-free.app' : 'ws://localhost:8000',
-    API_URL: isAndroid ? 'https://a1eb-176-36-11-52.ngrok-free.app' : 'http://localhost:8000',
+    WS_URL: isAndroid
+      ? 'wss://a1eb-176-36-11-52.ngrok-free.app'
+      : 'wss://66e4-91-218-13-211.ngrok-free.app',
+    API_URL: isAndroid
+      ? 'https://a1eb-176-36-11-52.ngrok-free.app'
+      : 'https://66e4-91-218-13-211.ngrok-free.app',
   },
   production: {
     TYPESENSE: {

@@ -1,17 +1,10 @@
-import { useEffect, useState } from 'react';
-import { getSession } from 'utils/secureStorage';
+import { useMemo } from 'react';
+import { getSessionSync } from 'utils/secureStorage';
 
 export const useSession = () => {
-  const [token, setToken] = useState<string | null>(null);
-
-  useEffect(() => {
-    const getSessionToken = async () => {
-      const sessionToken = await getSession();
-      setToken(sessionToken);
-    };
-
-    getSessionToken();
+  const session = useMemo(() => {
+    return getSessionSync();
   }, []);
 
-  return token;
+  return session;
 };

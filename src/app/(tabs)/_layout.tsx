@@ -10,15 +10,25 @@ import { useQuery } from '@tanstack/react-query';
 import { WS_URL } from 'config';
 import Colors from 'constants/colors';
 import { Tabs, router, usePathname } from 'expo-router';
-import { useSession } from 'hooks/useSession';
 import { useEffect, useMemo } from 'react';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { fetcher } from 'utils/fetcher';
+import { getSessionSync } from 'utils/secureStorage';
 
-const WebsocketConnection = ({ refetch, session }: { refetch: () => void; session: string }) => {
+const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId: string }) => {
+  const session = useMemo(() => {
+    return getSessionSync();
+  }, [userId]);
+
   const { sendJsonMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
-    onMessage: () => {
+    onMessage: (msg) => {
+      if (!msg.data) return;
+      const jsonMsg = JSON.parse(msg.data);
+      // TODO: implement toast
+      if (jsonMsg.text && jsonMsg.senderId === userId) return;
+
+      console.log('refetching...');
       refetch();
     },
     options: { headers: { Cookie: `token=${session}` } },
@@ -27,7 +37,7 @@ const WebsocketConnection = ({ refetch, session }: { refetch: () => void; sessio
   useEffect(() => {
     if (readyState !== ReadyState.OPEN) return;
     sendJsonMessage({ connect: true });
-  }, [readyState]);
+  }, [readyState, userId]);
 
   return null;
 };
@@ -42,7 +52,12 @@ export default function TabLayout() {
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
-  const session = useSession();
+  const path = usePathname();
+
+  const hideTabBar = useMemo(
+    () => path.includes('chat') || path.includes('/messages/user'),
+    [path]
+  );
 
   const onAuthTabPress = (e: EventArg<'tabPress', true, undefined>) => {
     if (user) return;
@@ -50,17 +65,11 @@ export default function TabLayout() {
     router.navigate('/auth');
   };
 
-  const path = usePathname();
-  const hideTabBar = useMemo(
-    () => path.includes('chat') || path.includes('/messages/user'),
-    [path]
-  );
-
   if (isLoading) return null;
 
   return (
     <>
-      {session && user && <WebsocketConnection session={session} refetch={refetch} />}
+      {user && <WebsocketConnection refetch={refetch} userId={user.id} />}
       <Tabs
         screenOptions={{
           tabBarStyle: { display: hideTabBar ? 'none' : 'flex' },
