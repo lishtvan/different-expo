@@ -31,9 +31,18 @@ const RenderChat = ({ item }: { item: Chat }) => {
               {getLastMsgDate(new Date(item.Messages[0].createdAt))}
             </Text>
           </View>
-          <Text numberOfLines={2} className="pr-3">
-            {item.Messages[0].text}
-          </Text>
+          {item.notification ? (
+            <View className="flex-row justify-between items-center pr-1">
+              <Text numberOfLines={2} className="w-[92%] pr-2.5">
+                {item.Messages[0].text}
+              </Text>
+              <View className="rounded-full bg-main w-4 h-4 mr-auto" />
+            </View>
+          ) : (
+            <Text numberOfLines={2} className="pr-3">
+              {item.Messages[0].text}
+            </Text>
+          )}
         </View>
       </View>
     </Link>
