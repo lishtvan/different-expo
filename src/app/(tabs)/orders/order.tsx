@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery } from '@tanstack/react-query';
+import { STATUS_MAPPER } from 'constants/order';
 import { Image } from 'expo-image';
 import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
@@ -13,30 +14,6 @@ import { copyText } from 'utils/clipboard';
 import { transformPhone } from 'utils/common';
 import { formatDateToUkrainian } from 'utils/date';
 import { fetcher } from 'utils/fetcher';
-
-// LOW_PRIO: add types
-const STATUS_MAPPER: any = {
-  PAYMENT: {
-    statusColor: 'text-orange-600',
-    statusText: 'Очікування на оплату',
-  },
-  HANDLING: {
-    statusColor: 'text-amber-500',
-    statusText: 'Очікування на відправку',
-  },
-  SHIPPING: {
-    statusColor: 'text-cyan-600',
-    statusText: 'Товар в дорозі',
-  },
-  FINISHED: {
-    statusColor: 'text-main',
-    statusText: 'Завершено',
-  },
-  CANCELED: {
-    statusColor: 'text-red-500',
-    statusText: 'Скасовано',
-  },
-};
 
 const getOrderDate = (createdAt: string) => {
   const orderCreatedAtToDate = new Date(createdAt);
@@ -119,9 +96,7 @@ export default function OrderScreen() {
           <Text className="mt-2" numberOfLines={2}>
             {order.Listing.title}
           </Text>
-          <Text className="mt-auto text-base font-bold" numberOfLines={2}>
-            {order.Listing.price} грн
-          </Text>
+          <Text className="mt-auto text-base font-bold">{order.Listing.price} грн</Text>
         </View>
       </View>
       <Separator borderColor="$gray7Light" className="mt-3" />
