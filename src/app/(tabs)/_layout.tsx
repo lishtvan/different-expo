@@ -54,10 +54,12 @@ export default function TabLayout() {
 
   const path = usePathname();
 
-  const hideTabBar = useMemo(
-    () => path.includes('chat') || path.includes('/messages/user'),
-    [path]
-  );
+  const tabBarStyle: any = useMemo(() => {
+    if (path === '/messages') return { position: 'absolute' };
+    const hide = path.includes('chat') || path.includes('/messages/user');
+    if (hide) return { display: 'none' };
+    return { display: 'flex' };
+  }, [path]);
 
   const onAuthTabPress = (e: EventArg<'tabPress', true, undefined>) => {
     if (user) return;
@@ -72,7 +74,7 @@ export default function TabLayout() {
       {user && <WebsocketConnection refetch={refetch} userId={user.id} />}
       <Tabs
         screenOptions={{
-          tabBarStyle: { display: hideTabBar ? 'none' : 'flex' },
+          tabBarStyle,
           tabBarActiveTintColor: Colors['light'].tint,
           headerShadowVisible: false,
           headerTitleAlign: 'center',

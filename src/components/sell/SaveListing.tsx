@@ -463,7 +463,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
           </Text>
         </View>
       )}
-      <View className="mb-24 w-full" />
+      <View className="mb-5 w-full" />
     </KeyboardAwareScrollView>
   );
 };

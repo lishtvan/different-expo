@@ -83,7 +83,7 @@ export default function MessagesScreen() {
       data={chats}
       estimatedItemSize={80}
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
-      contentContainerStyle={{ paddingTop: 12 }}
+      contentContainerStyle={{ paddingTop: 12, paddingBottom: 90 }}
       renderItem={RenderChat}
       keyExtractor={(item) => item.id}
     />

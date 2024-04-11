@@ -69,7 +69,7 @@ const SelectCategoryAndSize = () => {
         </Animated.View>
       )}
       {selectedCategory && (
-        <View className="mb-20 w-full">
+        <View className="mb-3 w-full">
           <Text className="font-medium text-xl pl-3 mb-3 mt-3">Розмір</Text>
           <View className="flex-row flex-wrap gap-2 px-3">
             {SIZES[selectedSection as Section].map((size) => (
