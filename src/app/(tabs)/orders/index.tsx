@@ -52,9 +52,11 @@ const Orders: FC<Props> = ({ orders, type }) => {
   if (!orders.length) {
     return (
       <View className="flex-1 justify-center items-center">
-        <Text className="text-base">
-          {type === 'sell' ? 'Продажі відсутні' : 'Покупки відсутні'}
-        </Text>
+        <View className="rounded-3xl bg-[#ebebeb] px-4 py-1.5">
+          <Text className="text-base">
+            {type === 'sell' ? 'Продажі відсутні' : 'Покупки відсутні'}
+          </Text>
+        </View>
       </View>
     );
   }

@@ -122,13 +122,16 @@ const Chat = () => {
     }
   }, [msg]);
 
-  const onSend = useCallback((messages: IMessage[] = []) => {
-    const { text } = messages[0];
-    sendJsonMessage({ text, chatId });
-    if (ref.current) {
-      ref.current._listRef._scrollRef.scrollTo({ y: 0, animated: true });
-    }
-  }, []);
+  const onSend = useCallback(
+    (messages: IMessage[] = []) => {
+      const { text } = messages[0];
+      sendJsonMessage({ text, chatId, receiverId: participants?.recipient.id });
+      if (ref.current) {
+        ref.current._listRef._scrollRef.scrollTo({ y: 0, animated: true });
+      }
+    },
+    [participants]
+  );
 
   const userLink =
     `/${segments[1]}/user/${participants?.recipient.nickname}` as `${string}:${string}`;

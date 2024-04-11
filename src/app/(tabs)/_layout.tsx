@@ -124,7 +124,7 @@ export default function TabLayout() {
           name="messages"
           listeners={{ tabPress: onAuthTabPress }}
           options={{
-            tabBarBadge: user?.chatNotificationCount || undefined,
+            tabBarBadge: user?._count.Notifications || undefined,
             headerShown: false,
             title: 'Повідомлення',
             tabBarIcon: ({ color }) => (
