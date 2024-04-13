@@ -17,8 +17,10 @@ import { useOnlineManager } from 'hooks/useOnlineManager';
 import { useEffect } from 'react';
 import '../../global.css';
 import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
+import { enableScreens } from 'react-native-screens';
 import Toast from 'react-native-toast-message';
 import { Circle, TamaguiProvider, Theme } from 'tamagui';
+import { isAndroid } from 'utils/platform';
 
 import tamaguiConfig from '../../tamagui.config';
 
@@ -42,6 +44,7 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
+      if (!isAndroid) enableScreens(false);
     }
   }, [loaded]);
 

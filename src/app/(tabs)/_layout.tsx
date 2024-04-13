@@ -56,7 +56,7 @@ export default function TabLayout() {
 
   const tabBarStyle: any = useMemo(() => {
     const hide = path.includes('chat') || path.includes('/messages/user');
-    if (hide) return { display: 'none', position: 'absolute' };
+    if (hide) return { display: 'none' };
     return { display: 'flex' };
   }, [path]);
 
