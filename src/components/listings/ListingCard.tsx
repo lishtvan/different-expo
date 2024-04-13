@@ -11,8 +11,15 @@ interface Props {
 }
 
 const MyListing: FC<Props> = ({ listing, segment }) => {
+  const link = segment
+    ? `/${segment}/listing/${listing.id}`
+    : {
+        pathname: '/listingr',
+        params: { listingId: listing.id },
+      };
   return (
-    <Link push href={`/${segment}/listing/${listing.id}`} asChild>
+    // @ts-expect-error expo problem
+    <Link push href={link} asChild>
       <View>
         <Image
           className="aspect-[0.83] w-full object-cover "

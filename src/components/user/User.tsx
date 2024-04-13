@@ -3,9 +3,8 @@ import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import MessageButton from 'components/chat/MessageButton';
 import ListingCard from 'components/listings/ListingCard';
-import Delayed from 'components/wrappers/Delayed';
 import { mainColor } from 'constants/colors';
-import { Link, Stack, useLocalSearchParams, usePathname, useSegments } from 'expo-router';
+import { Link, Stack, useLocalSearchParams, useSegments } from 'expo-router';
 import { useRefresh } from 'hooks/useRefresh';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
@@ -15,7 +14,6 @@ import {
   useToggleRefinement,
 } from 'react-instantsearch-core';
 import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
-import { Edges, SafeAreaView } from 'react-native-safe-area-context';
 import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
 import { TListing, TUser } from 'types';
 import { avatarFb } from 'utils/avatarUrlFallback';
@@ -36,14 +34,11 @@ const User = () => {
 
   const { refreshing, handleRefresh } = useRefresh(refetch);
   const { refresh, setUiState } = useInstantSearch();
-  const path = usePathname();
 
   if (isLoading || refreshing) return null;
 
-  const edges: Edges = path.includes('messages') ? ['bottom', 'left', 'right'] : ['left', 'right'];
-
   return (
-    <SafeAreaView edges={edges} className="flex-1">
+    <View className="flex-1">
       <Stack.Screen
         options={{
           headerTitle: params.nickname,
@@ -66,7 +61,7 @@ const User = () => {
           />
         }
       />
-    </SafeAreaView>
+    </View>
   );
 };
 
@@ -163,7 +158,7 @@ const MyHeader = ({ user, segment }: { user: TUser; segment?: string }) => {
         ) : (
           <MessageButton
             recipientId={user.id}
-            pathname={`/${segment}/chat`}
+            pathname="/chatf"
             size="$3"
             theme="active"
             className="w-[47%]"
@@ -202,23 +197,21 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
   }, [refreshControl.key]);
 
   return (
-    <Delayed waitBeforeShow={100}>
-      <FlatList
-        ref={scrollRef}
-        data={hits}
-        refreshControl={refreshControl}
-        ListHeaderComponent={<Header user={user} segment={segments[1]} />}
-        onEndReached={() => {
-          if (!isLastPage && hits.length) showMore();
-        }}
-        columnWrapperStyle={{ justifyContent: 'space-between' }}
-        numColumns={2}
-        ItemSeparatorComponent={() => <View className="h-3" />}
-        renderItem={(object) => <RenderItem item={object.item} segment={segments[1]} />}
-        keyExtractor={(item) => item.id}
-        ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
-      />
-    </Delayed>
+    <FlatList
+      ref={scrollRef}
+      data={hits}
+      refreshControl={refreshControl}
+      ListHeaderComponent={<Header user={user} segment={segments[1]} />}
+      onEndReached={() => {
+        if (!isLastPage && hits.length) showMore();
+      }}
+      columnWrapperStyle={{ justifyContent: 'space-between' }}
+      numColumns={2}
+      ItemSeparatorComponent={() => <View className="h-3" />}
+      renderItem={(object) => <RenderItem item={object.item} segment={segments[1]} />}
+      keyExtractor={(item) => item.id}
+      ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
+    />
   );
 };
 

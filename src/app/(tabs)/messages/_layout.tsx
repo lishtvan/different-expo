@@ -11,24 +11,6 @@ export default function MessagesLayoutNav() {
         fullScreenGestureEnabled: true,
       }}>
       <Stack.Screen name="index" options={{ headerTitle: 'Повідомлення' }} />
-      <Stack.Screen
-        name="chat"
-        options={{ headerBackTitleVisible: false, headerTitle: '', headerShadowVisible: true }}
-      />
-      <Stack.Screen
-        name="listing/[listingId]"
-        options={{
-          headerTitle: '',
-          headerBackTitleVisible: false,
-        }}
-      />
-      <Stack.Screen
-        name="user/[nickname]"
-        options={{
-          headerTitle: '',
-          headerBackTitleVisible: false,
-        }}
-      />
     </Stack>
   );
 }

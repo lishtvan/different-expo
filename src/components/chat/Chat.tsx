@@ -1,7 +1,7 @@
 import { Entypo, EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { WS_URL } from 'config';
 import { mainColor } from 'constants/colors';
-import { Stack, useLocalSearchParams, Link, useSegments } from 'expo-router';
+import { Stack, useLocalSearchParams, Link } from 'expo-router';
 import { useSession } from 'hooks/useSession';
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { KeyboardAvoidingView, Text, TouchableOpacity, View, StyleSheet } from 'react-native';
@@ -74,7 +74,6 @@ const Chat = () => {
   const ref = useRef<any>(null);
   const { chatId } = useLocalSearchParams<{ chatId: string }>();
   const [participants, setParticipants] = useState<Participants>();
-  const segments = useSegments();
 
   const session = useSession();
 
@@ -133,9 +132,6 @@ const Chat = () => {
     [participants]
   );
 
-  const userLink =
-    `/${segments[1]}/user/${participants?.recipient.nickname}` as `${string}:${string}`;
-
   const headerClassname = isAndroid ? 'pl-4' : 'pb-2 pl-4';
 
   if (!participants) {
@@ -154,7 +150,9 @@ const Chat = () => {
       <Stack.Screen
         options={{
           headerTitle: () => (
-            <Link asChild href={userLink}>
+            <Link
+              asChild
+              href={{ pathname: '/userg', params: { nickname: participants.recipient.nickname } }}>
               <TouchableOpacity>
                 <Text style={{ fontWeight: 'bold', fontSize: 17 }}>
                   {participants.recipient.nickname}
@@ -163,7 +161,9 @@ const Chat = () => {
             </Link>
           ),
           headerRight: () => (
-            <Link asChild href={userLink}>
+            <Link
+              asChild
+              href={{ pathname: '/userg', params: { nickname: participants.recipient.nickname } }}>
               <TouchableOpacity className={headerClassname}>
                 <Avatar circular size="$3.5">
                   <Avatar.Image src={avatarFb(participants.recipient.avatarUrl)} />

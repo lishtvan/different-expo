@@ -9,7 +9,7 @@ import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import { WS_URL } from 'config';
 import Colors from 'constants/colors';
-import { Tabs, router, usePathname } from 'expo-router';
+import { Tabs, router } from 'expo-router';
 import { useEffect, useMemo } from 'react';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { fetcher } from 'utils/fetcher';
@@ -52,14 +52,6 @@ export default function TabLayout() {
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
-  const path = usePathname();
-
-  const tabBarStyle: any = useMemo(() => {
-    const hide = path.includes('chat') || path.includes('/messages/user');
-    if (hide) return { display: 'none' };
-    return { display: 'flex' };
-  }, [path]);
-
   const onAuthTabPress = (e: EventArg<'tabPress', true, undefined>) => {
     if (user) return;
     e.preventDefault();
@@ -73,7 +65,6 @@ export default function TabLayout() {
       {user && <WebsocketConnection refetch={refetch} userId={user.id} />}
       <Tabs
         screenOptions={{
-          tabBarStyle,
           tabBarActiveTintColor: Colors['light'].tint,
           headerShadowVisible: false,
           headerTitleAlign: 'center',

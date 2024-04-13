@@ -17,10 +17,8 @@ import { useOnlineManager } from 'hooks/useOnlineManager';
 import { useEffect } from 'react';
 import '../../global.css';
 import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
-import { enableScreens } from 'react-native-screens';
 import Toast from 'react-native-toast-message';
 import { Circle, TamaguiProvider, Theme } from 'tamagui';
-import { isAndroid } from 'utils/platform';
 
 import tamaguiConfig from '../../tamagui.config';
 
@@ -44,7 +42,6 @@ export default function RootLayout() {
   useEffect(() => {
     if (loaded) {
       SplashScreen.hideAsync();
-      if (!isAndroid) enableScreens(false);
     }
   }, [loaded]);
 
@@ -172,6 +169,34 @@ function RootLayoutNav() {
                   headerShadowVisible: false,
                   headerShown: false,
                   headerBackTitleVisible: false,
+                  fullScreenGestureEnabled: true,
+                }}
+              />
+              <Stack.Screen
+                name="chatf"
+                options={{
+                  headerBackTitleVisible: false,
+                  headerTitle: '',
+                  headerShadowVisible: true,
+                  fullScreenGestureEnabled: true,
+                }}
+              />
+
+              <Stack.Screen
+                name="userg"
+                options={{
+                  headerTitle: '',
+                  headerBackTitleVisible: false,
+                  fullScreenGestureEnabled: true,
+                  headerShadowVisible: false,
+                }}
+              />
+              <Stack.Screen
+                name="listingr"
+                options={{
+                  headerTitle: '',
+                  headerBackTitleVisible: false,
+                  headerShadowVisible: false,
                   fullScreenGestureEnabled: true,
                 }}
               />

@@ -8,7 +8,6 @@ export default function OrdersLayoutNav() {
       screenOptions={{
         headerShadowVisible: false,
         headerTitleAlign: 'center',
-        animation: 'simple_push',
         fullScreenGestureEnabled: true,
       }}>
       <Stack.Screen name="index" options={{ headerTitle: 'Замовлення' }} />

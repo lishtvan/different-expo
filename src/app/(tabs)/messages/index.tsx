@@ -17,7 +17,7 @@ interface GetChatsResponse {
 
 const RenderChat = ({ item }: { item: Chat }) => {
   return (
-    <Link asChild href={{ pathname: '/messages/chat', params: { chatId: item.id } }}>
+    <Link asChild href={{ pathname: '/chatf', params: { chatId: item.id } }}>
       <View pressStyle={{ backgroundColor: '#f1f1f1' }} className="flex-row items-center">
         <View className="px-3 py-2">
           <Avatar circular size={57}>

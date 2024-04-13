@@ -5,7 +5,7 @@ import MessageButton from 'components/chat/MessageButton';
 import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import { Link, Stack, router, useLocalSearchParams, useSegments } from 'expo-router';
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
 import { Alert, Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 // @ts-expect-error pinchable problem
@@ -159,7 +159,14 @@ export default function ListingPage() {
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
-  const segments = useSegments();
+  const [, segment] = useSegments();
+
+  const userLink = useMemo(() => {
+    if (!data) return;
+    if (data.isOwnListing) return '/profile';
+    if (segment) return `/${segment}/user/${data.listing.User.nickname}`;
+    return { pathname: '/userg', params: { nickname: data.listing.User.nickname } };
+  }, [segment, data]);
 
   if (isLoading || !data) return null;
 
@@ -206,9 +213,8 @@ export default function ListingPage() {
               ))}
             </View>
           )}
-          <Link
-            asChild
-            href={isOwnListing ? '/profile' : `/${segments[1]}/user/${listing.User.nickname}`}>
+          {/* @ts-expect-error expo problem */}
+          <Link asChild href={userLink}>
             <Pressable className="flex-row mt-4 gap-x-3">
               <Image
                 className="h-14 w-14 rounded-full object-cover"
@@ -236,7 +242,7 @@ export default function ListingPage() {
             className="flex-1 mx-1.5"
             fontSize="$6"
             borderRadius="$main"
-            pathname={`/${segments[1]}/chat`}
+            pathname="/chatf"
             recipientId={listing.userId}>
             Написати
           </MessageButton>

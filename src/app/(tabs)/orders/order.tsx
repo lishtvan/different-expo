@@ -83,7 +83,12 @@ export default function OrderScreen() {
           </TouchableOpacity>
         </View>
       </ReactNativeModal>
-      <Link asChild href={`/listing/${order.Listing.id}`}>
+      <Link
+        asChild
+        href={{
+          pathname: '/listingr',
+          params: { listingId: order.Listing.id },
+        }}>
         <View className="flex-row gap-x-3">
           <Image
             className="aspect-[0.83] w-20 rounded-lg"
@@ -123,7 +128,7 @@ export default function OrderScreen() {
         <Text className="text-lg font-semibold">
           {orderType === 'buy' ? 'Продавець' : 'Покупець'}
         </Text>
-        <Link asChild href={`/user/${dealPerson.nickname}`}>
+        <Link asChild href={{ pathname: '/userg', params: { nickname: dealPerson.nickname } }}>
           <Pressable className="flex-row mt-4 gap-x-3">
             <Image
               className="h-16 w-16 rounded-full object-cover"
