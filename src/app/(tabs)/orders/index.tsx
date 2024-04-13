@@ -6,7 +6,7 @@ import { STATUS_MAPPER } from 'constants/order';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
 import { FC, useState } from 'react';
-import { Text, useWindowDimensions } from 'react-native';
+import { RefreshControl, RefreshControlProps, Text, useWindowDimensions } from 'react-native';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Separator, View } from 'tamagui';
 import { fetcher } from 'utils/fetcher';
@@ -14,6 +14,10 @@ import { fetcher } from 'utils/fetcher';
 interface Props {
   orders: any[];
   type: 'buy' | 'sell';
+  refreshControl: React.ReactElement<
+    RefreshControlProps,
+    string | React.JSXElementConstructor<any>
+  >;
 }
 
 // TODO: add types
@@ -48,7 +52,7 @@ const RenderOrder = ({ item }: { item: any }) => {
   );
 };
 
-const Orders: FC<Props> = ({ orders, type }) => {
+const Orders: FC<Props> = ({ orders, type, refreshControl }) => {
   if (!orders.length) {
     return (
       <View className="flex-1 justify-center items-center">
@@ -65,6 +69,7 @@ const Orders: FC<Props> = ({ orders, type }) => {
     <FlashList
       data={orders}
       estimatedItemSize={96}
+      refreshControl={refreshControl}
       contentContainerStyle={{ paddingVertical: 12, paddingHorizontal: 12 }}
       renderItem={RenderOrder}
       keyExtractor={(item) => item.id}
@@ -82,8 +87,8 @@ function Tabs({ renderScene }: any) {
   const [index, setIndex] = useState(0);
 
   const [routes] = useState([
-    { key: 'sell', title: 'Продажі' },
     { key: 'buy', title: 'Покупки' },
+    { key: 'sell', title: 'Продажі' },
   ]);
 
   return (
@@ -111,7 +116,7 @@ function Tabs({ renderScene }: any) {
 }
 
 const OrdersScreen = () => {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, refetch } = useQuery({
     queryKey: ['orders'],
     queryFn: () => fetcher({ route: '/order/getMany' }),
   });
@@ -121,8 +126,20 @@ const OrdersScreen = () => {
   return (
     <Tabs
       renderScene={SceneMap({
-        sell: () => <Orders orders={data.sellOrders} type="sell" />,
-        buy: () => <Orders orders={data.buyOrders} type="buy" />,
+        buy: () => (
+          <Orders
+            orders={data.buyOrders}
+            refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
+            type="buy"
+          />
+        ),
+        sell: () => (
+          <Orders
+            orders={data.sellOrders}
+            refreshControl={<RefreshControl refreshing={false} onRefresh={refetch} />}
+            type="sell"
+          />
+        ),
       })}
     />
   );

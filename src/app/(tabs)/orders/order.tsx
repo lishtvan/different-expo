@@ -83,22 +83,24 @@ export default function OrderScreen() {
           </TouchableOpacity>
         </View>
       </ReactNativeModal>
-      <View className="flex-row gap-x-3">
-        <Image
-          className="aspect-[0.83] w-20 rounded-lg"
-          source={order.Listing.imageUrls[0]}
-          alt="item"
-          contentFit="cover"
-          transition={200}
-        />
-        <View className="w-full flex-1">
-          <Text className="font-semibold text-base">{order.Listing.designer}</Text>
-          <Text className="mt-2" numberOfLines={2}>
-            {order.Listing.title}
-          </Text>
-          <Text className="mt-auto text-base font-bold">{order.Listing.price} грн</Text>
+      <Link asChild href={`/listing/${order.Listing.id}`}>
+        <View className="flex-row gap-x-3">
+          <Image
+            className="aspect-[0.83] w-20 rounded-lg"
+            source={order.Listing.imageUrls[0]}
+            alt="item"
+            contentFit="cover"
+            transition={200}
+          />
+          <View className="w-full flex-1">
+            <Text className="font-semibold text-base">{order.Listing.designer}</Text>
+            <Text className="mt-2" numberOfLines={2}>
+              {order.Listing.title}
+            </Text>
+            <Text className="mt-auto text-base font-bold">{order.Listing.price} грн</Text>
+          </View>
         </View>
-      </View>
+      </Link>
       <Separator borderColor="$gray7Light" className="mt-3" />
       <View className="mt-2">
         <Text className="text-lg">

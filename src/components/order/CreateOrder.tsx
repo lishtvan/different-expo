@@ -63,7 +63,7 @@ export default function CreateOrder() {
       }
 
       await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
-
+      await queryClient.invalidateQueries({ queryKey: ['orders'] });
       await queryClient.invalidateQueries({ queryKey: ['listing', params.listingId] });
     },
   });
@@ -102,7 +102,7 @@ export default function CreateOrder() {
   };
 
   if (mutation.isSuccess && !mutation.data.error) {
-    return <OrderSuccess orderId={mutation.data.orderId} />;
+    return <OrderSuccess />;
   }
 
   return (
