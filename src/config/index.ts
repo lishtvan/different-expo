@@ -11,12 +11,8 @@ export const config = {
       },
       additionalSearchParameters,
     },
-    WS_URL: isAndroid
-      ? 'wss://a1eb-176-36-11-52.ngrok-free.app'
-      : 'wss://6f9c-91-218-13-211.ngrok-free.app',
-    API_URL: isAndroid
-      ? 'https://a1eb-176-36-11-52.ngrok-free.app'
-      : 'https://6f9c-91-218-13-211.ngrok-free.app',
+    WS_URL: isAndroid ? 'wss://a1eb-176-36-11-52.ngrok-free.app' : 'ws://localhost:8000',
+    API_URL: isAndroid ? 'https://a1eb-176-36-11-52.ngrok-free.app' : 'http://localhost:8000',
   },
   production: {
     TYPESENSE: {
