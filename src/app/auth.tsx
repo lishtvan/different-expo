@@ -35,6 +35,8 @@ const AuthScreen = () => {
     });
     const hasPlayService = await GoogleSignin.hasPlayServices();
     if (!hasPlayService) return;
+    const isSignedIn = await GoogleSignin.isSignedIn();
+    if (isSignedIn) await GoogleSignin.signOut();
     await GoogleSignin.signIn();
     const { accessToken } = await GoogleSignin.getTokens();
     mutation.mutate(accessToken);

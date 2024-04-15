@@ -47,6 +47,14 @@ export default function ProfileLayoutNav() {
           headerShadowVisible: false,
         }}
       />
+      <Stack.Screen
+        name="resources"
+        options={{
+          headerTitle: '',
+          headerBackTitleVisible: false,
+          headerShadowVisible: false,
+        }}
+      />
     </Stack>
   );
 }

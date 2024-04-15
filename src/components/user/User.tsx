@@ -1,4 +1,4 @@
-import { EvilIcons } from '@expo/vector-icons';
+import { EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { useScrollToTop } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
 import MessageButton from 'components/chat/MessageButton';
@@ -13,7 +13,7 @@ import {
   useRefinementList,
   useToggleRefinement,
 } from 'react-instantsearch-core';
-import { FlatList, RefreshControl, RefreshControlProps } from 'react-native';
+import { FlatList, RefreshControl, RefreshControlProps, TouchableOpacity } from 'react-native';
 import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
 import { TListing, TUser } from 'types';
 import { avatarFb } from 'utils/avatarUrlFallback';
@@ -42,6 +42,14 @@ const User = () => {
       <Stack.Screen
         options={{
           headerTitle: params.nickname,
+          headerRight: () =>
+            user.isOwnAccount && (
+              <Link asChild href="/profile/resources">
+                <TouchableOpacity className="pl-8 pb-1 ">
+                  <SimpleLineIcons name="menu" size={22} />
+                </TouchableOpacity>
+              </Link>
+            ),
           headerTitleStyle: { fontWeight: 'bold', fontSize: 19 },
         }}
       />
