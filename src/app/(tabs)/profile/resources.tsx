@@ -5,6 +5,7 @@ import * as Linking from 'expo-linking';
 import { router, useNavigation } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { fetcher } from 'utils/fetcher';
 import { destroySession } from 'utils/secureStorage';
 
@@ -38,8 +39,37 @@ const SignOut = () => {
 };
 
 const DeleteAccount = () => {
+  const queryClient = useQueryClient();
+  const navigation = useNavigation();
+  const mutation = useMutation({
+    mutationFn: () => fetcher({ route: '/user/delete', method: 'POST' }),
+    onSuccess: async (res) => {
+      if (res.errors) {
+        Toast.show({
+          props: { height: 70, paddingHorizontal: 20 },
+          type: 'error',
+          text1: res.errors.message,
+        });
+        return;
+      }
+      await Promise.all([
+        destroySession(),
+        queryClient.invalidateQueries({ queryKey: ['auth_me'] }),
+      ]);
+      navigation.dispatch(CommonActions.reset({ routes: [{ key: '(tabs)', name: '(tabs)' }] }));
+      router.navigate('/');
+    },
+  });
+
+  const openConfirmationModal = () => {
+    Alert.alert('Ви впевнені, що хочете видалити аккаунт?', '', [
+      { text: 'Ні', onPress: () => {}, style: 'cancel' },
+      { text: 'Так', onPress: () => mutation.mutate() },
+    ]);
+  };
+
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={openConfirmationModal}>
       <Text className="mt-2 text-lg text-red-500">Видалити аккаунт</Text>
     </TouchableOpacity>
   );

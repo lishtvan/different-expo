@@ -17,7 +17,7 @@ export const toastConfig = {
           shadowRadius: 6,
           elevation: 2,
           alignItems: 'center',
-          paddingHorizontal: 25,
+          paddingHorizontal: props.props.paddingHorizontal || 25,
           marginTop: 13,
         }}
         text1NumberOfLines={5}
@@ -54,7 +54,7 @@ export const toastConfig = {
           shadowRadius: 6,
           elevation: 2,
           alignItems: 'center',
-          paddingHorizontal: 25,
+          paddingHorizontal: props.props.paddingHorizontal || 25,
           marginTop: 13,
         }}
         text1NumberOfLines={5}
