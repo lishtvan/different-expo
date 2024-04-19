@@ -4,8 +4,9 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as Linking from 'expo-linking';
 import { router, useNavigation } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { Alert, Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View } from 'react-native';
 import Toast from 'react-native-toast-message';
+import { openConfirmationModal } from 'utils/confirmationModal';
 import { fetcher } from 'utils/fetcher';
 import { destroySession } from 'utils/secureStorage';
 
@@ -24,15 +25,9 @@ const SignOut = () => {
     },
   });
 
-  const openConfirmationModal = () => {
-    Alert.alert('Ви впевнені, що хочете вийти?', '', [
-      { text: 'Ні', onPress: () => {}, style: 'cancel' },
-      { text: 'Так', onPress: () => mutation.mutate() },
-    ]);
-  };
-
   return (
-    <TouchableOpacity onPress={openConfirmationModal}>
+    <TouchableOpacity
+      onPress={() => openConfirmationModal('Ви впевнені, що хочете вийти?', mutation.mutate)}>
       <Text className="mt-10 text-lg text-blue-500">Вийти з аккаунта</Text>
     </TouchableOpacity>
   );
@@ -61,15 +56,11 @@ const DeleteAccount = () => {
     },
   });
 
-  const openConfirmationModal = () => {
-    Alert.alert('Ви впевнені, що хочете видалити аккаунт?', '', [
-      { text: 'Ні', onPress: () => {}, style: 'cancel' },
-      { text: 'Так', onPress: () => mutation.mutate() },
-    ]);
-  };
-
   return (
-    <TouchableOpacity onPress={openConfirmationModal}>
+    <TouchableOpacity
+      onPress={() =>
+        openConfirmationModal('Ви впевнені, що хочете видалити аккаунт?', mutation.mutate)
+      }>
       <Text className="mt-2 text-lg text-red-500">Видалити аккаунт</Text>
     </TouchableOpacity>
   );

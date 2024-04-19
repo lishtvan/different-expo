@@ -6,7 +6,7 @@ import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import { Link, Stack, router, useLocalSearchParams, useSegments } from 'expo-router';
 import { FC, useMemo, useState } from 'react';
-import { Alert, Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
+import { Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 // @ts-expect-error pinchable problem
 import Pinchable from 'react-native-pinchable';
@@ -14,6 +14,7 @@ import Carousel from 'react-native-reanimated-carousel';
 import { Button, Separator, Text, View } from 'tamagui';
 import { ListingResponse, RFunc } from 'types';
 import { avatarFb } from 'utils/avatarUrlFallback';
+import { openConfirmationModal } from 'utils/confirmationModal';
 import { fetcher } from 'utils/fetcher';
 import { shareLink } from 'utils/share';
 
@@ -58,18 +59,12 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
     onSuccess: () => router.back(),
   });
 
-  const openConfirmationModal = () => {
-    Alert.alert('Ви впевнені, що хочете видалити оголошення?', '', [
-      { text: 'Ні', onPress: () => {}, style: 'cancel' },
-      { text: 'Так', onPress: () => mutation.mutate() },
-    ]);
-  };
-
   const shareListing = () => shareLink(`listing/${listing.id}`);
 
   const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
+    const deleteText = 'Ви впевнені, що хочете видалити оголошення?';
     const menuActions: RFunc = {
-      delete: openConfirmationModal,
+      delete: () => openConfirmationModal(deleteText, mutation.mutate),
       edit: () => router.navigate({ pathname: '/edit_listing', params: { listingId: listing.id } }),
       share: shareListing,
     };
