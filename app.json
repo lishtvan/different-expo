@@ -14,6 +14,7 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
+      "usesAppleSignIn": true,
       "associatedDomains": ["applinks:different-marketplace.com"],
       "supportsTablet": true,
       "bundleIdentifier": "different",
@@ -46,6 +47,7 @@
     },
     "plugins": [
       "expo-router",
+      "expo-apple-authentication",
       "@react-native-google-signin/google-signin",
       [
         "expo-image-picker",
