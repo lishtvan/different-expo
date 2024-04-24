@@ -8,6 +8,7 @@ import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text } from 'tamagui';
 import { fetcher } from 'utils/fetcher';
+import { isAndroid } from 'utils/platform';
 import { saveSession } from 'utils/secureStorage';
 
 const AuthScreen = () => {
@@ -58,33 +59,35 @@ const AuthScreen = () => {
           </View>
         </View>
         <View className="gap-y-3.5">
+          {!isAndroid && (
+            <AppleAuthentication.AppleAuthenticationButton
+              buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+              buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+              cornerRadius={10}
+              className="h-10"
+              onPress={async () => {
+                try {
+                  const credential = await AppleAuthentication.signInAsync({
+                    requestedScopes: [
+                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                    ],
+                  });
+                  console.log(credential);
+                } catch (e) {
+                  console.log(e);
+                }
+              }}
+            />
+          )}
           <GoogleSigninButton
             onPress={signIn}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Light}
           />
-          <AppleAuthentication.AppleAuthenticationButton
-            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
-            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
-            cornerRadius={10}
-            className="h-10"
-            onPress={async () => {
-              try {
-                const credential = await AppleAuthentication.signInAsync({
-                  requestedScopes: [
-                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                  ],
-                });
-                console.log(credential);
-              } catch (e) {
-                console.log(e);
-              }
-            }}
-          />
         </View>
       </View>
-      <View className="px-2.5">
+      <View className="px-2.5 pb-5">
         <Text>
           Продовжуючи, ви погоджуєтесь з нашою{'\n'}
           <Text

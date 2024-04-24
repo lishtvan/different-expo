@@ -90,12 +90,26 @@ const Resources = () => {
           </TouchableOpacity>
         </View>
       </View>
-      <TouchableOpacity className="flex-row justify-between items-center">
+      <TouchableOpacity
+        onPress={() =>
+          WebBrowser.openBrowserAsync(
+            `https://different-marketplace.notion.site/6518326323454c0cb934574e5fe59420`
+          )
+        }
+        className="flex-row justify-between items-center">
         <Text className="text-lg">Політика конфіденційності</Text>
         <Entypo name="chevron-thin-right" size={15} />
       </TouchableOpacity>
       <TouchableOpacity className="flex-row justify-between items-center">
-        <Text className="text-lg">Умови використання</Text>
+        <Text
+          onPress={() =>
+            WebBrowser.openBrowserAsync(
+              `https://different-marketplace.notion.site/5ff3aa4eeefa4e1886ed4cafe087517e`
+            )
+          }
+          className="text-lg">
+          Умови використання
+        </Text>
         <Entypo name="chevron-thin-right" size={15} />
       </TouchableOpacity>
       <View>
