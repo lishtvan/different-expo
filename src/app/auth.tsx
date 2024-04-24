@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import * as AppleAuthentication from 'expo-apple-authentication';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { View, Text } from 'tamagui';
@@ -83,14 +84,28 @@ const AuthScreen = () => {
           />
         </View>
       </View>
-      <View className="pb-5 px-2.5">
+      <View className="px-2.5">
         <Text>
           Продовжуючи, ви погоджуєтесь з нашою{'\n'}
-          <Text pressStyle={{ opacity: 0.5 }} className="text-blue-500">
+          <Text
+            onPress={() =>
+              WebBrowser.openBrowserAsync(
+                `https://different-marketplace.notion.site/6518326323454c0cb934574e5fe59420`
+              )
+            }
+            pressStyle={{ opacity: 0.5 }}
+            className="text-blue-500">
             політикою конфіденційності{' '}
           </Text>
           та{' '}
-          <Text pressStyle={{ opacity: 0.5 }} className="text-blue-500">
+          <Text
+            onPress={() =>
+              WebBrowser.openBrowserAsync(
+                `https://different-marketplace.notion.site/5ff3aa4eeefa4e1886ed4cafe087517e`
+              )
+            }
+            pressStyle={{ opacity: 0.5 }}
+            className="text-blue-500">
             умовами використання.
           </Text>
         </Text>
