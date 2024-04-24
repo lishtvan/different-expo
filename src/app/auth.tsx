@@ -1,11 +1,11 @@
-import { GoogleSignin } from '@react-native-google-signin/google-signin';
+import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { mainColor } from 'constants/colors';
+import * as AppleAuthentication from 'expo-apple-authentication';
 import { Image } from 'expo-image';
 import { router, useLocalSearchParams } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Button, View, Text } from 'tamagui';
+import { View, Text } from 'tamagui';
 import { fetcher } from 'utils/fetcher';
 import { saveSession } from 'utils/secureStorage';
 
@@ -56,20 +56,44 @@ const AuthScreen = () => {
             </Text>
           </View>
         </View>
-        <Button
-          onPress={signIn}
-          size="$4"
-          icon={
-            <Image
-              style={{ width: 30, height: 30 }}
-              source={require('../../assets/images/google.jpeg')}
-            />
-          }
-          pressStyle={{ backgroundColor: 'white', borderColor: mainColor }}
-          className="w-full justify-start border border-black bg-white"
-          borderRadius="$main">
-          <Text fontSize="$7">Увійти за допомогою Google</Text>
-        </Button>
+        <View className="gap-y-3.5">
+          <GoogleSigninButton
+            onPress={signIn}
+            size={GoogleSigninButton.Size.Wide}
+            color={GoogleSigninButton.Color.Light}
+          />
+          <AppleAuthentication.AppleAuthenticationButton
+            buttonType={AppleAuthentication.AppleAuthenticationButtonType.SIGN_IN}
+            buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
+            cornerRadius={10}
+            className="h-10"
+            onPress={async () => {
+              try {
+                const credential = await AppleAuthentication.signInAsync({
+                  requestedScopes: [
+                    AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
+                    AppleAuthentication.AppleAuthenticationScope.EMAIL,
+                  ],
+                });
+                console.log(credential);
+              } catch (e) {
+                console.log(e);
+              }
+            }}
+          />
+        </View>
+      </View>
+      <View className="pb-5 px-2.5">
+        <Text>
+          Продовжуючи, ви погоджуєтесь з нашою{'\n'}
+          <Text pressStyle={{ opacity: 0.5 }} className="text-blue-500">
+            політикою конфіденційності{' '}
+          </Text>
+          та{' '}
+          <Text pressStyle={{ opacity: 0.5 }} className="text-blue-500">
+            умовами використання.
+          </Text>
+        </Text>
       </View>
     </SafeAreaView>
   );
