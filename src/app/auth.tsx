@@ -14,12 +14,15 @@ import { saveSession } from 'utils/secureStorage';
 const AuthScreen = () => {
   const queryClient = useQueryClient();
   const params = useLocalSearchParams();
-  const mutation = useMutation({
-    mutationFn: (accessToken: string) =>
+  const signInMutation = useMutation({
+    mutationFn: (mutationParams: {
+      route: '/auth/google/mobile' | '/auth/apple';
+      accessToken: string;
+    }) =>
       fetcher({
-        route: '/auth/google/mobile',
+        route: mutationParams.route,
         method: 'POST',
-        body: { accessToken },
+        body: { accessToken: mutationParams.accessToken },
       }),
     onSuccess: async ({ token }) => {
       await saveSession(token);
@@ -31,7 +34,7 @@ const AuthScreen = () => {
     },
   });
 
-  const signIn = async () => {
+  const signInWithGoogle = async () => {
     GoogleSignin.configure({
       iosClientId: '24434242390-l4r82unf87hh643nmssogggm3grvqcvq.apps.googleusercontent.com',
     });
@@ -39,9 +42,26 @@ const AuthScreen = () => {
     if (!hasPlayService) return;
     const isSignedIn = await GoogleSignin.isSignedIn();
     if (isSignedIn) await GoogleSignin.signOut();
-    await GoogleSignin.signIn();
+    try {
+      await GoogleSignin.signIn();
+    } catch (e) {
+      console.log(e);
+      return;
+    }
     const { accessToken } = await GoogleSignin.getTokens();
-    mutation.mutate(accessToken);
+    signInMutation.mutate({ accessToken, route: '/auth/google/mobile' });
+  };
+
+  const signInWithApple = async () => {
+    try {
+      const credential = await AppleAuthentication.signInAsync({
+        requestedScopes: [AppleAuthentication.AppleAuthenticationScope.EMAIL],
+      });
+      if (!credential.identityToken) return;
+      signInMutation.mutate({ accessToken: credential.identityToken, route: '/auth/apple' });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -65,23 +85,11 @@ const AuthScreen = () => {
               buttonStyle={AppleAuthentication.AppleAuthenticationButtonStyle.BLACK}
               cornerRadius={10}
               className="h-10"
-              onPress={async () => {
-                try {
-                  const credential = await AppleAuthentication.signInAsync({
-                    requestedScopes: [
-                      AppleAuthentication.AppleAuthenticationScope.FULL_NAME,
-                      AppleAuthentication.AppleAuthenticationScope.EMAIL,
-                    ],
-                  });
-                  console.log(credential);
-                } catch (e) {
-                  console.log(e);
-                }
-              }}
+              onPress={signInWithApple}
             />
           )}
           <GoogleSigninButton
-            onPress={signIn}
+            onPress={signInWithGoogle}
             size={GoogleSigninButton.Size.Wide}
             color={GoogleSigninButton.Color.Light}
           />

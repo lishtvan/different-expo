@@ -15,7 +15,6 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "usesAppleSignIn": true,
-      "associatedDomains": ["applinks:different-marketplace.com"],
       "supportsTablet": true,
       "bundleIdentifier": "different",
       "config": {
