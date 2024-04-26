@@ -35,7 +35,8 @@
       "package": "com.lishtvan.different",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+        "backgroundColor": "#ffffff",
+        "backgroundImage": "./assets/images/adaptive-background.png"
       },
       "permissions": ["android.permission.RECORD_AUDIO"]
     },
