@@ -9,6 +9,8 @@ import {
 import { Alert, Linking } from 'react-native';
 import { getSession } from 'utils/secureStorage';
 
+const MB_10 = 10000000;
+
 export const uploadImage = async (image: ImagePickerAsset) => {
   const token = await getSession();
   const uploadResult = await FileSystem.uploadAsync(`${API_URL}/images/upload`, image.uri, {
@@ -48,7 +50,7 @@ export const verifyPermission = async (
 
 export const validateMultipleImagesSize = (images: ImagePickerAsset[]) => {
   for (const image of images) {
-    if (image.fileSize && image.fileSize > 10000000) {
+    if (image.fileSize && image.fileSize > MB_10) {
       return false;
     }
   }
@@ -56,6 +58,6 @@ export const validateMultipleImagesSize = (images: ImagePickerAsset[]) => {
 };
 
 export const validateSingleImageSize = (image: ImagePickerAsset) => {
-  if (image.fileSize && image.fileSize > 10000000) return false;
+  if (image.fileSize && image.fileSize > MB_10) return false;
   return true;
 };
