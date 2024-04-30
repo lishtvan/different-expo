@@ -53,7 +53,6 @@ export default function RootLayout() {
 }
 
 function onAppStateChange(status: AppStateStatus) {
-  // React Query already supports in web browser refetch on window focus by default
   if (Platform.OS !== 'web') {
     focusManager.setFocused(status === 'active');
   }
@@ -63,8 +62,9 @@ interface ErrActions {
   [key: string]: (() => void) | undefined;
 }
 
+// TODO: 404 and 500 is incorrect behaviour, should be used approach with error boundary
 const erorrActions: ErrActions = {
-  404: () => router.replace('/404'),
+  404: () => router.navigate('/404'),
   500: () => router.replace('/500'),
   401: () => router.navigate('/auth'),
 };
