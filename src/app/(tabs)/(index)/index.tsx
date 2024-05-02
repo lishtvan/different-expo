@@ -13,21 +13,24 @@ import { isAndroid } from 'utils/platform';
 
 const HomeListingsWrapper = () => {
   const search = useInstantSearch();
-  const { refreshing, refreshKey, handleRefresh } = useRefresh(() => delay(50));
+  const { refreshing, refreshKey, handleRefresh, handleRefreshWithoutSpinner } = useRefresh(() =>
+    delay(50)
+  );
   const { refresh, setUiState } = search;
 
-  const fullSearchRefresh = () => {
+  const fullSearchRefresh = (reopen = false) => {
     setUiState((state) => {
       state.listings.page = 0;
       return state;
     });
     refresh();
-    handleRefresh();
+    if (reopen) handleRefreshWithoutSpinner();
+    else handleRefresh();
   };
 
   const onAppStateChange = (status: AppStateStatus) => {
     if (status !== 'active') return;
-    fullSearchRefresh();
+    fullSearchRefresh(true);
   };
 
   useAppState(onAppStateChange);

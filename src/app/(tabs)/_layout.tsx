@@ -25,10 +25,7 @@ const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId:
     onMessage: (msg) => {
       if (!msg.data) return;
       const jsonMsg = JSON.parse(msg.data);
-      // TODO: implement toast
       if (jsonMsg.text && jsonMsg.senderId === userId) return;
-
-      console.log('refetching...');
       refetch();
     },
     options: { headers: { Cookie: `token=${session}` } },

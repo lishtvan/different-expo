@@ -20,7 +20,7 @@ interface Props {
   >;
 }
 
-// TODO: add types
+// LOW_PRIO: add types
 const RenderOrder = ({ item }: { item: any }) => {
   const { statusColor, statusText } = STATUS_MAPPER[item.status];
 

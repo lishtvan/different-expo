@@ -82,7 +82,7 @@ const SettingsScreen = () => {
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 1,
         allowsEditing: true,
       });

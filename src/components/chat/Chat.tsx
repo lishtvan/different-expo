@@ -206,7 +206,7 @@ const Chat = () => {
           )}
           messageContainerRef={ref}
           placeholder="Напишіть повідомлення..."
-          onSend={(messages) => onSend(messages)}
+          onSend={onSend}
           renderAvatar={null}
           maxInputLength={800}
           renderComposer={(props) => (

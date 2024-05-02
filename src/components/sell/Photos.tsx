@@ -1,4 +1,4 @@
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
 import { InputValidationError } from 'components/ui/InputValidationErrors';
 import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
@@ -25,7 +25,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
 
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
-        mediaTypes: ImagePicker.MediaTypeOptions.All,
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [1, 10],
         quality: 1,
         allowsMultipleSelection: true,
@@ -71,9 +71,9 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
         <Text className="text-base">Фото *</Text>
         {selectedImages.length > 0 && (
           <TouchableOpacity onPress={deleteAllPhotos}>
-            <View className="mt-1 flex-row items-center gap-x-1">
+            <View className="mt-1 mr-0.5 flex-row items-center gap-x-2">
               <Text className="text-red-500">Видалити всі</Text>
-              <MaterialCommunityIcons name="camera-outline" size={22} />
+              <SimpleLineIcons name="camera" size={22} />
             </View>
           </TouchableOpacity>
         )}
