@@ -22,7 +22,7 @@ const MyListing: FC<Props> = ({ listing, segment }) => {
     <Link push href={link} asChild>
       <View>
         <Image
-          className="aspect-[0.83] w-full object-cover "
+          className="aspect-[0.83] w-full object-cover"
           source={listing.imageUrls[0]}
           alt="item"
           transition={200}
