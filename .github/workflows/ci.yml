@@ -1,0 +1,60 @@
+name: Check
+
+on:
+  push:
+    branches:
+      - 'main'
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: package.json
+
+      - name: Install
+        run: |
+          npm install --ignore-scripts
+
+      - name: Lint code
+        run: |
+          npm run lint
+
+  prettier:
+    name: Lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 'lts/*'
+          cache: 'npm'
+          cache-dependency-path: package.json
+
+      - name: Install
+        run: |
+          npm install --ignore-scripts
+
+      - name: Lint code
+        run: |
+          npm run check:format
