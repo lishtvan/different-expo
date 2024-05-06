@@ -68,18 +68,18 @@ export default function OrderScreen() {
         <View className="mx-4 mb-16 rounded-2xl bg-white">
           <TouchableOpacity
             onPress={() => copyTrackingNumber(order.trackingNumber)}
-            className="flex-row justify-center border-b-2 border-b-[#eeeeee] p-3.5 gap-x-2">
+            className="flex-row justify-center gap-x-2 border-b-2 border-b-[#eeeeee] p-3.5">
             <Ionicons name="copy-outline" size={25} />
-            <Text className="text-xl mr-8">Скопіювати</Text>
+            <Text className="mr-8 text-xl">Скопіювати</Text>
           </TouchableOpacity>
           <TouchableOpacity
             onPress={openTrackingPage}
-            className="flex-row justify-center items-center p-2 gap-x-1.5">
+            className="flex-row items-center justify-center gap-x-1.5 p-2">
             <Image
               style={{ width: 40, height: 40 }}
               source={require('../../../../assets/images/novaposhta.png')}
             />
-            <Text className="text-xl mr-10">Відстежити</Text>
+            <Text className="mr-10 text-xl">Відстежити</Text>
           </TouchableOpacity>
         </View>
       </ReactNativeModal>
@@ -98,7 +98,7 @@ export default function OrderScreen() {
             transition={200}
           />
           <View className="w-full flex-1">
-            <Text className="font-semibold text-base">{order.Listing.designer}</Text>
+            <Text className="text-base font-semibold">{order.Listing.designer}</Text>
             <Text className="mt-2" numberOfLines={2}>
               {order.Listing.title}
             </Text>
@@ -112,7 +112,7 @@ export default function OrderScreen() {
           <Text className="text-[#737373]">Статус: </Text>
           <Text className={statusColor}>{statusText}</Text>
         </Text>
-        <Text className="text-lg mt-1">
+        <Text className="mt-1 text-lg">
           <Text className="text-[#737373]">Номер накладної: </Text>
           <Text
             pressStyle={{ opacity: 0.7 }}
@@ -129,7 +129,7 @@ export default function OrderScreen() {
           {orderType === 'buy' ? 'Продавець' : 'Покупець'}
         </Text>
         <Link asChild href={{ pathname: '/userg', params: { nickname: dealPerson.nickname } }}>
-          <Pressable className="flex-row mt-4 gap-x-3">
+          <Pressable className="mt-4 flex-row gap-x-3">
             <Image
               className="h-16 w-16 rounded-full object-cover"
               source={{ uri: avatarFb(dealPerson.avatarUrl) }}
@@ -142,7 +142,7 @@ export default function OrderScreen() {
                 pressStyle={{ opacity: 0.7 }}
                 onPress={() => Linking.openURL(`tel:+${dealPerson.phone}`)}
                 style={{ textDecorationLine: 'underline' }}
-                className="font-semibold text-[#507493] text-base mt-1.5">
+                className="mt-1.5 text-base font-semibold text-[#507493]">
                 {transformPhone.output('+' + dealPerson.phone)}
               </Text>
             </View>

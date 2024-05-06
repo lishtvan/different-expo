@@ -16,7 +16,7 @@ export default function NotFoundScreen() {
           headerBackVisible: false,
         }}
       />
-      <View className="flex-1 items-center justify-center gap-y-4 mt-10">
+      <View className="mt-10 flex-1 items-center justify-center gap-y-4">
         <Text style={styles.title}>Сторінку не знайдено</Text>
         <Button
           onPress={() => {

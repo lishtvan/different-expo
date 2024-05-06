@@ -111,8 +111,8 @@ const SizeFilter = () => {
         (section) =>
           groupedItems[section as keyof typeof groupedItems].length > 0 && (
             <View key={section}>
-              <TouchableOpacity className="px-2 mr-2 py-2" onPress={() => selectCategory(section)}>
-                <View className="px-1 pb-2 flex-row justify-between items-center">
+              <TouchableOpacity className="mr-2 px-2 py-2" onPress={() => selectCategory(section)}>
+                <View className="flex-row items-center justify-between px-1 pb-2">
                   <Text className="text-lg">{section}</Text>
                   <Square
                     animation="quick"
@@ -124,7 +124,7 @@ const SizeFilter = () => {
               </TouchableOpacity>
 
               {selectedCategories.includes(section) && (
-                <View className="flex-row flex-wrap gap-2 w-full mx-auto p-1">
+                <View className="mx-auto w-full flex-row flex-wrap gap-2 p-1">
                   {groupedItems[section as keyof typeof groupedItems].map((i) => (
                     <View key={i.value}>
                       <SizeItem item={i} refine={refine} />

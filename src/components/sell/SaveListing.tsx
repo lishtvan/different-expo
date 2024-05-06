@@ -446,13 +446,13 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         {listing.id ? 'Зберегти' : 'Створити'}
       </Button>
       {!listing.id && (
-        <View className="flex-1 flex-row items-center justify-between p-3 bg-card rounded-xl">
+        <View className="flex-1 flex-row items-center justify-between rounded-xl bg-card p-3">
           <Foundation name="shield" size={38} />
           <Image
             style={{ width: 53, height: 53 }}
             source={require('../../../assets/images/novaposhta.png')}
           />
-          <Text className="text-base px-2">
+          <Text className="px-2 text-base">
             Ваші продажі захищені послугою {'\n'}
             <Text className="font-semibold">Cейф-сервіс</Text> від Нової Пошти.{'\n'}
             <Link

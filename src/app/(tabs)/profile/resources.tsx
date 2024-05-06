@@ -68,20 +68,20 @@ const DeleteAccount = () => {
 
 const Resources = () => {
   return (
-    <View className="p-3 gap-y-2">
+    <View className="gap-y-2 p-3">
       <Text className="text-lg font-semibold">Допомога</Text>
       <View className="mb-2">
         <Text className="text-base">
           Ви можете зв'язатися з нами якщо у вас є будь які проблеми, питання чи пропозиції.
         </Text>
-        <TouchableOpacity className="flex-row items-center mt-1" onPress={() => {}}>
+        <TouchableOpacity className="mt-1 flex-row items-center" onPress={() => {}}>
           <Text className="text-base">Telegram: </Text>
           <TouchableOpacity
             onPress={() => WebBrowser.openBrowserAsync(`https://t.me/DifferentMarketplace`)}>
             <Text className="text-base text-blue-500">@DifferentMarketplace</Text>
           </TouchableOpacity>
         </TouchableOpacity>
-        <View className="flex-row items-center mt-1">
+        <View className="mt-1 flex-row items-center">
           {/* TODO: test it on iphone 5s, test email opening */}
           <Text className="text-base">Email: </Text>
           <TouchableOpacity
@@ -96,11 +96,11 @@ const Resources = () => {
             `https://different-marketplace.notion.site/6518326323454c0cb934574e5fe59420`
           )
         }
-        className="flex-row justify-between items-center">
+        className="flex-row items-center justify-between">
         <Text className="text-lg">Політика конфіденційності</Text>
         <Entypo name="chevron-thin-right" size={15} />
       </TouchableOpacity>
-      <TouchableOpacity className="flex-row justify-between items-center">
+      <TouchableOpacity className="flex-row items-center justify-between">
         <Text
           onPress={() =>
             WebBrowser.openBrowserAsync(

@@ -84,8 +84,8 @@ const CategoryFilter = () => {
         (section) =>
           groupedItems[section as keyof typeof groupedItems].length > 0 && (
             <View key={section}>
-              <TouchableOpacity className="px-2 mr-2 py-2" onPress={() => selectSection(section)}>
-                <View className="px-1 pb-2 flex-row justify-between items-center">
+              <TouchableOpacity className="mr-2 px-2 py-2" onPress={() => selectSection(section)}>
+                <View className="flex-row items-center justify-between px-1 pb-2">
                   <Text className="text-lg">{section}</Text>
                   <Square
                     animation="quick"
@@ -97,7 +97,7 @@ const CategoryFilter = () => {
               </TouchableOpacity>
 
               {selectedSections.includes(section) && (
-                <View className=" pr-2 pl-3.5">
+                <View className=" pl-3.5 pr-2">
                   {groupedItems[section as keyof typeof groupedItems].map((i) => (
                     <View key={i.value}>
                       <FilterItem item={i} refine={refine} />

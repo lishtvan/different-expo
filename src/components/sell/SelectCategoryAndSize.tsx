@@ -17,8 +17,8 @@ const SelectCategoryAndSize = () => {
   return (
     <ScrollView ref={scrollRef} className="flex-1 px-1">
       <View>
-        <Text className="font-medium text-xl pl-3 mb-3">Секція</Text>
-        <View className="flex-row flex-wrap gap-3 mx-auto">
+        <Text className="mb-3 pl-3 text-xl font-medium">Секція</Text>
+        <View className="mx-auto flex-row flex-wrap gap-3">
           {SECTIONS.map((section) => (
             <TouchableOpacity
               onPress={() => {
@@ -28,10 +28,10 @@ const SelectCategoryAndSize = () => {
                   scrollRef.current?.scrollToEnd({ animated: true });
                 }, 200);
               }}
-              className={`w-[45%] h-16 items-center justify-center rounded-xl border-[0.8px] ${section === selectedSection ? 'bg-main' : 'bg-white'}`}
+              className={`h-16 w-[45%] items-center justify-center rounded-xl border-[0.8px] ${section === selectedSection ? 'bg-main' : 'bg-white'}`}
               key={section}>
               <Text
-                className={`font-bold text-base ${section === selectedSection ? 'text-white' : 'text-[#737373]'}`}>
+                className={`text-base font-bold ${section === selectedSection ? 'text-white' : 'text-[#737373]'}`}>
                 {section}
               </Text>
             </TouchableOpacity>
@@ -40,8 +40,8 @@ const SelectCategoryAndSize = () => {
       </View>
       {selectedSection && (
         <Animated.View entering={FadeIn.duration(300)}>
-          <Text className="font-medium text-xl pl-3 mb-3 mt-3">Категорія</Text>
-          <View className="flex-row flex-wrap gap-3 mx-auto mb-1">
+          <Text className="mb-3 mt-3 pl-3 text-xl font-medium">Категорія</Text>
+          <View className="mx-auto mb-1 flex-row flex-wrap gap-3">
             {CATEGORIES[selectedSection].map((category) => (
               <TouchableOpacity
                 onPress={() => {
@@ -57,10 +57,10 @@ const SelectCategoryAndSize = () => {
                     scrollRef.current?.scrollToEnd({ animated: true });
                   }, 200);
                 }}
-                className={`w-[45%] h-16 items-center justify-center rounded-xl border-[0.8px] ${category === selectedCategory ? 'bg-main' : 'bg-white'}`}
+                className={`h-16 w-[45%] items-center justify-center rounded-xl border-[0.8px] ${category === selectedCategory ? 'bg-main' : 'bg-white'}`}
                 key={category}>
                 <Text
-                  className={`font-bold text-base ${category === selectedCategory ? 'text-white' : 'text-[#737373]'}`}>
+                  className={`text-base font-bold ${category === selectedCategory ? 'text-white' : 'text-[#737373]'}`}>
                   {category}
                 </Text>
               </TouchableOpacity>
@@ -70,7 +70,7 @@ const SelectCategoryAndSize = () => {
       )}
       {selectedCategory && (
         <View className="mb-3 w-full">
-          <Text className="font-medium text-xl pl-3 mb-3 mt-3">Розмір</Text>
+          <Text className="mb-3 mt-3 pl-3 text-xl font-medium">Розмір</Text>
           <View className="flex-row flex-wrap gap-2 px-3">
             {SIZES[selectedSection as Section].map((size) => (
               <TouchableOpacity

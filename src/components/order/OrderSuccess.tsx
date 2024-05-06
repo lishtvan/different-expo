@@ -10,8 +10,8 @@ const OrderSuccess = () => {
   useEffect(() => {
     navigation.setOptions({
       headerTitle: () => (
-        <View className="flex-row items-center ml-5">
-          <Text className="font-semibold text-lg">Замовлення створено</Text>
+        <View className="ml-5 flex-row items-center">
+          <Text className="text-lg font-semibold">Замовлення створено</Text>
           <View className="ml-2">
             <Ionicons name="checkmark-circle-sharp" size={25} color={mainColor} />
           </View>
@@ -22,7 +22,7 @@ const OrderSuccess = () => {
 
   return (
     <SafeAreaView className="flex-1">
-      <View className="p-3 flex-1">
+      <View className="flex-1 p-3">
         <Text className="text-base">
           <Text className=" font-medium">
             Зараз Ви отримаєте сповіщення у мобільному додатку Нової Пошти.{'\n'}Будь ласка,
@@ -37,7 +37,7 @@ const OrderSuccess = () => {
           {'\n'}
         </Text>
       </View>
-      <View className="mb-3 px-3 gap-y-3">
+      <View className="mb-3 gap-y-3 px-3">
         <Link href="/" asChild>
           <Button size="$4" fontSize="$6" borderRadius="$main">
             На головну

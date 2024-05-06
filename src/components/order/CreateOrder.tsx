@@ -248,13 +248,13 @@ export default function CreateOrder() {
         />
         {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
-      <View className="flex-1 flex-row items-center justify-between p-3 bg-card rounded-xl">
+      <View className="flex-1 flex-row items-center justify-between rounded-xl bg-card p-3">
         <Foundation name="shield" size={38} />
         <Image
           style={{ width: 53, height: 53 }}
           source={require('../../../assets/images/novaposhta.png')}
         />
-        <Text className="text-base px-2">
+        <Text className="px-2 text-base">
           Ваші покупки захищені послугою {'\n'}
           <Text className="font-semibold">Cейф-сервіс</Text> від Нової Пошти.{'\n'}
           <Link
@@ -277,7 +277,7 @@ export default function CreateOrder() {
           theme="active"
           fontSize="$6"
           borderRadius="$main"
-          className="mt-2 mb-20">
+          className="mb-20 mt-2">
           {mutation.isPending ? 'Замовлення створюється...' : 'Створити замовлення'}
         </Button>
       </View>

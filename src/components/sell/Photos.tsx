@@ -75,7 +75,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
         </View>
         {selectedImages.length > 0 && (
           <TouchableOpacity onPress={deleteAllPhotos}>
-            <View className="mt-1 mr-0.5 flex-row items-center gap-x-2">
+            <View className="mr-0.5 mt-1 flex-row items-center gap-x-2">
               <Text className="text-red-500">Видалити всі</Text>
               <SimpleLineIcons name="camera" size={22} />
             </View>

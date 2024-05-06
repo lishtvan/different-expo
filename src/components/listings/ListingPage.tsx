@@ -84,7 +84,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
           if (isOwnListing && listing.status === 'AVAILABLE') {
             return (
               <MenuView onPressAction={onPressAction} actions={menuActionsUi}>
-                <TouchableOpacity className="pl-2 py-1">
+                <TouchableOpacity className="py-1 pl-2">
                   <SimpleLineIcons name="options" size={22} />
                 </TouchableOpacity>
               </MenuView>
@@ -92,7 +92,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
           }
 
           return (
-            <TouchableOpacity onPress={shareListing} className="pl-2 py-1">
+            <TouchableOpacity onPress={shareListing} className="py-1 pl-2">
               <EvilIcons name="share-apple" size={36} />
             </TouchableOpacity>
           );
@@ -172,7 +172,7 @@ export default function ListingPage() {
       <ListingMenu listing={listing} isOwnListing={isOwnListing} />
       <ScrollView className="flex-1">
         <ListingImages imageUrls={listing.imageUrls} />
-        <View className="mt-4 px-3 mb-20">
+        <View className="mb-20 mt-4 px-3">
           <Text className="text-lg">{listing.title}</Text>
           <Separator className="mt-2" />
           <Text className="mt-3 text-lg">
@@ -194,11 +194,11 @@ export default function ListingPage() {
           {listing.description && (
             <View className="mt-2">
               <Text className="text-lg text-[#737373]">Опис</Text>
-              <Text className="text-lg mt-1">{listing.description}</Text>
+              <Text className="mt-1 text-lg">{listing.description}</Text>
             </View>
           )}
           {listing.tags.length > 0 && (
-            <View className="flex flex-row  gap-x-2 mt-3">
+            <View className="mt-3 flex  flex-row gap-x-2">
               {listing.tags.map((tag) => (
                 <View
                   key={tag}
@@ -210,7 +210,7 @@ export default function ListingPage() {
           )}
           {/* @ts-expect-error expo problem */}
           <Link asChild href={userLink}>
-            <Pressable className="flex-row mt-4 gap-x-3">
+            <Pressable className="mt-4 flex-row gap-x-3">
               <Image
                 className="h-14 w-14 rounded-full object-cover"
                 source={{
@@ -220,7 +220,7 @@ export default function ListingPage() {
               />
               <View className="flex-1">
                 <Text className="text-lg">{listing.User.nickname}</Text>
-                <View className="flex-row gap-x-2 mt-1.5">
+                <View className="mt-1.5 flex-row gap-x-2">
                   <Text className="text-[#737373]">{sellerAvailableListingsCount} оголошень</Text>
                   <Text className="text-[#737373]">{sellerSoldListingsCount} продано</Text>
                 </View>
@@ -234,7 +234,7 @@ export default function ListingPage() {
           <MessageButton
             icon={() => <Feather name="send" color="#737373" size={20} />}
             size="$4"
-            className="flex-1 mx-1.5"
+            className="mx-1.5 flex-1"
             fontSize="$6"
             borderRadius="$main"
             pathname="/chatf"
@@ -251,7 +251,7 @@ export default function ListingPage() {
               <Button
                 icon={() => <SimpleLineIcons name="bag" color="white" size={20} />}
                 size="$4"
-                className="flex-1 mx-1.5"
+                className="mx-1.5 flex-1"
                 theme="active"
                 fontSize="$6"
                 borderRadius="$main">

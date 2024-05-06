@@ -24,19 +24,19 @@ const RenderChat = ({ item }: { item: Chat }) => {
             <Avatar.Image src={avatarFb(item.Users[0].avatarUrl)} />
           </Avatar>
         </View>
-        <View className="w-full flex-1 h-20 border-b justify-center border-gray-200">
-          <View className="flex-row items-center justify-between mb-1">
+        <View className="h-20 w-full flex-1 justify-center border-b border-gray-200">
+          <View className="mb-1 flex-row items-center justify-between">
             <Text className="text-base font-medium">{item.Users[0].nickname}</Text>
             <Text className="mr-2 text-xs text-gray-600">
               {getLastMsgDate(new Date(item.Messages[0].createdAt))}
             </Text>
           </View>
           {item._count.Notifications > 0 ? (
-            <View className="flex-row justify-between items-center">
+            <View className="flex-row items-center justify-between">
               <Text numberOfLines={2} className="w-[85%]">
                 {item.Messages[0].text}
               </Text>
-              <View className="rounded-full bg-main px-2 mr-1.5">
+              <View className="mr-1.5 rounded-full bg-main px-2">
                 <Text className="text-base text-white">{item._count.Notifications}</Text>
               </View>
             </View>
@@ -70,7 +70,7 @@ export default function MessagesScreen() {
 
   if (!chats.length) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <View className="rounded-3xl bg-[#ebebeb] px-4 py-1.5">
           <Text className="text-lg ">Повідомлення відсутні</Text>
         </View>

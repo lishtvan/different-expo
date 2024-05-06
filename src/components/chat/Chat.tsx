@@ -124,7 +124,7 @@ const Chat = () => {
 
   if (!participants) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <Spinner size="large" />
       </View>
     );

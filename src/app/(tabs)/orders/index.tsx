@@ -35,8 +35,8 @@ const RenderOrder = ({ item }: { item: any }) => {
           transition={200}
         />
         <View className="w-full flex-1">
-          <View className="flex-row justify-between items-center">
-            <Text className="font-semibold text-base">{item.Listing.designer}</Text>
+          <View className="flex-row items-center justify-between">
+            <Text className="text-base font-semibold">{item.Listing.designer}</Text>
             <Entypo name="chevron-thin-right" size={15} />
           </View>
           <Text className="mt-2" numberOfLines={2}>
@@ -44,7 +44,7 @@ const RenderOrder = ({ item }: { item: any }) => {
           </Text>
           <View className="mt-auto flex-row items-center justify-between">
             <Text className={statusColor}>{statusText}</Text>
-            <Text className="text-base font-bold mb-0.5">{item.Listing.price} грн</Text>
+            <Text className="mb-0.5 text-base font-bold">{item.Listing.price} грн</Text>
           </View>
         </View>
       </View>
@@ -55,7 +55,7 @@ const RenderOrder = ({ item }: { item: any }) => {
 const Orders: FC<Props> = ({ orders, type, refreshControl }) => {
   if (!orders.length) {
     return (
-      <View className="flex-1 justify-center items-center">
+      <View className="flex-1 items-center justify-center">
         <View className="rounded-3xl bg-[#ebebeb] px-4 py-1.5">
           <Text className="text-base">
             {type === 'sell' ? 'Продажі відсутні' : 'Покупки відсутні'}
@@ -74,7 +74,7 @@ const Orders: FC<Props> = ({ orders, type, refreshControl }) => {
       renderItem={RenderOrder}
       keyExtractor={(item) => item.id}
       ItemSeparatorComponent={() => (
-        <View className="h-3 mt-3">
+        <View className="mt-3 h-3">
           <Separator />
         </View>
       )}

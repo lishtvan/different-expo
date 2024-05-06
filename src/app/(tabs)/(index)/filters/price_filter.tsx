@@ -111,9 +111,9 @@ const PriceFilter = () => {
                 <View key={key}>
                   <TouchableOpacity
                     onPress={() => setMaxPriceOnClick(i)}
-                    className="py-2.5 px-2 mt-2">
+                    className="mt-2 px-2 py-2.5">
                     <Text
-                      className={`text-base ${selectedPrice === i + 'max' ? 'text-main font-bold' : 'text-black'}`}>
+                      className={`text-base ${selectedPrice === i + 'max' ? 'font-bold text-main' : 'text-black'}`}>
                       До {i} грн
                     </Text>
                   </TouchableOpacity>
@@ -122,9 +122,9 @@ const PriceFilter = () => {
               ))}
               <TouchableOpacity
                 onPress={() => setMinPriceOnClick('3000')}
-                className="py-2.5 px-2 mt-2">
+                className="mt-2 px-2 py-2.5">
                 <Text
-                  className={`text-base ${selectedPrice === '3000min' ? 'text-main font-bold' : 'text-black'}`}>
+                  className={`text-base ${selectedPrice === '3000min' ? 'font-bold text-main' : 'text-black'}`}>
                   Від 3000 грн
                 </Text>
               </TouchableOpacity>
@@ -132,7 +132,7 @@ const PriceFilter = () => {
             </View>
           </View>
 
-          <View className="px-3 mb-2">
+          <View className="mb-2 px-3">
             <ShowListingsButton />
           </View>
         </KeyboardAvoidingView>

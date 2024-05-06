@@ -62,11 +62,11 @@ const FiltersButton = () => {
 
   return (
     <Link href="/filters" asChild>
-      <TouchableOpacity className="ml-1 p-2 flex-row">
+      <TouchableOpacity className="ml-1 flex-row p-2">
         <MaterialCommunityIcons name="tune-variant" size={25} />
         {filtersCount > 0 && (
-          <View className="bg-main h-6 w-6 ml-2 flex-row items-center justify-center rounded-full">
-            <Text className="text-white font-bold">{filtersCount}</Text>
+          <View className="ml-2 h-6 w-6 flex-row items-center justify-center rounded-full bg-main">
+            <Text className="font-bold text-white">{filtersCount}</Text>
           </View>
         )}
       </TouchableOpacity>

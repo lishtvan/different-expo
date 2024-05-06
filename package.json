@@ -12,7 +12,9 @@
     "build:ios": "eas build --profile development --platform ios",
     "build:android": "eas build --profile development --platform android",
     "test": "jest --watchAll",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "check:format": "prettier --check ."
   },
   "engines": {
     "node": "20.12.2",
@@ -37,6 +39,7 @@
     "babel-plugin-transform-inline-environment-variables": "^0.4.4",
     "card-validator": "^9.1.0",
     "expo": "~50.0.17",
+    "expo-apple-authentication": "~6.3.0",
     "expo-clipboard": "~5.0.1",
     "expo-dev-client": "~3.3.11",
     "expo-font": "~11.10.3",
@@ -72,8 +75,7 @@
     "react-native-toast-message": "^2.2.0",
     "react-native-use-websocket": "^0.2.6",
     "tamagui": "^1.61.3",
-    "typesense-instantsearch-adapter": "^2.8.0",
-    "expo-apple-authentication": "~6.3.0"
+    "typesense-instantsearch-adapter": "^2.8.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.3",
@@ -86,6 +88,7 @@
     "eslint-config-universe": "^12.0.1",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
+    "prettier-plugin-tailwindcss": "^0.5.14",
     "react-test-renderer": "18.2.0",
     "tailwindcss": "^3.3.2",
     "typescript": "^5.4.3"

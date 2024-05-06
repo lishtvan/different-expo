@@ -45,7 +45,7 @@ const User = () => {
           headerRight: () =>
             user.isOwnAccount && (
               <Link asChild href="/profile/resources">
-                <TouchableOpacity className="pl-8 pb-1 ">
+                <TouchableOpacity className="pb-1 pl-8">
                   <SimpleLineIcons name="menu" size={22} />
                 </TouchableOpacity>
               </Link>
@@ -96,7 +96,7 @@ interface StatusSwitcherProps {
 
 const StatusSwitcher: FC<StatusSwitcherProps> = ({ value, refine }) => {
   return (
-    <View className="flex-row items-center mb-4 mt-1 px-3 gap-x-4">
+    <View className="mb-4 mt-1 flex-row items-center gap-x-4 px-3">
       <Text className="text-lg">Показати продані речі</Text>
       <Switch
         size="$3"
