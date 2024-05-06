@@ -18,7 +18,7 @@ import { isAndroid } from 'utils/platform';
 const PriceFilter = () => {
   const keyboardVerticalOffset = isAndroid ? 80 : 120;
   const behavior = isAndroid ? 'height' : 'padding';
-
+  console.log('check')
   const { refine, start } = useRange({
     attribute: 'price',
     min: INITIAL_PRICE.MIN,
