@@ -202,7 +202,7 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
 
   useEffect(() => {
     refineSeller(user.id.toString());
-  }, [refreshControl.key]);
+  }, [refineSeller, refreshControl.key, user.id]);
 
   return (
     <FlatList

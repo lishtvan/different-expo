@@ -5,6 +5,5 @@ export const useSession = () => {
   const session = useMemo(() => {
     return getSessionSync();
   }, []);
-
   return session;
 };

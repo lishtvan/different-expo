@@ -64,6 +64,13 @@ const styles = {
   }),
 };
 
+const formatMsg = (msg: Message) => ({
+  _id: msg.id,
+  text: msg.text,
+  createdAt: new Date(msg.createdAt),
+  user: { _id: msg.senderId },
+});
+
 const getFontSizeStyle = (fontSize: number) => {
   return { left: { fontSize }, right: { fontSize } };
 };
@@ -89,47 +96,28 @@ const Chat = () => {
   useEffect(() => {
     if (readyState !== ReadyState.OPEN) return;
     sendJsonMessage({ chatId, enterChat: true });
-  }, [chatId, readyState]);
+  }, [chatId, readyState, sendJsonMessage]);
 
   useEffect(() => {
     if (msg.chat) {
-      setMessages(
-        msg.chat.Messages.map((m: Message) => ({
-          _id: m.id,
-          text: m.text,
-          createdAt: new Date(m.createdAt),
-          user: {
-            _id: m.senderId,
-          },
-        }))
-      );
+      const formattedMessages = msg.chat.Messages.map(formatMsg);
       setParticipants(msg.chat.Users);
+      setMessages(formattedMessages);
     }
     if (msg.text) {
-      setMessages([
-        {
-          _id: msg.id,
-          text: msg.text,
-          createdAt: new Date(msg.createdAt),
-          user: { _id: msg.senderId },
-        },
-        ...messages,
-      ]);
-      if (msg.senderId !== participants?.sender.id) {
-        sendJsonMessage({ messageSeen: true, chatId });
-      }
+      const newMsg = formatMsg(msg);
+      setMessages((prevMessages) => [newMsg, ...prevMessages]);
+      if (msg.senderId !== participants?.sender.id) sendJsonMessage({ messageSeen: true, chatId });
     }
-  }, [msg]);
+  }, [chatId, msg, participants?.sender.id, sendJsonMessage]);
 
   const onSend = useCallback(
     (messages: IMessage[] = []) => {
-      const { text } = messages[0];
+      const text = messages[0].text;
       sendJsonMessage({ text, chatId, receiverId: participants?.recipient.id });
-      if (ref.current) {
-        ref.current._listRef._scrollRef.scrollTo({ y: 0, animated: true });
-      }
+      if (ref.current) ref.current._listRef._scrollRef.scrollTo({ y: 0, animated: true });
     },
-    [participants]
+    [participants, sendJsonMessage, chatId]
   );
 
   const headerClassname = isAndroid ? 'pl-4' : 'pb-2 pl-4';

@@ -18,7 +18,7 @@ const OrderSuccess = () => {
         </View>
       ),
     });
-  }, []);
+  }, [navigation]);
 
   return (
     <SafeAreaView className="flex-1">

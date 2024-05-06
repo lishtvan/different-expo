@@ -10,15 +10,13 @@ import { useQuery } from '@tanstack/react-query';
 import { WS_URL } from 'config';
 import Colors from 'constants/colors';
 import { Tabs, router } from 'expo-router';
-import { useEffect, useMemo } from 'react';
+import { useSession } from 'hooks/useSession';
+import { useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { fetcher } from 'utils/fetcher';
-import { getSessionSync } from 'utils/secureStorage';
 
 const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId: string }) => {
-  const session = useMemo(() => {
-    return getSessionSync();
-  }, [userId]);
+  const session = useSession();
 
   const { sendJsonMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
@@ -34,7 +32,7 @@ const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId:
   useEffect(() => {
     if (readyState !== ReadyState.OPEN) return;
     sendJsonMessage({ connect: true });
-  }, [readyState, userId]);
+  }, [readyState, sendJsonMessage]);
 
   return null;
 };

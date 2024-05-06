@@ -1,5 +1,4 @@
 import { MaterialIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { InputValidationError } from 'components/ui/InputValidationErrors';
 import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
@@ -68,7 +67,12 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
   return (
     <View>
       <View className="mb-3 ml-2 flex-row items-center justify-between">
-        <Text className="text-base">Фото *</Text>
+        <View className="flex-row ">
+          <Text className="text-base">Фото *</Text>
+          {error && selectedImages.length === 0 && (
+            <Text className="my-1 ml-2 text-red-600">{error}</Text>
+          )}
+        </View>
         {selectedImages.length > 0 && (
           <TouchableOpacity onPress={deleteAllPhotos}>
             <View className="mt-1 mr-0.5 flex-row items-center gap-x-2">
@@ -78,8 +82,6 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
           </TouchableOpacity>
         )}
       </View>
-      {error && selectedImages.length === 0 && <InputValidationError message={error} />}
-
       {selectedImages.length === 0 ? (
         <TouchableOpacity onPress={pickImages}>
           <View className="h-28 w-full items-center justify-center rounded-xl border-[0.5px] border-main">

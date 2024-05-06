@@ -77,7 +77,7 @@ export default function CreateOrder() {
       setValue('department', { name: params.departmentName, ref: params.departmentRef });
       if (errors.department?.name) clearErrors('department.name');
     }
-  }, [params]);
+  }, [clearErrors, errors.city?.name, errors.department?.name, params, setValue]);
 
   const onSubmit = (data: any) => {
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');

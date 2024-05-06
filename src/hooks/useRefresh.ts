@@ -9,9 +9,9 @@ export function useRefresh<T>(refetch: () => Promise<T>) {
       setRefreshing(false);
       setRefreshKey(Date.now());
     });
-  }, []);
+  }, [refetch]);
   const handleRefreshWithoutSpinner = useCallback(() => {
     refetch().then(() => setRefreshKey(Date.now()));
-  }, []);
+  }, [refetch]);
   return { refreshing, refreshKey, handleRefresh, handleRefreshWithoutSpinner };
 }

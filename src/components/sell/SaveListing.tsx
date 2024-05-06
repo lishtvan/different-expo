@@ -118,6 +118,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       if (errors.designer) clearErrors('designer');
     }
     if (params.size && params.category) {
+      console.log('set category and size');
       setValue('category', params.category);
       // @ts-expect-error its okay
       setValue('size', params.size);
@@ -125,7 +126,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       if (errors.category) clearErrors('category');
       if (errors.size) clearErrors('size');
     }
-  }, [params]);
+  }, [clearErrors, errors.category, errors.designer, errors.size, params, setValue]);
 
   const onSubmit = (data: Record<string, unknown>) => {
     const { isValid } = validateCard.number(data.cardNumber);
@@ -246,8 +247,8 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
                 )}
                 name="category"
               />
-              {errors.designer &&
-                validationErrors[errors.designer.type as keyof typeof validationErrors]}
+              {errors.category &&
+                validationErrors[errors.category.type as keyof typeof validationErrors]}
             </View>
           </Pressable>
         </Link>
