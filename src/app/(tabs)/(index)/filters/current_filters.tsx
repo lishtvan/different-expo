@@ -138,7 +138,7 @@ const SortBy = () => {
   }, [sort.currentRefinement]);
 
   return (
-    <View className="mt-32 flex-row items-center justify-between">
+    <View className="mt-5 flex-row items-center justify-between">
       <View className="flex-row items-center">
         <Text className="text-lg">Сортування</Text>
         {sort.currentRefinement !== 'listings' && (
@@ -203,20 +203,18 @@ const CurrentFilters = () => {
     <Delayed waitBeforeShow={0}>
       <SafeAreaView className="flex-1">
         <Clear />
-        <View className="mb-2 flex flex-1 flex-col justify-between px-4 pt-3">
-          <View>
-            <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
-            <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
-            <FilterListItem attribute="size" title="Розмір" routeName="size_filter" />
-            <FilterListItem attribute="condition" title="Стан речі" routeName="condition_filter" />
-            <PriceFilterListItem attribute="price" title="Ціна" routeName="price_filter" />
-            <FilterListItem attribute="tags" title="Теги" routeName="tags_filter" />
-            <SortBy />
-            <StatusFilter />
-          </View>
-          <View>
-            <ShowListingsButton />
-          </View>
+        <View className="flex-1 flex-col px-4 pt-3">
+          <FilterListItem attribute="designer" title="Дизайнер" routeName="designer_filter" />
+          <FilterListItem attribute="category" title="Категорія" routeName="category_filter" />
+          <FilterListItem attribute="size" title="Розмір" routeName="size_filter" />
+          <FilterListItem attribute="condition" title="Стан речі" routeName="condition_filter" />
+          <PriceFilterListItem attribute="price" title="Ціна" routeName="price_filter" />
+          <FilterListItem attribute="tags" title="Теги" routeName="tags_filter" />
+          <SortBy />
+          <StatusFilter />
+        </View>
+        <View className="mb-2 px-2">
+          <ShowListingsButton />
         </View>
       </SafeAreaView>
     </Delayed>

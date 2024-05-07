@@ -11,10 +11,10 @@ import {
   Alert,
   Keyboard,
   Pressable,
-  SafeAreaView,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
 import { Text, Avatar, Input, View } from 'tamagui';
 import { DEFAULT_AVATAR } from 'utils/avatarUrlFallback';
@@ -119,7 +119,7 @@ const SettingsScreen = () => {
   if (isLoading) return null;
   const blurRadius = 10;
   return (
-    <SafeAreaView className="flex-1">
+    <KeyboardAwareScrollView extraScrollHeight={40} className="flex-1">
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -244,7 +244,7 @@ const SettingsScreen = () => {
           </Modal>
         </View>
       </TouchableWithoutFeedback>
-    </SafeAreaView>
+    </KeyboardAwareScrollView>
   );
 };
 

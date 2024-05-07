@@ -89,14 +89,17 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
           </View>
         </TouchableOpacity>
       ) : (
-        <View className="flex-row flex-wrap items-center gap-x-2 gap-y-2">
-          {selectedImages.map((img) => (
+        <View className="flex-row flex-wrap items-center  gap-y-2">
+          {selectedImages.map((img, index) => (
             <View
               onPress={() => deletePhoto(img)}
               key={img.imageUrl}
-              className="h-28 w-[22.7%] items-center justify-center rounded-lg">
+              style={{
+                width: '24.3%',
+                marginRight: index % 4 === 3 ? 0 : '0.7%', // Add marginRight only to the first 3 cards in each row
+              }}>
               <Image
-                className="aspect-[8.5/10] h-28 w-full rounded-lg object-cover"
+                className="h-28 w-full rounded-lg object-cover"
                 source={{ uri: img.imageUrl }}
                 alt="item"
                 blurRadius={img.isPreview ? blurRadius : 0}
@@ -106,7 +109,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
           {selectedImages.length < 8 && (
             <TouchableOpacity
               onPress={pickImages}
-              className="h-28 w-[22.7%] items-center justify-center rounded-lg border-[0.5px] border-main">
+              className="h-28 w-[24.3%] items-center justify-center rounded-lg border-[0.5px] border-main">
               <MaterialIcons name="add-circle" size={20} color={mainColor} />
             </TouchableOpacity>
           )}
