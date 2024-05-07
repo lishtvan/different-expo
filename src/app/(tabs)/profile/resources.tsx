@@ -27,7 +27,7 @@ const SignOut = () => {
 
   return (
     <TouchableOpacity
-      className="mt-10 rounded-2xl bg-card p-3"
+      className="rounded-2xl bg-card p-3"
       onPress={() => openConfirmationModal('Ви впевнені, що хочете вийти?', mutation.mutate)}>
       <Text className="text-center text-lg text-blue-500">Вийти з аккаунта</Text>
     </TouchableOpacity>
