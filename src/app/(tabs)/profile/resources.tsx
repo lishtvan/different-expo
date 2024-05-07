@@ -27,8 +27,9 @@ const SignOut = () => {
 
   return (
     <TouchableOpacity
+      className="mt-10 rounded-2xl bg-card p-3"
       onPress={() => openConfirmationModal('Ви впевнені, що хочете вийти?', mutation.mutate)}>
-      <Text className="mt-10 text-lg text-blue-500">Вийти з аккаунта</Text>
+      <Text className="text-center text-lg text-blue-500">Вийти з аккаунта</Text>
     </TouchableOpacity>
   );
 };
@@ -58,60 +59,64 @@ const DeleteAccount = () => {
 
   return (
     <TouchableOpacity
+      className="mt-2 rounded-2xl bg-card p-3 "
       onPress={() =>
         openConfirmationModal('Ви впевнені, що хочете видалити аккаунт?', mutation.mutate)
       }>
-      <Text className="mt-2 text-lg text-red-500">Видалити аккаунт</Text>
+      <Text className="text-center text-lg text-red-500">Видалити аккаунт</Text>
     </TouchableOpacity>
   );
 };
 
 const Resources = () => {
   return (
-    <View className="gap-y-2 p-3">
-      <Text className="text-lg font-semibold">Допомога</Text>
-      <View className="mb-2">
-        <Text className="text-base">
-          Ви можете зв'язатися з нами якщо у вас є будь які проблеми, питання чи пропозиції.
-        </Text>
-        <TouchableOpacity className="mt-1 flex-row items-center" onPress={() => {}}>
-          <Text className="text-base">Telegram: </Text>
-          <TouchableOpacity
-            onPress={() => WebBrowser.openBrowserAsync(`https://t.me/DifferentMarketplace`)}>
-            <Text className="text-base text-blue-500">@DifferentMarketplace</Text>
+    <View className="flex-1 p-3">
+      <View className="flex-1 flex-col gap-y-2 ">
+        <Text className="text-lg font-semibold">Допомога</Text>
+        <View className="mb-2">
+          <Text className="text-base">
+            Ви можете зв'язатися з нами якщо у вас є будь які проблеми, питання чи пропозиції.
+          </Text>
+          <TouchableOpacity className="mt-1 flex-row items-center" onPress={() => {}}>
+            <Text className="text-base">Telegram: </Text>
+            <TouchableOpacity
+              onPress={() => WebBrowser.openBrowserAsync(`https://t.me/DifferentMarketplace`)}>
+              <Text className="text-base text-blue-500">@DifferentMarketplace</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
-        </TouchableOpacity>
-        <View className="mt-1 flex-row items-center">
-          {/* TODO: test it on iphone 5s, test email opening */}
-          <Text className="text-base">Email: </Text>
-          <TouchableOpacity
-            onPress={() => Linking.openURL('mailto:hello.different.marketplace@gmail.com')}>
-            <Text className="text-base text-blue-500">hello.different.marketplace@gmail.com</Text>
-          </TouchableOpacity>
+          <View className="mt-1 flex-row items-center">
+            {/* TODO: test it on iphone 5s, test email opening */}
+            <Text className="text-base">Email: </Text>
+            <TouchableOpacity
+              onPress={() => Linking.openURL('mailto:hello.different.marketplace@gmail.com')}>
+              <Text className="text-base text-blue-500">hello.different.marketplace@gmail.com</Text>
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-      <TouchableOpacity
-        onPress={() =>
-          WebBrowser.openBrowserAsync(
-            `https://different-marketplace.notion.site/6518326323454c0cb934574e5fe59420`
-          )
-        }
-        className="flex-row items-center justify-between">
-        <Text className="text-lg">Політика конфіденційності</Text>
-        <Entypo name="chevron-thin-right" size={15} />
-      </TouchableOpacity>
-      <TouchableOpacity className="flex-row items-center justify-between">
-        <Text
+        <TouchableOpacity
           onPress={() =>
             WebBrowser.openBrowserAsync(
-              `https://different-marketplace.notion.site/5ff3aa4eeefa4e1886ed4cafe087517e`
+              `https://different-marketplace.notion.site/6518326323454c0cb934574e5fe59420`
             )
           }
-          className="text-lg">
-          Умови використання
-        </Text>
-        <Entypo name="chevron-thin-right" size={15} />
-      </TouchableOpacity>
+          className="flex-row items-center justify-between">
+          <Text className="text-lg">Політика конфіденційності</Text>
+          <Entypo name="chevron-thin-right" size={15} />
+        </TouchableOpacity>
+        <TouchableOpacity className="flex-row items-center justify-between">
+          <Text
+            onPress={() =>
+              WebBrowser.openBrowserAsync(
+                `https://different-marketplace.notion.site/5ff3aa4eeefa4e1886ed4cafe087517e`
+              )
+            }
+            className="text-lg">
+            Умови використання
+          </Text>
+          <Entypo name="chevron-thin-right" size={15} />
+        </TouchableOpacity>
+      </View>
+
       <View>
         <SignOut />
         <DeleteAccount />
