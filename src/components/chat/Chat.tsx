@@ -231,6 +231,7 @@ const Chat = () => {
                 borderColor: '#E8E8E8',
                 borderWidth: 2,
                 marginHorizontal: 10,
+                marginBottom: 3,
                 borderRadius: 20,
               }}
               containerStyle={{

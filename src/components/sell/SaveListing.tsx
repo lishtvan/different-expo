@@ -172,7 +172,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       keyboardOpeningTime={0}
       className="flex-1 gap-y-3 p-3">
       <View>
-        <Text className="mb-1 ml-2 text-base">Заголовок *</Text>
+        <Text className="mb-1 ml-2 text-base">Заголовок</Text>
         <Controller
           control={control}
           rules={{ required: true, maxLength: 80 }}
@@ -193,7 +193,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         {errors.title && validationErrors[errors.title.type as keyof typeof validationErrors]}
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Дизайнер *</Text>
+        <Text className="mb-1 ml-2 text-base">Дизайнер</Text>
         <Link
           href={{
             pathname: `${currentPath}/designer_search`,
@@ -224,7 +224,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         </Link>
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Категорія та розмір *</Text>
+        <Text className="mb-1 ml-2 text-base">Категорія та розмір</Text>
         <Link
           href={{
             pathname: `${currentPath}/select_category_and_size`,
@@ -261,7 +261,9 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         />
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Опис</Text>
+        <Text className="mb-1 ml-2 text-base">
+          Опис <Text className="text-zinc-400">(опціонально)</Text>
+        </Text>
         <Controller
           control={control}
           rules={{ maxLength: 1000 }}
@@ -282,7 +284,9 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
           validationErrors[errors.description.type as keyof typeof validationErrors]}
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Теги</Text>
+        <Text className="mb-1 ml-2 text-base">
+          Теги <Text className="text-zinc-400">(опціонально)</Text>
+        </Text>
         <DropDownPicker
           open={open}
           multiple
@@ -309,7 +313,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         />
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Стан речі *</Text>
+        <Text className="mb-1 ml-2 text-base">Стан речі</Text>
         <Controller
           control={control}
           rules={{
@@ -340,7 +344,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
           validationErrors[errors.condition.type as keyof typeof validationErrors]}
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Ціна *</Text>
+        <Text className="mb-1 ml-2 text-base">Ціна</Text>
         <Controller
           control={control}
           rules={{
@@ -376,7 +380,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
           validationErrors[errors.price.type as keyof typeof validationErrors]}
       </View>
       <View>
-        <Text className="mb-1 ml-2 text-base">Номер телефону *</Text>
+        <Text className="mb-1 ml-2 text-base">Номер телефону</Text>
         <Controller
           control={control}
           rules={{
@@ -407,7 +411,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
       <View className="mb-4">
-        <Text className="mb-1 ml-2 text-base">Номер карти *</Text>
+        <Text className="mb-1 ml-2 text-base">Номер карти</Text>
         <Controller
           control={control}
           rules={{

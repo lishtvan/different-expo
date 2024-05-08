@@ -18,7 +18,7 @@ const SelectCategoryAndSize = () => {
     <ScrollView ref={scrollRef} className="flex-1 px-1">
       <View>
         <Text className="mb-3 pl-3 text-xl font-medium">Секція</Text>
-        <View className="mx-auto flex-row flex-wrap gap-3">
+        <View className="flex-row flex-wrap gap-3 px-2">
           {SECTIONS.map((section) => (
             <TouchableOpacity
               onPress={() => {
@@ -41,7 +41,7 @@ const SelectCategoryAndSize = () => {
       {selectedSection && (
         <Animated.View entering={FadeIn.duration(300)}>
           <Text className="mb-3 mt-3 pl-3 text-xl font-medium">Категорія</Text>
-          <View className="mx-auto mb-1 flex-row flex-wrap gap-3">
+          <View className="mb-1 flex-row flex-wrap gap-3 px-2">
             {CATEGORIES[selectedSection].map((category) => (
               <TouchableOpacity
                 onPress={() => {
