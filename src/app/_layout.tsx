@@ -16,7 +16,7 @@ import { useAppState } from 'hooks/useAppState';
 import { useOnlineManager } from 'hooks/useOnlineManager';
 import { useEffect } from 'react';
 import '../../global.css';
-import { AppStateStatus, Platform, TouchableOpacity } from 'react-native';
+import { AppStateStatus, TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Circle, TamaguiProvider, Theme } from 'tamagui';
 
@@ -53,9 +53,7 @@ export default function RootLayout() {
 }
 
 function onAppStateChange(status: AppStateStatus) {
-  if (Platform.OS !== 'web') {
-    focusManager.setFocused(status === 'active');
-  }
+  focusManager.setFocused(status === 'active');
 }
 
 interface ErrActions {

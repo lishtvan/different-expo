@@ -118,7 +118,6 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       if (errors.designer) clearErrors('designer');
     }
     if (params.size && params.category) {
-      console.log('set category and size');
       setValue('category', params.category);
       // @ts-expect-error its okay
       setValue('size', params.size);
