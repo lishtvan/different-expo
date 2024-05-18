@@ -75,7 +75,7 @@ const Resources = () => {
         <Text className="text-lg font-semibold">Допомога</Text>
         <View className="mb-2">
           <Text className="text-base">
-            Ви можете зв'язатися з нами якщо у вас є будь які проблеми, питання чи пропозиції.
+            Ви можете зв`язатися з нами якщо у вас є будь які проблеми, питання чи пропозиції.
           </Text>
           <TouchableOpacity className="mt-1 flex-row items-center" onPress={() => {}}>
             <Text className="text-base">Telegram: </Text>
