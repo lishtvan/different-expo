@@ -85,7 +85,7 @@ const Resources = () => {
             </TouchableOpacity>
           </TouchableOpacity>
           <View className="mt-1 flex-row items-center">
-            {/* TODO: test it on iphone 5s, test email opening */}
+            {/* TODO: test email opening */}
             <Text className="text-base">Email: </Text>
             <TouchableOpacity
               onPress={() => Linking.openURL('mailto:hello.different.marketplace@gmail.com')}>
