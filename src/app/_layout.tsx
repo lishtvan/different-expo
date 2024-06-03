@@ -56,27 +56,15 @@ function onAppStateChange(status: AppStateStatus) {
   focusManager.setFocused(status === 'active');
 }
 
-interface ErrActions {
-  [key: string]: (() => void) | undefined;
-}
-
-// TODO: 404 and 500 is incorrect behaviour, should be used approach with error boundary
-const erorrActions: ErrActions = {
-  404: () => router.navigate('/404'),
-  500: () => router.replace('/500'),
-  401: () => router.navigate('/auth'),
-};
-
 const globalErrorHandler = (err: Error) => {
-  const errAction = erorrActions[err.cause as string];
-  if (errAction) errAction();
+  if (err.cause === 401) router.navigate('/auth');
   else throw err;
 };
 
 const queryClient = new QueryClient({
   queryCache: new QueryCache({ onError: globalErrorHandler }),
   mutationCache: new MutationCache({ onError: globalErrorHandler }),
-  defaultOptions: { queries: { retry: false } },
+  defaultOptions: { queries: { retry: true } },
 });
 
 function RootLayoutNav() {
