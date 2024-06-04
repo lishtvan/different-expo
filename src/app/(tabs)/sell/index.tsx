@@ -7,6 +7,8 @@ export default function SellScreen() {
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
+
+  if (user.error) throw user.error;
   if (user.isLoading || !user.data) return null;
 
   return (

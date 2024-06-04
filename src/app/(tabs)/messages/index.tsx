@@ -52,7 +52,7 @@ const RenderChat = ({ item }: { item: Chat }) => {
 };
 
 export default function MessagesScreen() {
-  const { data, isLoading, refetch } = useQuery<GetChatsResponse>({
+  const { data, isLoading, refetch, error } = useQuery<GetChatsResponse>({
     queryKey: ['chats'],
     queryFn: () => fetcher({ route: '/chat/getMany' }),
   });
@@ -64,6 +64,7 @@ export default function MessagesScreen() {
     }, [refetch])
   );
 
+  if (error) throw error;
   if (isLoading || !data) return null;
 
   const { chats } = data;

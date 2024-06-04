@@ -39,7 +39,7 @@ export default function SelectDepartment() {
   const params = useLocalSearchParams<Omit<Props, 'item'>>();
   const [filteredDepartments, setFilteredDepartments] = useState<DepartmentNP[]>([]);
 
-  const { data } = useQuery<DepartmentNP[]>({
+  const { data, error } = useQuery<DepartmentNP[]>({
     queryKey: ['search_department', params.cityRef],
     queryFn: () => searchDepartments(params.cityRef),
   });
@@ -58,6 +58,8 @@ export default function SelectDepartment() {
   }, [searchText, data]);
 
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1 bg-[#f8f8f8]' : 'p-0 pl-2  bg-[#f8f8f8]';
+
+  if (error) throw error;
 
   return (
     <View className="flex-1 px-3 py-1">

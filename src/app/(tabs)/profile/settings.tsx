@@ -21,6 +21,8 @@ import { DEFAULT_AVATAR } from 'utils/avatarUrlFallback';
 import { fetcher } from 'utils/fetcher';
 import { uploadImage, validateSingleImageSize, verifyPermission } from 'utils/uploadImage';
 
+const blurRadius = 10;
+
 const SettingsScreen = () => {
   const [newAvatarUrl, setNewAvatarUrl] = useState<string | null>();
   const [isUploading, setIsUploading] = useState(false);
@@ -29,7 +31,11 @@ const SettingsScreen = () => {
   const [previewImage, setPreviewImage] = useState<string>();
 
   const [, requestPermission] = ImagePicker.useCameraPermissions();
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
@@ -117,7 +123,8 @@ const SettingsScreen = () => {
   };
 
   if (isLoading) return null;
-  const blurRadius = 10;
+  if (error) throw error;
+
   return (
     <KeyboardAwareScrollView extraScrollHeight={40} className="flex-1">
       <Stack.Screen

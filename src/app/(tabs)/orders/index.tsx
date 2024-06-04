@@ -116,11 +116,12 @@ function Tabs({ renderScene }: any) {
 }
 
 const OrdersScreen = () => {
-  const { data, isLoading, refetch } = useQuery({
+  const { data, isLoading, refetch, error } = useQuery({
     queryKey: ['orders'],
     queryFn: () => fetcher({ route: '/order/getMany' }),
   });
 
+  if (error) throw error;
   if (isLoading) return null;
 
   return (

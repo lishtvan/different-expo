@@ -24,7 +24,7 @@ type CreateOrderParams = {
 };
 
 export default function CreateOrder() {
-  const { data: user } = useQuery<TUser>({
+  const { data: user, error } = useQuery<TUser>({
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
@@ -104,6 +104,8 @@ export default function CreateOrder() {
   if (mutation.isSuccess && !mutation.data.error) {
     return <OrderSuccess />;
   }
+
+  if (error) throw error;
 
   return (
     <KeyboardAwareScrollView

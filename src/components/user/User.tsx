@@ -26,6 +26,7 @@ const User = () => {
   const {
     data: user,
     isLoading,
+    error,
     refetch,
   } = useQuery({
     queryKey: ['user', params.nickname],
@@ -35,6 +36,7 @@ const User = () => {
   const { refreshing, handleRefresh } = useRefresh(refetch);
   const { refresh, setUiState } = useInstantSearch();
 
+  if (error) throw error;
   if (isLoading || refreshing) return null;
 
   return (

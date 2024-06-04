@@ -17,6 +17,9 @@ export default function EditListingScreen() {
     queryFn: () => fetcher({ body: { listingId: params.listingId }, route: '/listing/get' }),
   });
 
+  if (user.error) throw user.error;
+  if (listingResponse.error) throw listingResponse.error;
+
   if (listingResponse.isLoading || user.isLoading || !listingResponse.data || !user.data)
     return null;
 

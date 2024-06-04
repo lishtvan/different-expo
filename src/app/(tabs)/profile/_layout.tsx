@@ -7,11 +7,16 @@ import { fetcher } from 'utils/fetcher';
 export const unstable_settings = { initialRouteName: 'index' };
 
 export default function ProfileLayoutNav() {
-  const { data: user, isLoading } = useQuery({
+  const {
+    data: user,
+    isLoading,
+    error,
+  } = useQuery({
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
+  if (error) throw error;
   if (isLoading) return null;
 
   return (

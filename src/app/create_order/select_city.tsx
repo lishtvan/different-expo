@@ -35,12 +35,14 @@ export default function SelectCity() {
   const params = useLocalSearchParams<{ listingId: string }>();
   const [searchText, onChangeSearch] = useState('');
 
-  const { data, isLoading } = useQuery<City[]>({
+  const { data, isLoading, error } = useQuery<City[]>({
     queryKey: ['search_city', searchText],
     queryFn: () => searchCity(searchText || 'К'),
   });
 
   const iconClassname = isAndroid ? 'p-0 pl-2 pb-1 bg-[#f8f8f8]' : 'p-0 pl-2  bg-[#f8f8f8]';
+
+  if (error) throw error;
 
   return (
     <View className="flex-1 px-3 py-1">
