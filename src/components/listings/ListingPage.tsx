@@ -146,11 +146,15 @@ const ListingImages: FC<ListingImagesProps> = ({ imageUrls }) => {
 
 export default function ListingPage() {
   const { listingId } = useLocalSearchParams();
-  const { data, isLoading } = useQuery<ListingResponse>({
+  const {
+    data,
+    isLoading,
+    error: listingError,
+  } = useQuery<ListingResponse>({
     queryKey: ['listing', listingId],
     queryFn: () => fetcher({ body: { listingId }, route: '/listing/get' }),
   });
-  const { data: user } = useQuery({
+  const { data: user, error: userError } = useQuery({
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
@@ -163,6 +167,8 @@ export default function ListingPage() {
     return { pathname: '/userg', params: { nickname: data.listing.User.nickname } };
   }, [segment, data]);
 
+  if (listingError) throw listingError;
+  if (userError) throw userError;
   if (isLoading || !data) return null;
 
   const { listing, isOwnListing, sellerAvailableListingsCount, sellerSoldListingsCount } = data;

@@ -11,7 +11,6 @@ interface Fetcher {
 }
 
 export const fetcher: Fetcher = async ({ route, body, method = 'POST', baseURL = API_URL }) => {
-  console.log('fetching', route);
   const headers = new Headers();
 
   const token = await getSession();
@@ -24,6 +23,8 @@ export const fetcher: Fetcher = async ({ route, body, method = 'POST', baseURL =
     response = await fetch(`${baseURL}${route}`, { method, headers, body: JSON.stringify(body) });
   } else response = await fetch(`${baseURL}${route}`, { method, headers });
 
+  console.log('fetching', route, response.status);
+
   if (response.status === 401) {
     if (route === '/auth/me') return null;
     else throw new Error('Not authorized', { cause: 401 });
@@ -32,7 +33,6 @@ export const fetcher: Fetcher = async ({ route, body, method = 'POST', baseURL =
   if (response.status >= 500) {
     throw new Error('Something went wrong', { cause: 500 });
   }
-
   const json = await response.json();
   if (json.error) {
     const { message } = json;

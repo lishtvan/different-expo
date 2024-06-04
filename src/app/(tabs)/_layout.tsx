@@ -42,6 +42,7 @@ export default function TabLayout() {
     data: user,
     isLoading,
     refetch,
+    error,
   } = useQuery({
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
@@ -53,6 +54,7 @@ export default function TabLayout() {
     router.navigate('/auth');
   };
 
+  if (error) throw error;
   if (isLoading) return null;
 
   return (

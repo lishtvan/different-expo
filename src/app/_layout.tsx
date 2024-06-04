@@ -22,8 +22,7 @@ import { Circle, TamaguiProvider, Theme } from 'tamagui';
 
 import tamaguiConfig from '../../tamagui.config';
 
-export { ErrorBoundary } from 'expo-router';
-
+export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 export const unstable_settings = { initialRouteName: '(tabs)' };
 
 SplashScreen.preventAutoHideAsync();
@@ -56,15 +55,10 @@ function onAppStateChange(status: AppStateStatus) {
   focusManager.setFocused(status === 'active');
 }
 
-const globalErrorHandler = (err: Error) => {
-  if (err.cause === 401) router.navigate('/auth');
-  else throw err;
-};
-
 const queryClient = new QueryClient({
-  queryCache: new QueryCache({ onError: globalErrorHandler }),
-  mutationCache: new MutationCache({ onError: globalErrorHandler }),
-  defaultOptions: { queries: { retry: true } },
+  queryCache: new QueryCache(),
+  mutationCache: new MutationCache(),
+  defaultOptions: { queries: { retry: false } },
 });
 
 function RootLayoutNav() {

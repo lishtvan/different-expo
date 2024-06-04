@@ -27,7 +27,7 @@ const getOrderDate = (createdAt: string) => {
 
 export default function OrderScreen() {
   const { orderId } = useLocalSearchParams();
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['order', orderId],
     queryFn: () => fetcher({ body: { orderId }, route: '/order/get' }),
   });
@@ -46,6 +46,7 @@ export default function OrderScreen() {
     setModalVisible(false);
   };
 
+  if (error) throw error;
   if (isLoading) return null;
   const { order, orderType } = data;
 

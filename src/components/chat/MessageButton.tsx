@@ -10,7 +10,7 @@ interface MessageButtonProps extends ButtonProps {
 }
 
 const MessageButton = (props: MessageButtonProps) => {
-  const createChatMutation = useMutation({
+  const { mutate, error } = useMutation({
     mutationFn: () =>
       fetcher({
         route: '/chat/create',
@@ -23,10 +23,15 @@ const MessageButton = (props: MessageButtonProps) => {
         params: { chatId: res.chatId },
       });
     },
+    onError: (err) => {
+      if (err.cause === 401) router.navigate('/auth');
+    },
   });
 
+  if (error && error.cause !== 401) throw error;
+
   return (
-    <Button {...props} onPress={() => createChatMutation.mutate()}>
+    <Button {...props} onPress={() => mutate()}>
       {props.children}
     </Button>
   );
