@@ -43,7 +43,7 @@ const OrderSuccess = () => {
             На головну
           </Button>
         </Link>
-        <Link href="/orders" asChild>
+        <Link href="/orders/" asChild>
           <Button size="$4" theme="active" fontSize="$6" borderRadius="$main">
             Перейти до замовлень
           </Button>

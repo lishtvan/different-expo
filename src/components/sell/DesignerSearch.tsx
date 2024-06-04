@@ -9,7 +9,7 @@ import { isAndroid } from 'utils/platform';
 const RenderDesigner = ({ item, listingId }: { item: string; listingId?: string }) => (
   <Link
     href={{
-      pathname: listingId ? '/edit_listing/' : '/sell',
+      pathname: listingId ? '/edit_listing/' : '/sell/',
       params: { designer: item, listingId: listingId || '' },
     }}
     asChild>

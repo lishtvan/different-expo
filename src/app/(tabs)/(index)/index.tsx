@@ -61,7 +61,7 @@ const FiltersButton = () => {
   }, [items]);
 
   return (
-    <Link href="/filters" asChild>
+    <Link href="/filters/current_filters" asChild>
       <TouchableOpacity className="ml-1 flex-row p-2">
         <MaterialCommunityIcons name="tune-variant" size={25} />
         {filtersCount > 0 && (

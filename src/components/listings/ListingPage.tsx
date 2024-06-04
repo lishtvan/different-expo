@@ -245,7 +245,7 @@ export default function ListingPage() {
             <Link
               asChild
               href={{
-                pathname: user ? '/create_order' : '/auth',
+                pathname: user ? '/create_order/' : '/auth',
                 params: { listingId: listing.id },
               }}>
               <Button

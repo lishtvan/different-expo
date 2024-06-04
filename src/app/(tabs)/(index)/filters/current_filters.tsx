@@ -41,6 +41,7 @@ const PriceFilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, ti
   }, [currentFilter]);
 
   return (
+    // @ts-expect-error its okay
     <Link href={`/filters/${routeName}`} asChild className="mb-1">
       <TouchableOpacity activeOpacity={0.5} className="w-full">
         <ListItem className="px-0.5 py-3">
@@ -63,6 +64,7 @@ const FilterListItem: FC<FilterListItemProps> = ({ attribute, routeName, title }
   const currentFilter = useCurrentRefinements({ includedAttributes: [attribute] });
 
   return (
+    // @ts-expect-error its okay
     <Link href={`/filters/${routeName}`} asChild className="mb-1">
       <TouchableOpacity activeOpacity={0.5} className="w-full">
         <ListItem className="px-0.5 py-3">

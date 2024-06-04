@@ -18,7 +18,7 @@ interface Props {
 const RenderDepartment: FC<Props> = ({ item, listingId, cityRef, cityName }) => (
   <Link
     href={{
-      pathname: '/create_order',
+      pathname: '/create_order/',
       params: {
         listingId,
         cityRef,
