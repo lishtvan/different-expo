@@ -122,7 +122,7 @@ const OrdersScreen = () => {
   });
 
   if (error) throw error;
-  if (isLoading) return null;
+  if (isLoading || !data) return null;
 
   return (
     <Tabs

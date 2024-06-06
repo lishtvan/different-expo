@@ -37,7 +37,7 @@ const User = () => {
   const { refresh, setUiState } = useInstantSearch();
 
   if (error) throw error;
-  if (isLoading || refreshing) return null;
+  if (isLoading || refreshing || !user) return null;
 
   return (
     <View className="flex-1">

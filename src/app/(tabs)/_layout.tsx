@@ -15,6 +15,8 @@ import { useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { fetcher } from 'utils/fetcher';
 
+export { ErrorBoundary } from 'components/errors/ErrorBoundary';
+
 const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId: string }) => {
   const session = useSession();
 

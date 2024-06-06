@@ -1,5 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { onlineManager } from '@tanstack/react-query';
+import { onlineManager, useQueryClient, useQueryErrorResetBoundary } from '@tanstack/react-query';
 import { ErrorBoundaryProps } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useState } from 'react';
@@ -64,14 +64,17 @@ const InternalError = (props: ErrorBoundaryProps) => {
 
 const NoInternetError = (props: ErrorBoundaryProps) => {
   const [checking, setChecking] = useState(false);
+  const errorBoundary = useQueryErrorResetBoundary();
+  const queryClient = useQueryClient();
   const checkConnection = async () => {
     setChecking(true);
     try {
+      // LOW_PRIO: refactor this to net info
       await fetch('https://jsonplaceholder.typicode.com/todos/1');
+      errorBoundary.reset();
+      queryClient.clear();
+      onlineManager.setOnline(true);
       props.retry();
-      setTimeout(() => {
-        onlineManager.setOnline(true);
-      }, 1000);
     } catch {
       setTimeout(() => {
         setChecking(false);
