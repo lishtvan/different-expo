@@ -2,11 +2,10 @@ import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeListings from 'components/home/Listings';
 import { INITIAL_PRICE } from 'constants/filter';
 import { Link, Stack } from 'expo-router';
-import { useAppState } from 'hooks/useAppState';
 import { useRefresh } from 'hooks/useRefresh';
 import React, { useMemo } from 'react';
 import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
-import { Dimensions, AppStateStatus, RefreshControl, TouchableOpacity } from 'react-native';
+import { Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
 import { Button, Input, Text, View, XStack, debounce } from 'tamagui';
 import { delay } from 'utils/common';
 import { isAndroid } from 'utils/platform';
@@ -27,13 +26,6 @@ const HomeListingsWrapper = () => {
     if (reopen) handleRefreshWithoutSpinner();
     else handleRefresh();
   };
-
-  const onAppStateChange = (status: AppStateStatus) => {
-    if (status !== 'active') return;
-    fullSearchRefresh(true);
-  };
-
-  useAppState(onAppStateChange);
 
   return (
     <HomeListings
