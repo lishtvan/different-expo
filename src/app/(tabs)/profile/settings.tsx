@@ -2,6 +2,7 @@ import { Entypo } from '@expo/vector-icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { InputValidationError, validationErrors } from 'components/ui/InputValidationErrors';
 import TextArea from 'components/ui/TextArea';
+import { toastConfig } from 'components/ui/toastConfig';
 import { mainColor } from 'constants/colors';
 import * as ImagePicker from 'expo-image-picker';
 import { Stack, router } from 'expo-router';
@@ -11,11 +12,12 @@ import {
   Alert,
   Keyboard,
   Pressable,
+  SafeAreaView,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import Modal from 'react-native-modal';
+import Toast from 'react-native-toast-message';
 import { Text, Avatar, Input, View } from 'tamagui';
 import { DEFAULT_AVATAR } from 'utils/avatarUrlFallback';
 import { fetcher } from 'utils/fetcher';
@@ -126,7 +128,8 @@ const SettingsScreen = () => {
   if (error) throw error;
   if (mutation.error) throw mutation.error;
   return (
-    <KeyboardAwareScrollView extraScrollHeight={40} className="flex-1">
+    <SafeAreaView className="flex-1">
+      <Toast config={toastConfig} />
       <Stack.Screen
         options={{
           headerRight: () => (
@@ -137,7 +140,7 @@ const SettingsScreen = () => {
         }}
       />
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View className="flex-1 gap-y-3 px-3">
+        <View className="gap-y-3 px-3">
           <View className="mx-auto">
             <Pressable
               disabled={isUploading}
@@ -251,7 +254,7 @@ const SettingsScreen = () => {
           </Modal>
         </View>
       </TouchableWithoutFeedback>
-    </KeyboardAwareScrollView>
+    </SafeAreaView>
   );
 };
 
