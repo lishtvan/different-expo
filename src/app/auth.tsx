@@ -63,6 +63,7 @@ const AuthScreen = () => {
       console.log(e);
     }
   };
+  if (signInMutation.error) throw signInMutation.error;
 
   return (
     <SafeAreaView className="flex-1 items-center">

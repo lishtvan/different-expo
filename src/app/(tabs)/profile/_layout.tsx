@@ -3,6 +3,7 @@ import { Stack, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 import { Text } from 'tamagui';
 import { fetcher } from 'utils/fetcher';
+export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 
 export const unstable_settings = { initialRouteName: 'index' };
 

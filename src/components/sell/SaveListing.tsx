@@ -160,7 +160,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
   const hideKeyboardIfVisible = () => {
     if (Keyboard.isVisible()) Keyboard.dismiss();
   };
-
+  if (mutation.error) throw mutation.error;
   return (
     <KeyboardAwareScrollView
       enableOnAndroid

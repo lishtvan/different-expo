@@ -70,7 +70,7 @@ const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
         <View className="flex-row items-center">
           <Text className="text-base">Фото</Text>
           {error && selectedImages.length === 0 && (
-            <Text className="ml-2 text-xs text-red-600">{error}</Text>
+            <Text className="ml-2 mt-0.5 text-xs text-red-600">{error}</Text>
           )}
         </View>
         {selectedImages.length > 0 && (

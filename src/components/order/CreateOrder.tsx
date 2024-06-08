@@ -106,6 +106,7 @@ export default function CreateOrder() {
   }
 
   if (error) throw error;
+  if (mutation.error) throw mutation.error;
 
   return (
     <KeyboardAwareScrollView

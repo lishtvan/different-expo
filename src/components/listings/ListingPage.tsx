@@ -74,6 +74,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
   };
 
   const { color, text } = headerTitleStatusMapper[listing.status];
+  if (mutation.error) throw mutation.error;
 
   return (
     <Stack.Screen

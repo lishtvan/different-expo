@@ -24,6 +24,7 @@ const SignOut = () => {
       router.navigate('/');
     },
   });
+  if (mutation.error) throw mutation.error;
 
   return (
     <TouchableOpacity
@@ -56,6 +57,8 @@ const DeleteAccount = () => {
       router.navigate('/');
     },
   });
+
+  if (mutation.error) throw mutation.error;
 
   return (
     <TouchableOpacity

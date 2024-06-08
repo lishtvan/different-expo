@@ -3,6 +3,7 @@ import { mainColor } from 'constants/colors';
 import { Stack, router } from 'expo-router';
 import { TouchableOpacity } from 'react-native';
 
+export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 export const unstable_settings = { initialRouteName: 'index' };
 
 export default function CreateOrderLayoutNav() {

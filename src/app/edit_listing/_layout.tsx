@@ -5,6 +5,7 @@ import { TouchableOpacity } from 'react-native';
 import Toast from 'react-native-toast-message';
 import { Circle } from 'tamagui';
 
+export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 export const unstable_settings = { initialRouteName: 'index' };
 
 export default function EditListingLayoutNav() {

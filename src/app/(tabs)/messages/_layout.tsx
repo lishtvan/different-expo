@@ -1,5 +1,6 @@
 import { Stack } from 'expo-router';
 
+export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 export const unstable_settings = { initialRouteName: 'index' };
 
 export default function MessagesLayoutNav() {

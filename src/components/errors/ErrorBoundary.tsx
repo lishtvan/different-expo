@@ -11,15 +11,15 @@ import tamaguiConfig from '../../../tamagui.config';
 const NotFoundError = (props: ErrorBoundaryProps) => {
   return (
     <SafeAreaView className="flex-1 items-center">
-      <View className="rounded-3xl bg-red-100 px-4 py-1.5">
-        <Text className="text-lg font-semibold">Помилка 404</Text>
-      </View>
-      <View className="flex-1 justify-center px-5">
+      <View className="flex-1 items-center justify-center px-5">
+        <View className="mb-4 rounded-3xl bg-red-100 px-4 py-1.5">
+          <Text className="text-lg font-semibold">Помилка 404</Text>
+        </View>
         <Text className="text-xl font-medium">
           Те що ви шукали - не знайдено.{'\n'}Якщо це здається вам помилкою, зверніться в підтримку.
         </Text>
       </View>
-      <View className="flex-row gap-x-4">
+      <View className="mb-2 flex-row gap-x-4">
         <Button onPress={props.retry} size="$5" fontSize="$6" borderRadius="$main">
           Повернутись
         </Button>
@@ -38,15 +38,15 @@ const NotFoundError = (props: ErrorBoundaryProps) => {
 const InternalError = (props: ErrorBoundaryProps) => {
   return (
     <SafeAreaView className="flex-1 items-center">
-      <View className="rounded-3xl bg-red-100 px-4 py-1.5">
-        <Text className="text-lg font-semibold">Помилка 500</Text>
-      </View>
-      <View className="flex-1 justify-center px-5">
+      <View className="flex-1 items-center justify-center px-5">
+        <View className="mb-4 rounded-3xl bg-red-100 px-4 py-1.5">
+          <Text className="text-lg font-semibold">Помилка 500</Text>
+        </View>
         <Text className="text-xl font-medium">
           Щось пішло не так з нашої сторони.{'\n'}Будь ласка, напишіть в підтримку.
         </Text>
       </View>
-      <View className="flex-row gap-x-4">
+      <View className="mb-2 flex-row gap-x-4">
         <Button onPress={props.retry} size="$5" fontSize="$6" borderRadius="$main">
           Повернутись
         </Button>
@@ -84,7 +84,7 @@ const NoInternetError = (props: ErrorBoundaryProps) => {
 
   return (
     <SafeAreaView className="flex-1 items-center">
-      <View className="rounded-3xl bg-red-100 px-4 py-1.5">
+      <View className="mt-3 rounded-3xl bg-red-100 px-4 py-1.5">
         <Text className="text-lg font-semibold">Немає мережі</Text>
       </View>
       <View className="flex-1 flex-row items-center justify-center gap-x-2 px-5">
