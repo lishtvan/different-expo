@@ -1,12 +1,14 @@
-import { EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Entypo, EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import HomeListings from 'components/home/Listings';
 import { INITIAL_PRICE } from 'constants/filter';
 import { Link, Stack } from 'expo-router';
 import { useRefresh } from 'hooks/useRefresh';
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
-import { Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
-import { Button, Input, Text, View, XStack, debounce } from 'tamagui';
+import { RefreshControl, TouchableOpacity } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, View, debounce } from 'tamagui';
 import { delay } from 'utils/common';
 import { isAndroid } from 'utils/platform';
 
@@ -28,10 +30,13 @@ const HomeListingsWrapper = () => {
   };
 
   return (
-    <HomeListings
-      key={refreshKey}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fullSearchRefresh} />}
-    />
+    <SafeAreaView edges={['top']}>
+      <CustomHeader />
+      <HomeListings
+        key={refreshKey}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fullSearchRefresh} />}
+      />
+    </SafeAreaView>
   );
 };
 
@@ -54,10 +59,15 @@ const FiltersButton = () => {
 
   return (
     <Link href="/filters/current_filters" asChild>
-      <TouchableOpacity className="ml-1 flex-row p-2">
-        <MaterialCommunityIcons name="tune-variant" size={25} />
+      <TouchableOpacity className=" w-[23%] flex-1 flex-row items-center justify-center py-2 pr-2">
+        <View className="flex-1 flex-row items-center justify-center gap-x-2">
+          <Text className="text-lg">Фільтри</Text>
+          {filtersCount === 0 && (
+            <MaterialCommunityIcons name="tune-variant" size={20} style={{ marginTop: 1 }} />
+          )}
+        </View>
         {filtersCount > 0 && (
-          <View className="ml-2 h-6 w-6 flex-row items-center justify-center rounded-full bg-main">
+          <View className="ml-1 h-6 w-6 flex-row items-center justify-center rounded-full bg-main">
             <Text className="font-bold text-white">{filtersCount}</Text>
           </View>
         )}
@@ -66,49 +76,71 @@ const FiltersButton = () => {
   );
 };
 
-const ListingSearch = () => {
+const ListingSearch = ({
+  focused,
+  updateFocused,
+}: {
+  focused: boolean;
+  updateFocused: (newFocused: boolean) => void;
+}) => {
   const { refine } = useSearchBox();
+  const [text, setText] = useState('');
   const debouncedRefine = debounce(refine, 150);
-  const iconClassname = isAndroid ? 'p-0 pl-2 pb-1' : 'p-0 pl-2';
+
+  const updateSearch = (newText: string) => {
+    setText(newText);
+    debouncedRefine(newText);
+  };
+  const searchRef = useRef();
 
   return (
-    <>
-      <Button
-        size="$4"
-        icon={<EvilIcons name="search" size={30} />}
-        className={iconClassname}
-        borderTopLeftRadius="$main"
-        borderBottomLeftRadius="$main"
-        borderTopRightRadius="$0"
-        backgroundColor="#f8f4f4"
-        borderBottomRightRadius="$0"
-        borderWidth="$0"
-        borderRightWidth="$0"
-      />
-      <Input
-        autoCorrect={false}
-        placeholder="Пошук"
-        backgroundColor="#f8f4f4"
-        flex={1}
-        paddingLeft={6}
-        borderWidth="$0"
-        onChangeText={debouncedRefine}
-        borderRadius="$0"
-        borderTopRightRadius="$main"
-        borderBottomRightRadius="$main"
-      />
-    </>
+    <SearchBar
+      lightTheme
+      searchIcon={() => (
+        <EvilIcons name="search" size={28} style={{ marginBottom: isAndroid ? 5 : 0 }} />
+      )}
+      platform="ios"
+      showLoading={false}
+      ref={(ref) => {
+        // @ts-expect-error refs suck
+        searchRef.current = ref;
+      }}
+      value={text}
+      onFocus={() => updateFocused(true)}
+      onBlur={() => updateFocused(false)}
+      onClear={() => updateSearch('')}
+      // @ts-expect-error rn elements problem
+      onChangeText={updateSearch}
+      clearIcon={() => (
+        <Entypo
+          // @ts-expect-error refs suck
+          onPressIn={() => searchRef.current?.clear()}
+          onPress={() => {}}
+          name="circle-with-cross"
+          size={24}
+          color="#c2c2c2"
+        />
+      )}
+      containerStyle={{ width: focused ? '100%' : '73%' }}
+      inputContainerStyle={{ height: 20, backgroundColor: '#f3f3f3' }}
+      placeholder="Пошук"
+      cancelButtonTitle=""
+      autoCapitalize="sentences"
+    />
   );
 };
 
 const CustomHeader = () => {
-  const ScreenWidth = Dimensions.get('window').width;
+  const [focused, setFocused] = useState(false);
+  const updateFocused = useCallback((newFocused: boolean) => {
+    setFocused(newFocused);
+  }, []);
 
   return (
-    <XStack alignItems="center" style={{ width: ScreenWidth - 30 }}>
-      <ListingSearch />
-      <FiltersButton />
-    </XStack>
+    <View className="flex-row">
+      <ListingSearch focused={focused} updateFocused={updateFocused} />
+      {!focused && <FiltersButton />}
+    </View>
   );
 };
 
@@ -116,7 +148,10 @@ const HomeScreen = () => {
   return (
     <View>
       <Stack.Screen
-        options={{ contentStyle: { paddingTop: 7 }, headerTitle: () => <CustomHeader /> }}
+        options={{
+          headerShown: false,
+          contentStyle: { marginBottom: 90 },
+        }}
       />
       <HomeListingsWrapper />
     </View>
