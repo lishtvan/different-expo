@@ -16,7 +16,8 @@ const NotFoundError = (props: ErrorBoundaryProps) => {
           <Text className="text-lg font-semibold">Помилка 404</Text>
         </View>
         <Text className="text-xl font-medium">
-          Те що ви шукали - не знайдено.{'\n'}Якщо це здається вам помилкою, зверніться в підтримку.
+          Те, що Ви шукали - не знайдено.{'\n'}Якщо це здається Вам помилкою, зверніться в
+          підтримку.
         </Text>
       </View>
       <View className="mb-2 flex-row gap-x-4">

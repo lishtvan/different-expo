@@ -10,7 +10,7 @@ export function useOnlineManager() {
       if (!state.isConnected) {
         Toast.show({
           type: 'error',
-          text1: 'Інтернет відсутній',
+          text1: 'Відсутнє інтернет зʼєднання',
           autoHide: false,
           position: 'bottom',
           bottomOffset: 30,
