@@ -7,14 +7,18 @@ export const config = {
     TYPESENSE: {
       server: {
         nodes: [
-          { host: isAndroid ? '192.168.0.100' : '192.168.0.100', port: 8108, protocol: 'http' },
+          { host: isAndroid ? '192.168.0.100' : '192.168.0.102', port: 8108, protocol: 'http' },
         ],
         apiKey: 'xyz',
       },
       additionalSearchParameters,
     },
-    WS_URL: isAndroid ? 'wss://1cf3-91-218-13-202.ngrok-free.app' : 'ws://localhost:8000',
-    API_URL: isAndroid ? 'https://1cf3-91-218-13-202.ngrok-free.app' : 'http://localhost:8000',
+    WS_URL: isAndroid
+      ? 'wss://1cf3-91-218-13-202.ngrok-free.app'
+      : 'wss://8af1-91-218-13-198.ngrok-free.app',
+    API_URL: isAndroid
+      ? 'https://1cf3-91-218-13-202.ngrok-free.app'
+      : 'https://8af1-91-218-13-198.ngrok-free.app',
   },
   production: {
     TYPESENSE: {
