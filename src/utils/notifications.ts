@@ -3,6 +3,8 @@ import * as Notifications from 'expo-notifications';
 import { Alert, Linking, Platform } from 'react-native';
 import { fetcher } from 'utils/fetcher';
 
+import { getSession } from './secureStorage';
+
 function handleRegistrationError(errorMessage: string) {
   alert(errorMessage);
 }
@@ -44,10 +46,11 @@ export async function registerForPushNotificationsAsync({ shouldOpenModalIfNotGr
     handleRegistrationError('Project ID not found');
   }
   try {
-    const pushToken = await Notifications.getExpoPushTokenAsync({
-      projectId,
-    });
-    await fetcher({ route: '/user/update', method: 'POST', body: { pushToken: pushToken.data } });
+    const pushToken = await Notifications.getExpoPushTokenAsync({ projectId });
+    const session = await getSession();
+    if (session) {
+      await fetcher({ route: '/user/update', method: 'POST', body: { pushToken: pushToken.data } });
+    }
     return { granted: true };
   } catch (e: unknown) {
     handleRegistrationError(`${e}`);
