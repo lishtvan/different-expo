@@ -17,6 +17,7 @@ import { FlatList, RefreshControl, RefreshControlProps, TouchableOpacity } from 
 import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
 import { TListing, TUser } from 'types';
 import { avatarFb } from 'utils/avatarUrlFallback';
+import { getDynamicEndingUserListings } from 'utils/common';
 import { fetcher } from 'utils/fetcher';
 import { shareLink } from 'utils/share';
 
@@ -130,7 +131,7 @@ const MyHeader = ({ user, segment }: { user: TUser; segment?: string }) => {
               {user.availableListingsCount}
             </Text>
             <Text className="font-medium" fontSize="$6">
-              оголошень
+              {getDynamicEndingUserListings(user.availableListingsCount)}
             </Text>
           </View>
           <View className="flex items-center">
