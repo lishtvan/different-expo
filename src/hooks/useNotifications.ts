@@ -3,6 +3,7 @@ import * as Notifications from 'expo-notifications';
 import { useGlobalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { Platform } from 'react-native';
+import { fetcher } from 'utils/fetcher';
 
 function handleRegistrationError(errorMessage: string) {
   alert(errorMessage);
@@ -37,9 +38,7 @@ async function registerForPushNotificationsAsync() {
     const pushToken = await Notifications.getExpoPushTokenAsync({
       projectId,
     });
-    const pushTokenString = pushToken.data;
-    console.log(pushTokenString);
-    return pushTokenString;
+    await fetcher({ route: '/user/update', method: 'POST', body: { pushToken: pushToken.data } });
   } catch (e: unknown) {
     handleRegistrationError(`${e}`);
   }
@@ -65,8 +64,8 @@ export function useNotificationHandler() {
   useEffect(() => {
     Notifications.setNotificationHandler({
       handleNotification: async (notification) => {
-        const shouldAlert = getShouldAlert(notification, params);
-        return { shouldShowAlert: shouldAlert, shouldPlaySound: shouldAlert, shouldSetBadge: true };
+        const shouldShowAlert = getShouldAlert(notification, params);
+        return { shouldShowAlert, shouldPlaySound: false, shouldSetBadge: false };
       },
     });
   }, [params]);
