@@ -108,7 +108,7 @@ export default function CreateOrder() {
   };
 
   if (mutation.isSuccess && !mutation.data.error) {
-    return <OrderSuccess />;
+    return <OrderSuccess orderId={mutation.data.orderId} />;
   }
 
   if (error) throw error;
