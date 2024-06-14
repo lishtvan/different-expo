@@ -21,7 +21,7 @@ import Toast from 'react-native-toast-message';
 import { Text, Avatar, Input, View } from 'tamagui';
 import { DEFAULT_AVATAR } from 'utils/avatarUrlFallback';
 import { fetcher } from 'utils/fetcher';
-import { uploadImage, validateSingleImageSize, verifyPermission } from 'utils/uploadImage';
+import { uploadImage, validateSingleImageSize } from 'utils/uploadImage';
 
 const blurRadius = 10;
 
@@ -32,7 +32,6 @@ const SettingsScreen = () => {
   const queryClient = useQueryClient();
   const [previewImage, setPreviewImage] = useState<string>();
 
-  const [, requestPermission] = ImagePicker.useCameraPermissions();
   const {
     data: user,
     isLoading,
@@ -85,9 +84,6 @@ const SettingsScreen = () => {
   };
 
   const pickImage = async () => {
-    const hasPermission = await verifyPermission(requestPermission);
-    if (!hasPermission) return;
-
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,

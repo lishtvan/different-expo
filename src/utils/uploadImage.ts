@@ -1,12 +1,7 @@
 import { API_URL } from 'config';
 import * as FileSystem from 'expo-file-system';
-import {
-  ImagePickerAsset,
-  PermissionResponse,
-  PermissionStatus,
-  getCameraPermissionsAsync,
-} from 'expo-image-picker';
-import { Alert, Linking } from 'react-native';
+import { ImagePickerAsset } from 'expo-image-picker';
+import { Alert } from 'react-native';
 import { getSession } from 'utils/secureStorage';
 
 const MB_10 = 10000000;
@@ -29,23 +24,6 @@ export const uploadImages = async (images: ImagePickerAsset[]) => {
   const imageUploadPromises = images.map((image) => uploadImage(image));
   const imagesUrls = await Promise.all(imageUploadPromises);
   return imagesUrls;
-};
-
-export const verifyPermission = async (
-  requestPermission: () => Promise<PermissionResponse>
-): Promise<boolean> => {
-  const permission = await getCameraPermissionsAsync();
-  if (permission.status === PermissionStatus.UNDETERMINED) {
-    const permissionResponse = await requestPermission();
-    return permissionResponse.granted;
-  } else if (permission.status === PermissionStatus.DENIED) {
-    Alert.alert('Потрібно надати доступ до галереї', '', [
-      { text: 'Відкрити налаштування', onPress: () => Linking.openSettings(), isPreferred: true },
-      { text: 'Скасувати', onPress: () => {} },
-    ]);
-    return false;
-  }
-  return true;
 };
 
 export const validateMultipleImagesSize = (images: ImagePickerAsset[]) => {

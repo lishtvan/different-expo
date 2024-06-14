@@ -14,6 +14,7 @@ import { Button, Input, Spinner, Text, View } from 'tamagui';
 import { TUser } from 'types';
 import { fixedEncodeURIComponent, transformPhone } from 'utils/common';
 import { fetcher } from 'utils/fetcher';
+import { registerForPushNotificationsAsync } from 'utils/notifications';
 
 type CreateOrderParams = {
   listingId: string;
@@ -79,7 +80,7 @@ export default function CreateOrder() {
     }
   }, [clearErrors, errors.city?.name, errors.department?.name, params, setValue]);
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
 
     if (!phoneNumberString?.isValid()) {
@@ -88,6 +89,11 @@ export default function CreateOrder() {
     }
 
     const phone = parseInt(phoneNumberString.number, 10).toString();
+    const permission = await registerForPushNotificationsAsync({
+      shouldOpenModalIfNotGranted: true,
+    });
+
+    if (!permission.granted) return;
 
     mutation.mutate({
       CityRecipientRef: data.city.ref,

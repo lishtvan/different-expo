@@ -7,7 +7,7 @@ import { Alert, TouchableOpacity } from 'react-native';
 import { Text, View } from 'tamagui';
 import { SelectedImage } from 'types';
 import { isAndroid } from 'utils/platform';
-import { uploadImages, validateMultipleImagesSize, verifyPermission } from 'utils/uploadImage';
+import { uploadImages, validateMultipleImagesSize } from 'utils/uploadImage';
 
 interface Props {
   updateSelectedImages: (images: SelectedImage[]) => void;
@@ -16,12 +16,7 @@ interface Props {
 }
 
 const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
-  const [, requestPermission] = ImagePicker.useCameraPermissions();
-
   const pickImages = async () => {
-    const hasPermission = await verifyPermission(requestPermission);
-    if (!hasPermission) return;
-
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,

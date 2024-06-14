@@ -20,6 +20,7 @@ import { Button, Input, Text, View } from 'tamagui';
 import { EditListingParams, SelectedImage, TListing } from 'types';
 import { transformPhone } from 'utils/common';
 import { fetcher } from 'utils/fetcher';
+import { registerForPushNotificationsAsync } from 'utils/notifications';
 
 interface SaveListingProps {
   listing: Partial<TListing<number>>;
@@ -127,7 +128,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
     }
   }, [clearErrors, errors.category, errors.designer, errors.size, params, setValue]);
 
-  const onSubmit = (data: Record<string, unknown>) => {
+  const onSubmit = async (data: Record<string, unknown>) => {
     const { isValid } = validateCard.number(data.cardNumber);
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
     let isError;
@@ -143,6 +144,11 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
 
     const phone = parseInt(phoneNumberString!.number, 10);
     const cardNumber = (data.cardNumber as string).replace(/ /g, '');
+
+    const permission = await registerForPushNotificationsAsync({
+      shouldOpenModalIfNotGranted: true,
+    });
+    if (!permission.granted) return;
 
     mutation.mutate({
       ...data,
