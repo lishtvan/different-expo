@@ -25,8 +25,12 @@ const AuthScreen = () => {
         body: { accessToken: mutationParams.accessToken },
       }),
     onSuccess: async ({ token }) => {
-      await saveSession(token);
-      await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
+      await Promise.all([
+        saveSession(token),
+        queryClient.invalidateQueries({ queryKey: ['auth_me'] }),
+        queryClient.invalidateQueries({ queryKey: ['notications'] }),
+      ]);
+
       if (params.listingId) {
         await queryClient.invalidateQueries({ queryKey: ['listing', params.listingId] });
       }

@@ -51,10 +51,12 @@ export default function TabLayout() {
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
 
-  useEffect(() => {
-    if (!user) return;
-    registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false });
-  }, [user]);
+  useQuery({
+    queryKey: ['notications'],
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    queryFn: () => registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false }),
+  });
 
   const onAuthTabPress = (e: EventArg<'tabPress', true, undefined>) => {
     if (user) return;

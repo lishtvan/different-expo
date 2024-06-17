@@ -7,7 +7,7 @@ export const config = {
     TYPESENSE: {
       server: {
         nodes: [
-          { host: isAndroid ? '192.168.0.100' : '192.168.0.100', port: 8108, protocol: 'http' },
+          { host: isAndroid ? '192.168.0.100' : '192.168.0.101', port: 8108, protocol: 'http' },
         ],
         apiKey: 'xyz',
       },
