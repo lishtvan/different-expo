@@ -14,6 +14,7 @@ import { useSession } from 'hooks/useSession';
 import { useEffect } from 'react';
 import useWebSocket, { ReadyState } from 'react-native-use-websocket';
 import { fetcher } from 'utils/fetcher';
+import { registerForPushNotificationsAsync } from 'utils/notifications';
 
 export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 
@@ -49,6 +50,11 @@ export default function TabLayout() {
     queryKey: ['auth_me'],
     queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
   });
+
+  useEffect(() => {
+    if (!user) return;
+    registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false });
+  }, [user]);
 
   const onAuthTabPress = (e: EventArg<'tabPress', true, undefined>) => {
     if (user) return;

@@ -13,7 +13,7 @@ import { useFonts } from 'expo-font';
 import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useAppState } from 'hooks/useAppState';
-import { useNotificationHandler, useNotifications } from 'hooks/useNotifications';
+import { useNotificationHandler } from 'hooks/useNotifications';
 import { useOnlineManager } from 'hooks/useOnlineManager';
 import { useEffect } from 'react';
 import '../../global.css';
@@ -35,7 +35,6 @@ export default function RootLayout() {
   });
 
   useNotificationHandler();
-  useNotifications();
 
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {

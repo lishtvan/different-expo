@@ -1,13 +1,6 @@
 import * as Notifications from 'expo-notifications';
 import { useGlobalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
-import { registerForPushNotificationsAsync } from 'utils/notifications';
-
-export function useNotifications() {
-  useEffect(() => {
-    registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false });
-  }, []);
-}
 
 const getShouldAlert = (notification: Notifications.Notification, params: any) => {
   const notificationData = notification.request.content.data;
