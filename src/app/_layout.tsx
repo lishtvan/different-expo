@@ -34,8 +34,6 @@ export default function RootLayout() {
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   });
 
-  useNotificationHandler();
-
   // Expo Router uses Error Boundaries to catch errors in the navigation tree.
   useEffect(() => {
     if (error) throw error;
@@ -66,7 +64,7 @@ const queryClient = new QueryClient({
 
 function RootLayoutNav() {
   useOnlineManager();
-
+  useNotificationHandler();
   useAppState(onAppStateChange);
 
   return (
