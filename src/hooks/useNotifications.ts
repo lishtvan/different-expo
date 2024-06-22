@@ -1,6 +1,7 @@
 import * as Notifications from 'expo-notifications';
 import { useGlobalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
+import { registerForPushNotificationsAsync } from 'utils/notifications';
 
 const getShouldAlert = (notification: Notifications.Notification, params: any) => {
   const notificationData = notification.request.content.data;
@@ -11,7 +12,7 @@ const getShouldAlert = (notification: Notifications.Notification, params: any) =
   return shouldAlert;
 };
 
-export function useNotificationHandler() {
+export function useNotifications() {
   const params = useGlobalSearchParams();
   useEffect(() => {
     Notifications.setNotificationHandler({
@@ -21,6 +22,13 @@ export function useNotificationHandler() {
       },
     });
   }, [params]);
+
+  useEffect(() => {
+    const subscription = Notifications.addPushTokenListener(() => {
+      registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false });
+    });
+    return () => subscription.remove();
+  }, []);
 }
 
 // await Notifications.scheduleNotificationAsync({

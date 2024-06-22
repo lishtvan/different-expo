@@ -13,7 +13,7 @@ import { useFonts } from 'expo-font';
 import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { useAppState } from 'hooks/useAppState';
-import { useNotificationHandler } from 'hooks/useNotifications';
+import { useNotifications } from 'hooks/useNotifications';
 import { useOnlineManager } from 'hooks/useOnlineManager';
 import { useEffect } from 'react';
 import '../../global.css';
@@ -64,7 +64,7 @@ const queryClient = new QueryClient({
 
 function RootLayoutNav() {
   useOnlineManager();
-  useNotificationHandler();
+  useNotifications();
   useAppState(onAppStateChange);
 
   return (
