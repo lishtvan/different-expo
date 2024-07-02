@@ -1,28 +1,16 @@
 import * as Notifications from 'expo-notifications';
-import { useGlobalSearchParams } from 'expo-router';
 import { useEffect } from 'react';
 import { registerForPushNotificationsAsync } from 'utils/notifications';
 
-const getShouldAlert = (notification: Notifications.Notification, params: any) => {
-  const notificationData = notification.request.content.data;
-  let shouldAlert = true;
-  if (notificationData.type === 'msg' && notificationData.info.chatId === params.chatId) {
-    shouldAlert = false;
-  }
-  return shouldAlert;
-};
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export function useNotifications() {
-  const params = useGlobalSearchParams();
-  useEffect(() => {
-    Notifications.setNotificationHandler({
-      handleNotification: async (notification) => {
-        const shouldShowAlert = getShouldAlert(notification, params);
-        return { shouldShowAlert, shouldPlaySound: false, shouldSetBadge: false };
-      },
-    });
-  }, [params]);
-
   useEffect(() => {
     const subscription = Notifications.addPushTokenListener(() => {
       registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false });
