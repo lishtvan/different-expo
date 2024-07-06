@@ -19,7 +19,6 @@ export function useNotifications() {
       lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
     ) {
       const url = lastNotificationResponse.notification.request.content.data.url;
-      console.log(lastNotificationResponse.notification.request.content.data);
       setTimeout(() => {
         Linking.openURL(url);
       }, 500);
