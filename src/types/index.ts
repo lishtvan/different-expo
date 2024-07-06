@@ -76,7 +76,7 @@ export type EditListingParams = {
 export interface Chat {
   id: string;
   _count: {
-    Notifications: number;
+    ChatNotification: number;
   };
   Users: TUser[];
   Messages: Message[];

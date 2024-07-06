@@ -1,22 +1,30 @@
+import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import { useEffect } from 'react';
-import { registerForPushNotificationsAsync } from 'utils/notifications';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
-    shouldPlaySound: false,
+    shouldPlaySound: true,
     shouldSetBadge: false,
   }),
 });
 
 export function useNotifications() {
+  const lastNotificationResponse = Notifications.useLastNotificationResponse();
   useEffect(() => {
-    const subscription = Notifications.addPushTokenListener(() => {
-      registerForPushNotificationsAsync({ shouldOpenModalIfNotGranted: false });
-    });
-    return () => subscription.remove();
-  }, []);
+    if (
+      lastNotificationResponse &&
+      lastNotificationResponse.notification.request.content.data.url &&
+      lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
+    ) {
+      const url = lastNotificationResponse.notification.request.content.data.url;
+      console.log(lastNotificationResponse.notification.request.content.data);
+      setTimeout(() => {
+        Linking.openURL(url);
+      }, 500);
+    }
+  }, [lastNotificationResponse]);
 }
 
 // await Notifications.scheduleNotificationAsync({

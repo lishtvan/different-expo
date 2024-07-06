@@ -23,6 +23,7 @@ const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId:
 
   const { sendJsonMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
+    shouldReconnect: () => true,
     onMessage: (msg) => {
       if (!msg.data) return;
       const jsonMsg = JSON.parse(msg.data);
@@ -123,7 +124,7 @@ export default function TabLayout() {
           name="messages"
           listeners={{ tabPress: onAuthTabPress }}
           options={{
-            tabBarBadge: user?._count.Notifications || undefined,
+            tabBarBadge: user?._count.ChatNotification || undefined,
             headerShown: false,
             title: 'Повідомлення',
             tabBarIcon: ({ color }) => (

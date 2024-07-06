@@ -31,13 +31,13 @@ const RenderChat = ({ item }: { item: Chat }) => {
               {getLastMsgDate(new Date(item.Messages[0].createdAt))}
             </Text>
           </View>
-          {item._count.Notifications > 0 ? (
+          {item._count.ChatNotification > 0 ? (
             <View className="flex-row items-center justify-between">
               <Text numberOfLines={2} className="w-[85%]">
                 {item.Messages[0].text}
               </Text>
               <View className="mr-1.5 rounded-full bg-main px-2">
-                <Text className="text-base text-white">{item._count.Notifications}</Text>
+                <Text className="text-base text-white">{item._count.ChatNotification}</Text>
               </View>
             </View>
           ) : (

@@ -90,6 +90,7 @@ const Chat = () => {
     readyState,
   } = useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
+    shouldReconnect: () => true,
     options: { headers: { Cookie: `token=${session}` } },
   });
 
