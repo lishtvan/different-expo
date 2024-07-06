@@ -20,8 +20,9 @@ export function useNotifications() {
     ) {
       const url = lastNotificationResponse.notification.request.content.data.url;
       setTimeout(() => {
+        // TODO: test it in production
         Linking.openURL(url);
-      }, 500);
+      }, 0);
     }
   }, [lastNotificationResponse]);
 }
