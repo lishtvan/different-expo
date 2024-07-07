@@ -94,6 +94,7 @@ export default function TabLayout() {
           options={{
             title: 'Замовлення',
             headerShown: false,
+            tabBarBadge: user?._count.OrderNotification || undefined,
             tabBarIcon: ({ color }) => (
               <MaterialCommunityIcons
                 size={36}

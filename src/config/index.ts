@@ -15,10 +15,10 @@ export const config = {
     },
     WS_URL: isAndroid
       ? 'wss://1cf3-91-218-13-202.ngrok-free.app'
-      : 'wss://4cd7-91-218-13-201.ngrok-free.app',
+      : 'wss://a0b9-91-218-13-194.ngrok-free.app',
     API_URL: isAndroid
       ? 'https://1cf3-91-218-13-202.ngrok-free.app'
-      : 'https://4cd7-91-218-13-201.ngrok-free.app',
+      : 'https://a0b9-91-218-13-194.ngrok-free.app',
   },
   production: {
     TYPESENSE: {

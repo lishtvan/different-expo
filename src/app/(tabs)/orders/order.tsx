@@ -1,11 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { STATUS_MAPPER } from 'constants/order';
 import { Image } from 'expo-image';
 import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Pressable, TouchableOpacity } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
 import { View, Text, Separator } from 'tamagui';
@@ -26,13 +26,18 @@ const getOrderDate = (createdAt: string) => {
 };
 
 export default function OrderScreen() {
+  const queryClient = useQueryClient();
   const { orderId } = useLocalSearchParams();
-  const { data, isLoading, error } = useQuery({
+  const { data, isLoading, error, isSuccess } = useQuery({
     queryKey: ['order', orderId],
     queryFn: () => fetcher({ body: { orderId }, route: '/order/get' }),
   });
 
   const [isModalVisible, setModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (isSuccess) queryClient.invalidateQueries({ queryKey: ['auth_me'] });
+  }, [isSuccess, queryClient]);
 
   const copyTrackingNumber = async (text: string) => {
     await copyText(text);

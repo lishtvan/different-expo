@@ -5,8 +5,10 @@ import { mainColor } from 'constants/colors';
 import { STATUS_MAPPER } from 'constants/order';
 import { Image } from 'expo-image';
 import { Link } from 'expo-router';
+import { useRefreshOnFocus } from 'hooks/useRefreshOnFocus';
 import { FC, useState } from 'react';
 import { RefreshControl, RefreshControlProps, Text, useWindowDimensions } from 'react-native';
+import { Badge } from 'react-native-elements';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Separator, View } from 'tamagui';
 import { fetcher } from 'utils/fetcher';
@@ -37,7 +39,14 @@ const RenderOrder = ({ item }: { item: any }) => {
         <View className="w-full flex-1">
           <View className="flex-row items-center justify-between">
             <Text className="text-base font-semibold">{item.Listing.designer}</Text>
-            <Entypo name="chevron-thin-right" size={15} />
+            <View className="flex-row items-center">
+              {item.OrderNotification.length > 0 && (
+                <View className="mr-1">
+                  <Badge value="1" status="error" />
+                </View>
+              )}
+              <Entypo name="chevron-thin-right" size={15} />
+            </View>
           </View>
           <Text className="mt-2" numberOfLines={2}>
             {item.Listing.title}
@@ -82,7 +91,7 @@ const Orders: FC<Props> = ({ orders, type, refreshControl }) => {
   );
 };
 
-function Tabs({ renderScene }: any) {
+function Tabs({ renderScene, buyNotificationCount, sellNotificationCount }: any) {
   const layout = useWindowDimensions();
   const [index, setIndex] = useState(0);
 
@@ -103,6 +112,20 @@ function Tabs({ renderScene }: any) {
           }}
           inactiveColor="#666666"
           pressOpacity={0.5}
+          renderBadge={({ route }) => {
+            const badgeCount = route.key === 'buy' ? buyNotificationCount : sellNotificationCount;
+            if (!badgeCount) return null;
+            return (
+              <Text style={{ marginTop: 18, marginRight: 36 }}>
+                <Badge
+                  value={badgeCount}
+                  textStyle={{ color: 'black' }}
+                  badgeStyle={{ backgroundColor: '#ebebeb' }}
+                  status="warning"
+                />
+              </Text>
+            );
+          }}
           indicatorStyle={{ backgroundColor: mainColor }}
           style={{ backgroundColor: 'white' }}
         />
@@ -121,11 +144,15 @@ const OrdersScreen = () => {
     queryFn: () => fetcher({ route: '/order/getMany' }),
   });
 
+  useRefreshOnFocus(refetch);
+
   if (error) throw error;
   if (isLoading || !data) return null;
 
   return (
     <Tabs
+      sellNotificationCount={data.sellNotificationCount}
+      buyNotificationCount={data.buyNotificationCount}
       renderScene={SceneMap({
         buy: () => (
           <Orders
