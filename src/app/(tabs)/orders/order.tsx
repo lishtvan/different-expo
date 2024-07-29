@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { STATUS_MAPPER } from 'constants/order';
+import { ORDER_DETAILS_MAPPER, STATUS_MAPPER } from 'constants/order';
 import { Image } from 'expo-image';
 import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
@@ -155,6 +155,15 @@ export default function OrderScreen() {
           </Pressable>
         </Link>
       </View>
+      {ORDER_DETAILS_MAPPER[order.status] && ORDER_DETAILS_MAPPER[order.status][orderType] && (
+        <>
+          <Separator borderColor="$gray7Light" className="mt-3" />
+          <View className="mt-2">
+            <Text className="text-lg font-semibold">Деталі</Text>
+            <Text className="text-base">{ORDER_DETAILS_MAPPER[order.status][orderType]}</Text>
+          </View>
+        </>
+      )}
     </View>
   );
 }
