@@ -3,7 +3,7 @@ import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import * as ImagePicker from 'expo-image-picker';
 import React, { FC } from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
+import { Alert, Keyboard, TouchableOpacity } from 'react-native';
 import { Text, View } from 'tamagui';
 import { SelectedImage } from 'types';
 import { isAndroid } from 'utils/platform';
@@ -18,6 +18,7 @@ interface Props {
 const Photos: FC<Props> = ({ updateSelectedImages, selectedImages, error }) => {
   const pickImages = async () => {
     try {
+      Keyboard.dismiss();
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         aspect: [1, 10],

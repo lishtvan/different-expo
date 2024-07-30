@@ -8,9 +8,9 @@ import TextArea from 'components/ui/TextArea';
 import { mainColor } from 'constants/colors';
 import { CONDITIONS, TAGS } from 'constants/listing';
 import { Image } from 'expo-image';
-import { Link, router, useLocalSearchParams } from 'expo-router';
+import { Link, router, useFocusEffect, useLocalSearchParams } from 'expo-router';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
-import { FC, useCallback, useEffect, useState } from 'react';
+import { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -30,9 +30,13 @@ interface SaveListingProps {
   };
 }
 
+const hideKeyboardIfVisible = () => {
+  if (Keyboard.isVisible()) Keyboard.dismiss();
+};
+
 const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
   const params = useLocalSearchParams<EditListingParams>();
-
+  const ref = useRef<KeyboardAwareScrollView>(null);
   const currentPath = listing.id ? '/edit_listing' : '/sell';
 
   const {
@@ -54,10 +58,17 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       condition: listing.condition,
       category: listing.category,
       size: listing.size,
-      phone: user.phone ? transformPhone.output('+' + user.phone) : '+380',
-      cardNumber: user.cardNumber,
+      phone: '',
+      cardNumber: '',
     },
   });
+
+  useFocusEffect(
+    useCallback(() => {
+      setValue('phone', user.phone ? transformPhone.output('+' + user.phone) : '+380');
+      setValue('cardNumber', user.cardNumber || '');
+    }, [user.phone, setValue, user.cardNumber])
+  );
 
   const [selectedImages, setSelectedImages] = useState<SelectedImage[]>(() =>
     !listing.imageUrls
@@ -98,6 +109,8 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         reset();
         setSelectedTags([]);
         updateSelectedImages([]);
+        hideKeyboardIfVisible();
+        if (ref.current) ref.current.scrollToPosition(0, 0, true);
         router.navigate({ pathname: `/listing/${res.listingId}` });
       } else {
         await queryClient.invalidateQueries({ queryKey: ['listing', listing.id.toString()] });
@@ -163,13 +176,11 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
     });
   };
 
-  const hideKeyboardIfVisible = () => {
-    if (Keyboard.isVisible()) Keyboard.dismiss();
-  };
   if (mutation.error) throw mutation.error;
   return (
     <KeyboardAwareScrollView
       enableOnAndroid
+      ref={ref}
       enableResetScrollToCoords={false}
       viewIsInsideTabBar={Boolean(listing.id)}
       keyboardShouldPersistTaps="handled"
@@ -367,6 +378,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
               keyboardType="number-pad"
               autoCorrect={false}
               borderRadius="$main"
+              returnKeyType="done"
               placeholder="Введіть ціну в гривнях"
               className="w-full"
               onBlur={onBlur}
