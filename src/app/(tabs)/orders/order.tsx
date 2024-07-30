@@ -6,7 +6,7 @@ import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 import { useEffect, useState } from 'react';
-import { Pressable, TouchableOpacity } from 'react-native';
+import { Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
 import { View, Text, Separator } from 'tamagui';
 import { avatarFb } from 'utils/avatarUrlFallback';
@@ -59,7 +59,7 @@ export default function OrderScreen() {
   const { statusColor, statusText } = STATUS_MAPPER[order.status];
 
   return (
-    <View className="flex-1 px-3 py-2">
+    <ScrollView className="flex-1 px-3 py-2">
       <Stack.Screen
         options={{
           headerRight: () => <Text>{getOrderDate(order.createdAt)}</Text>,
@@ -158,12 +158,12 @@ export default function OrderScreen() {
       {ORDER_DETAILS_MAPPER[order.status] && ORDER_DETAILS_MAPPER[order.status][orderType] && (
         <>
           <Separator borderColor="$gray7Light" className="mt-3" />
-          <View className="mt-2">
+          <View className="mb-10 mt-2">
             <Text className="text-lg font-semibold">Деталі</Text>
             <Text className="text-base">{ORDER_DETAILS_MAPPER[order.status][orderType]}</Text>
           </View>
         </>
       )}
-    </View>
+    </ScrollView>
   );
 }
