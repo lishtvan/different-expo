@@ -113,6 +113,7 @@ export const DESIGNERS = [
   'Comme Ca Ism',
   'Common Projects',
   'Converse',
+  'Corteiz',
   'Coogi',
   'Corneliani',
   'Crocs',

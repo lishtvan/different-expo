@@ -15,6 +15,10 @@ import { transformPhone } from 'utils/common';
 import { formatDateToUkrainian } from 'utils/date';
 import { fetcher } from 'utils/fetcher';
 
+const formatTrackingNumber = (trackingNumber: string) => {
+  return trackingNumber.replace(/(\d{2})(\d{4})(\d{4})(\d{4})/, '$1 $2 $3 $4');
+};
+
 const getOrderDate = (createdAt: string) => {
   const orderCreatedAtToDate = new Date(createdAt);
 
@@ -125,7 +129,7 @@ export default function OrderScreen() {
             onPress={() => setModalVisible(true)}
             style={{ textDecorationLine: 'underline' }}
             className="font-semibold text-blue-600">
-            {order.trackingNumber}
+            {formatTrackingNumber(order.trackingNumber)}
           </Text>
         </Text>
       </View>
