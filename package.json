@@ -17,8 +17,8 @@
     "check:format": "prettier --check ."
   },
   "engines": {
-    "node": "20.12.2",
-    "npm": "10.5.0"
+    "node": "20.15.1",
+    "npm": "10.7.0"
   },
   "jest": {
     "preset": "jest-expo"
@@ -46,7 +46,7 @@
     "expo-image": "~1.10.6",
     "expo-image-picker": "~14.7.1",
     "expo-linking": "~6.2.2",
-    "expo-notifications": "~0.27.7",
+    "expo-notifications": "~0.27.8",
     "expo-router": "~3.4.10",
     "expo-secure-store": "~12.8.1",
     "expo-splash-screen": "~0.26.5",
