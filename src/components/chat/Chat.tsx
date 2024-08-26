@@ -1,5 +1,5 @@
 import { Entypo, EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { WS_URL } from 'config';
+import { WS_URL } from 'config/config';
 import { mainColor } from 'constants/colors';
 import { Stack, useLocalSearchParams, Link } from 'expo-router';
 import { useSession } from 'hooks/useSession';

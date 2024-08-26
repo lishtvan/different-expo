@@ -7,7 +7,7 @@ import {
 } from '@expo/vector-icons';
 import { EventArg } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
-import { WS_URL } from 'config';
+import { WS_URL } from 'config/config';
 import Colors from 'constants/colors';
 import { Tabs, router } from 'expo-router';
 import { useSession } from 'hooks/useSession';

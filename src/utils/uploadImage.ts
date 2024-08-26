@@ -1,4 +1,4 @@
-import { API_URL } from 'config';
+import { API_URL } from 'config/config';
 import * as FileSystem from 'expo-file-system';
 import { ImagePickerAsset } from 'expo-image-picker';
 import { Alert } from 'react-native';
