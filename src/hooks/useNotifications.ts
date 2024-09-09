@@ -19,30 +19,12 @@ export function useNotifications() {
       lastNotificationResponse.notification.request.content.data.url &&
       lastNotificationResponse.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER
     ) {
-      if (lastNotificationResponse.notification.request.content.data.type === 'order') {
-        setTimeout(() => {
-          hackyOrderNavigate(lastNotificationResponse.notification.request.content.data.orderId);
-        }, 400);
-      } else {
-        const url = lastNotificationResponse.notification.request.content.data.url;
-        setTimeout(() => {
-          // TODO: test it in production
-          Linking.openURL(url);
-        }, 0);
-      }
+      const { type, url, orderId } = lastNotificationResponse.notification.request.content.data;
+      setTimeout(() => {
+        // TODO: test it in production
+        if (type === 'order') hackyOrderNavigate(orderId);
+        else Linking.openURL(url);
+      }, 0);
     }
   }, [lastNotificationResponse]);
 }
-
-// await Notifications.scheduleNotificationAsync({
-//   content: {
-//     title: 'Юля Емельяненко',
-//     body: 'Бэкстейдж, кстати.',
-//     data: {
-//       type: 'msg',
-//       info: { chatId: 'cd93a362-9bd7-4b35-94b4-e67ffe1f2ab7' },
-//     },
-//     sound: true,
-//   },
-//   trigger: { seconds: 4 },
-// });
