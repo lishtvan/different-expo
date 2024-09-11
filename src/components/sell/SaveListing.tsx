@@ -146,7 +146,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
     const phoneNumberString = parsePhoneNumberFromString(data.phone as string, 'UA');
     let isError;
     if (!isValid) {
-      setError('cardNumber', { type: 'validate', message: 'Недійсний номер карти' });
+      setError('cardNumber', { type: 'validate', message: 'Недійсний номер картки' });
       isError = true;
     }
     if (!phoneNumberString?.isValid()) {
@@ -428,14 +428,14 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         {errors.phone && <InputValidationError message="Недійсний номер телефону" />}
       </View>
       <View className="mb-4">
-        <Text className="mb-1 ml-2 text-base">Номер карти</Text>
+        <Text className="mb-1 ml-2 text-base">Номер картки</Text>
         <Controller
           control={control}
           rules={{
             required: 'Це поле є обовʼязковим.',
             validate: (value) => {
               const { card, isPotentiallyValid } = validateCard.number(value);
-              if (!isPotentiallyValid) return 'Недійсний номер карти.';
+              if (!isPotentiallyValid) return 'Недійсний номер картки.';
               if (!card) return true;
               if (card.niceType === 'Visa' || card.niceType === 'Mastercard') return true;
               return 'Дозволені лише картки Visa та Mastercard.';
@@ -447,7 +447,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
               autoCorrect={false}
               borderRadius="$main"
               keyboardType="number-pad"
-              placeholder="Введіть номер банківської карти"
+              placeholder="Введіть номер банківської картки"
               className="w-full"
               onBlur={onBlur}
               onChangeText={onChange}

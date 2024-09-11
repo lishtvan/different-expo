@@ -16,7 +16,7 @@
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "bundleIdentifier": "different",
+      "bundleIdentifier": "com.lishtvan.different",
       "config": {
         "usesNonExemptEncryption": false
       },
@@ -24,7 +24,7 @@
         "CFBundleURLTypes": [
           {
             "CFBundleURLSchemes": [
-              "different",
+              "com.lishtvan.different",
               "com.googleusercontent.apps.24434242390-l4r82unf87hh643nmssogggm3grvqcvq"
             ]
           }
