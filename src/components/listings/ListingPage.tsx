@@ -103,23 +103,24 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
   );
 };
 
+const screenWidth = Dimensions.get('window').width;
+const aspectRatio = 0.83;
+
 const ListingImages: FC<ListingImagesProps> = ({ imageUrls }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  const screenWidth = Dimensions.get('window').width;
 
   return (
     <View>
       <Carousel
         loop={imageUrls.length > 1}
         width={screenWidth}
-        height={screenWidth}
+        height={screenWidth / aspectRatio}
         data={imageUrls}
         scrollAnimationDuration={300}
         onScrollEnd={(i) => setCurrentImageIndex(i)}
         renderItem={({ item }) => (
           <Pinchable maximumZoomScale={6} className="flex-1">
-            <Image className="flex-1" source={{ uri: item }} alt="item" />
+            <Image className="flex-1" contentFit="cover" source={{ uri: item }} alt="item" />
           </Pinchable>
         )}
       />

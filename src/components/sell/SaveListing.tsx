@@ -162,20 +162,18 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       shouldOpenModalIfNotGranted: true,
     });
     if (!permission.granted) return;
+    const imageUrls = selectedImages.filter((i) => !i.isPreview);
 
     mutation.mutate({
       ...data,
-      imageUrls: selectedImages.map((img) => {
-        if (img.isPreview) return;
-        return img.imageUrl;
-      }),
+      imageUrls,
       cardNumber,
       phone,
       tags: selectedTags,
       listingId: listing.id,
     });
   };
-
+  const isImagesLoading = selectedImages.some((i) => i.isPreview);
   if (mutation.error) throw mutation.error;
   return (
     <KeyboardAwareScrollView
@@ -463,8 +461,10 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         size="$4"
         theme="active"
         fontSize="$6"
-        borderRadius="$main">
-        {listing.id ? 'Зберегти' : 'Створити'}
+        borderRadius="$main"
+        disabled={isImagesLoading}
+        opacity={isImagesLoading ? 0.5 : 1}>
+        {isImagesLoading ? 'Завантаження зображень...' : listing.id ? 'Зберегти' : 'Створити'}
       </Button>
       {!listing.id && (
         <View className="flex-1 flex-row items-center justify-between rounded-xl bg-card p-3">
