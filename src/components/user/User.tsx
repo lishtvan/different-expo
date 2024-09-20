@@ -155,7 +155,7 @@ const MyHeader = ({ user, segment }: { user: TUser; segment?: string }) => {
         )}
         {user.bio && (
           <Text fontSize="$6" className="mt-2 px-3">
-            {user.bio.replace(/\n+/g, '\n')}
+            {user.bio}
           </Text>
         )}
       </View>

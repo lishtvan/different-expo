@@ -162,8 +162,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       shouldOpenModalIfNotGranted: true,
     });
     if (!permission.granted) return;
-    const imageUrls = selectedImages.filter((i) => !i.isPreview);
-
+    const imageUrls = selectedImages.filter((i) => !i.isPreview).map((i) => i.imageUrl);
     mutation.mutate({
       ...data,
       imageUrls,
