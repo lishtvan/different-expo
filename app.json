@@ -12,7 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
@@ -38,7 +40,9 @@
         "backgroundColor": "#ffffff",
         "backgroundImage": "./assets/images/adaptive-background.png"
       },
-      "permissions": ["android.permission.RECORD_AUDIO"]
+      "permissions": [
+        "android.permission.RECORD_AUDIO"
+      ]
     },
     "web": {
       "bundler": "metro",
@@ -67,6 +71,12 @@
       "eas": {
         "projectId": "076ec3e2-8937-4a99-ab11-63b0f5719371"
       }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/076ec3e2-8937-4a99-ab11-63b0f5719371"
     }
   }
 }
