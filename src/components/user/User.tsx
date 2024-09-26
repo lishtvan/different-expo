@@ -112,7 +112,7 @@ const StatusSwitcher: FC<StatusSwitcherProps> = ({ value, refine }) => {
   );
 };
 
-const MyHeader = ({ user, segment }: { user: TUser; segment?: string }) => {
+const MyHeader = ({ user }: { user: TUser }) => {
   const { refine, value } = useToggleRefinement({
     attribute: 'status',
     on: 'SOLD',
@@ -212,7 +212,7 @@ const UserContent: FC<Props> = ({ refreshControl, user }) => {
       ref={scrollRef}
       data={hits}
       refreshControl={refreshControl}
-      ListHeaderComponent={<Header user={user} segment={segments[1]} />}
+      ListHeaderComponent={<Header user={user} />}
       onEndReached={() => {
         if (!isLastPage && hits.length) showMore();
       }}
