@@ -11,8 +11,7 @@ import { WS_URL } from 'config/config';
 import Colors from 'constants/colors';
 import { Tabs, router } from 'expo-router';
 import { useSession } from 'hooks/useSession';
-import { useEffect } from 'react';
-import useWebSocket, { ReadyState } from 'react-native-use-websocket';
+import useWebSocket from 'react-native-use-websocket';
 import { fetcher } from 'utils/fetcher';
 import { registerForPushNotificationsAsync } from 'utils/notifications';
 
@@ -21,7 +20,7 @@ export { ErrorBoundary } from 'components/errors/ErrorBoundary';
 const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId: string }) => {
   const session = useSession();
 
-  const { sendJsonMessage, readyState } = useWebSocket(`${WS_URL}/chat/message`, {
+  useWebSocket(`${WS_URL}/chat/message`, {
     share: true,
     shouldReconnect: () => true,
     onMessage: (msg) => {
@@ -32,11 +31,6 @@ const WebsocketConnection = ({ refetch, userId }: { refetch: () => void; userId:
     },
     options: { headers: { Cookie: `token=${session}` } },
   });
-
-  useEffect(() => {
-    if (readyState !== ReadyState.OPEN) return;
-    sendJsonMessage({ connect: true });
-  }, [readyState, sendJsonMessage]);
 
   return null;
 };
