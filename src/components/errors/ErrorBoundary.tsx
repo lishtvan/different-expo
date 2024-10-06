@@ -85,7 +85,7 @@ const NoInternetError = (props: ErrorBoundaryProps) => {
 
   return (
     <SafeAreaView className="flex-1 items-center">
-      <View className="mt-3 rounded-3xl bg-red-100 px-4 py-1.5">
+      <View className="mt-10 rounded-3xl bg-red-100 px-4 py-1.5">
         <Text className="text-lg font-semibold">Немає мережі</Text>
       </View>
       <View className="flex-1 flex-row items-center justify-center gap-x-2 px-5">

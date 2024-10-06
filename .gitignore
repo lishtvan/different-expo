@@ -41,3 +41,6 @@ expo-env.d.ts
 # @end expo-cli
 
 .env
+
+google-services.json
+different-ed8a9-firebase-adminsdk-nnzir-717907ff2f.json
