@@ -1,4 +1,4 @@
-import { EvilIcons, Feather, SimpleLineIcons } from '@expo/vector-icons';
+import { Feather, SimpleLineIcons } from '@expo/vector-icons';
 import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import MessageButton from 'components/chat/MessageButton';
@@ -6,7 +6,7 @@ import { mainColor } from 'constants/colors';
 import { Image } from 'expo-image';
 import { Link, Stack, router, useLocalSearchParams, useSegments } from 'expo-router';
 import { FC, useMemo, useState } from 'react';
-import { Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
+import { Alert, Dimensions, Platform, Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import AnimatedDotsCarousel from 'react-native-animated-dots-carousel';
 // @ts-expect-error pinchable problem
 import Pinchable from 'react-native-pinchable';
@@ -21,6 +21,21 @@ import { shareLink } from 'utils/share';
 interface ListingImagesProps {
   imageUrls: string[];
 }
+// TODO: implement for android
+const menuActionsUiNonAuthor = [
+  {
+    id: 'share',
+    title: 'Поширити',
+    imageColor: 'black',
+    image: Platform.select({ ios: 'square.and.arrow.up', android: 'ic_menu_share' }),
+  },
+  {
+    id: 'report',
+    title: 'Поскаржитися',
+    imageColor: 'black',
+    image: Platform.select({ ios: 'flag', android: 'ic_menu_report_image' }),
+  },
+];
 
 const menuActionsUi = [
   {
@@ -59,7 +74,34 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
     onSuccess: () => router.back(),
   });
 
+  const report = useMutation({
+    mutationFn: (text: string) =>
+      fetcher({
+        route: '/listing/report',
+        method: 'POST',
+        body: { listingId: listing.id, text },
+      }),
+  });
+
   const shareListing = () => shareLink(`listing/${listing.id}`);
+  const reportPrompt = () => {
+    return Alert.prompt(
+      'Заповніть скаргу',
+      'Напишіть що не так з цим оголошенням і ми відреагуємо протягом 24 годин',
+      [
+        {
+          text: 'Скасувати',
+          style: 'cancel',
+        },
+        {
+          text: 'OK',
+          onPress: (text) => {
+            if (text) report.mutate(`Скарга: ${text}`);
+          },
+        },
+      ]
+    );
+  };
 
   const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
     const deleteText = 'Ви впевнені, що хочете видалити оголошення?';
@@ -67,6 +109,7 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
       delete: () => openConfirmationModal(deleteText, mutation.mutate),
       edit: () => router.navigate({ pathname: '/edit_listing', params: { listingId: listing.id } }),
       share: shareListing,
+      report: reportPrompt,
     };
 
     const action = menuActions[nativeEvent.event];
@@ -93,9 +136,11 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
           }
 
           return (
-            <TouchableOpacity onPress={shareListing} className="py-1 pl-2">
-              <EvilIcons name="share-apple" size={36} />
-            </TouchableOpacity>
+            <MenuView onPressAction={onPressAction} actions={menuActionsUiNonAuthor}>
+              <TouchableOpacity className="py-1 pl-2">
+                <SimpleLineIcons name="options" size={22} />
+              </TouchableOpacity>
+            </MenuView>
           );
         },
       }}
