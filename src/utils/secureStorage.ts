@@ -5,3 +5,6 @@ export const getSessionSync = () => SecureStore.getItem('token');
 
 export const getSession = () => SecureStore.getItemAsync('token');
 export const destroySession = () => SecureStore.deleteItemAsync('token');
+
+export const setAgreedToTerms = () => SecureStore.setItemAsync('terms', 'agreed');
+export const getAgreedToTerms = () => SecureStore.getItem('terms');

@@ -15,7 +15,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "usesAppleSignIn": true,
-      "supportsTablet": true,
+      "supportsTablet": false,
       "bundleIdentifier": "com.lishtvan.different",
       "config": {
         "usesNonExemptEncryption": false

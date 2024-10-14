@@ -1,4 +1,4 @@
-import { AntDesign, Foundation } from '@expo/vector-icons';
+import { AntDesign, Fontisto, Foundation } from '@expo/vector-icons';
 import { MenuView } from '@react-native-menu/menu';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import validateCard from 'card-validator';
@@ -9,8 +9,9 @@ import { mainColor } from 'constants/colors';
 import { CONDITIONS, TAGS } from 'constants/listing';
 import { Image } from 'expo-image';
 import { Link, router, useFocusEffect, useLocalSearchParams } from 'expo-router';
+import * as WebBrowser from 'expo-web-browser';
 import parsePhoneNumberFromString, { isValidPhoneNumber } from 'libphonenumber-js';
-import { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Keyboard, Pressable } from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
@@ -21,6 +22,7 @@ import { EditListingParams, SelectedImage, TListing } from 'types';
 import { transformPhone } from 'utils/common';
 import { fetcher } from 'utils/fetcher';
 import { registerForPushNotificationsAsync } from 'utils/notifications';
+import { getAgreedToTerms, setAgreedToTerms } from 'utils/secureStorage';
 
 interface SaveListingProps {
   listing: Partial<TListing<number>>;
@@ -38,6 +40,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
   const params = useLocalSearchParams<EditListingParams>();
   const ref = useRef<KeyboardAwareScrollView>(null);
   const currentPath = listing.id ? '/edit_listing' : '/sell';
+  const [terms, toggleTerms] = useState(false);
 
   const {
     control,
@@ -105,6 +108,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
       await queryClient.invalidateQueries({ queryKey: ['auth_me'] });
 
       if (!listing.id) {
+        await setAgreedToTerms();
         router.setParams({ designer: '', size: '', category: '' });
         reset();
         setSelectedTags([]);
@@ -121,6 +125,8 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
 
   const [open, setOpen] = useState(false);
   const [tags, setTags] = useState(() => TAGS.map((tag) => ({ label: tag, value: tag })));
+
+  const agreedToTerms = useMemo(getAgreedToTerms, []);
 
   useEffect(() => {
     if (selectedTags.length === 3) setOpen(false);
@@ -163,6 +169,15 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
     });
     if (!permission.granted) return;
     const imageUrls = selectedImages.filter((i) => !i.isPreview).map((i) => i.imageUrl);
+    if (!terms) {
+      Toast.show({
+        props: { height: 70 },
+        type: 'error',
+        text1: 'Погодьтеся з правилами публікації оголошень',
+      });
+      return;
+    }
+
     mutation.mutate({
       ...data,
       imageUrls,
@@ -455,6 +470,29 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
         />
         {errors.cardNumber && <InputValidationError message={errors.cardNumber.message!} />}
       </View>
+      {!agreedToTerms && (
+        <Pressable
+          onPress={() => {
+            toggleTerms(!terms);
+          }}
+          className="flex-row items-center justify-center gap-x-2">
+          <Fontisto name={`checkbox-${terms ? 'active' : 'passive'}`} size={17} />
+          <Text>
+            Я погоджуюсь з{' '}
+            <Text
+              onPress={() =>
+                WebBrowser.openBrowserAsync(
+                  `https://different-marketplace.notion.site/11f25ecf82ea802398fac6e249b5290e`
+                )
+              }
+              pressStyle={{ opacity: 0.5 }}
+              className="text-blue-500">
+              правилами
+            </Text>{' '}
+            публікації оголошень
+          </Text>
+        </Pressable>
+      )}
       <Button
         onPress={handleSubmit(onSubmit)}
         size="$4"
