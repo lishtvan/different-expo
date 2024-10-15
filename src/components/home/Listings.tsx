@@ -12,14 +12,11 @@ import { getDynamicEndingForListingsCount } from 'utils/common';
 const RenderItem = ({
   item,
   segment,
-  blockedUsers,
 }: {
   item: TListing;
   segment?: string;
   blockedUsers: any[];
 }) => {
-  const isBlocked = blockedUsers.find((i) => item.sellerId === i.blockedId.toString());
-  if (isBlocked) return null;
   return (
     <View className="w-[49.5%]">
       <ListingCard segment={segment} listing={item} />
@@ -64,11 +61,18 @@ const HomeListings: React.FC<Props> = ({ refreshControl, blockedUsers }) => {
     return getDynamicEndingForListingsCount(results.nbHits, isShowSold);
   }, [results]);
 
+  const listings = blockedUsers
+    ? hits.filter((item) => {
+        const isBlocked = blockedUsers.find((i) => item.sellerId === i.blockedId.toString());
+        return !isBlocked;
+      })
+    : hits;
+
   return (
     <Delayed waitBeforeShow={100}>
       <FlatList
         ref={scrollRef}
-        data={hits}
+        data={listings}
         refreshControl={refreshControl}
         keyboardDismissMode="on-drag"
         ListHeaderComponent={() => (
