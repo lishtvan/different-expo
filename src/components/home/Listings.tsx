@@ -9,7 +9,17 @@ import { Spinner, Text, View } from 'tamagui';
 import { TListing } from 'types';
 import { getDynamicEndingForListingsCount } from 'utils/common';
 
-const RenderItem = ({ item, segment }: { item: TListing; segment?: string }) => {
+const RenderItem = ({
+  item,
+  segment,
+  blockedUsers,
+}: {
+  item: TListing;
+  segment?: string;
+  blockedUsers: any[];
+}) => {
+  const isBlocked = blockedUsers.find((i) => item.sellerId === i.blockedId.toString());
+  if (isBlocked) return null;
   return (
     <View className="w-[49.5%]">
       <ListingCard segment={segment} listing={item} />
@@ -18,13 +28,14 @@ const RenderItem = ({ item, segment }: { item: TListing; segment?: string }) => 
 };
 
 interface Props {
+  blockedUsers?: any[];
   refreshControl: React.ReactElement<
     RefreshControlProps,
     string | React.JSXElementConstructor<any>
   >;
 }
 
-const HomeListings: React.FC<Props> = ({ refreshControl }) => {
+const HomeListings: React.FC<Props> = ({ refreshControl, blockedUsers }) => {
   const scrollRef = useRef<FlatList>(null);
   const [shouldScrollToTop, setShouldScrollToTop] = useState(false);
   const segments = useSegments();
@@ -72,7 +83,9 @@ const HomeListings: React.FC<Props> = ({ refreshControl }) => {
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         numColumns={2}
         ItemSeparatorComponent={() => <View className="h-3" />}
-        renderItem={(object) => <RenderItem item={object.item} segment={segments[1]} />}
+        renderItem={(object) => (
+          <RenderItem item={object.item} blockedUsers={blockedUsers || []} segment={segments[1]} />
+        )}
         keyExtractor={(item) => item.id}
         ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
       />

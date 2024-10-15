@@ -1,4 +1,5 @@
 import { Entypo, EvilIcons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { useQuery } from '@tanstack/react-query';
 import HomeListings from 'components/home/Listings';
 import { INITIAL_PRICE } from 'constants/filter';
 import { Link, Stack } from 'expo-router';
@@ -10,6 +11,7 @@ import { SearchBar } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View, debounce } from 'tamagui';
 import { delay } from 'utils/common';
+import { fetcher } from 'utils/fetcher';
 import { isAndroid } from 'utils/platform';
 
 const HomeListingsWrapper = () => {
@@ -17,6 +19,12 @@ const HomeListingsWrapper = () => {
   const { refreshing, refreshKey, handleRefresh, handleRefreshWithoutSpinner } = useRefresh(() =>
     delay(50)
   );
+
+  const { data, isLoading } = useQuery({
+    queryKey: ['auth_me'],
+    queryFn: () => fetcher({ route: '/auth/me', method: 'GET' }),
+  });
+
   const { refresh, setUiState } = search;
 
   const fullSearchRefresh = (reopen = false) => {
@@ -29,11 +37,14 @@ const HomeListingsWrapper = () => {
     else handleRefresh();
   };
 
+  if (isLoading) return;
+
   return (
     <SafeAreaView edges={['top']}>
       <CustomHeader />
       <HomeListings
         key={refreshKey}
+        blockedUsers={data?.BlockedUsers}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={fullSearchRefresh} />}
       />
     </SafeAreaView>

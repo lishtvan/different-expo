@@ -1,10 +1,11 @@
 import { EvilIcons, SimpleLineIcons } from '@expo/vector-icons';
-import { useScrollToTop } from '@react-navigation/native';
-import { useQuery } from '@tanstack/react-query';
+import { MenuView, NativeActionEvent } from '@react-native-menu/menu';
+import { CommonActions, useScrollToTop } from '@react-navigation/native';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import MessageButton from 'components/chat/MessageButton';
 import ListingCard from 'components/listings/ListingCard';
 import { mainColor } from 'constants/colors';
-import { Link, Stack, useLocalSearchParams, useSegments } from 'expo-router';
+import { Link, router, Stack, useLocalSearchParams, useNavigation, useSegments } from 'expo-router';
 import { useRefresh } from 'hooks/useRefresh';
 import React, { FC, memo, useEffect, useRef } from 'react';
 import {
@@ -13,13 +14,29 @@ import {
   useRefinementList,
   useToggleRefinement,
 } from 'react-instantsearch-core';
-import { FlatList, RefreshControl, RefreshControlProps, TouchableOpacity } from 'react-native';
+import {
+  FlatList,
+  Platform,
+  RefreshControl,
+  RefreshControlProps,
+  TouchableOpacity,
+} from 'react-native';
 import { Avatar, Button, Spinner, Switch, Text, View } from 'tamagui';
-import { TListing, TUser } from 'types';
+import { RFunc, TListing, TUser } from 'types';
 import { avatarFb } from 'utils/avatarUrlFallback';
 import { getDynamicEndingUserListings } from 'utils/common';
 import { fetcher } from 'utils/fetcher';
 import { shareLink } from 'utils/share';
+
+// TODO: test android
+const menuActionsUi = [
+  {
+    id: 'block',
+    title: 'Заблокувати',
+    imageColor: 'black',
+    image: Platform.select({ ios: 'hand.raised', android: 'ic_menu_block' }),
+  },
+];
 
 // TODO: implement refresh on reopen app after user route is implemented
 const User = () => {
@@ -33,9 +50,35 @@ const User = () => {
     queryKey: ['user', params.nickname],
     queryFn: () => fetcher({ body: { nickname: params.nickname }, route: '/user/get' }),
   });
+  const queryClient = useQueryClient();
+  const navigation = useNavigation();
+
+  const block = useMutation({
+    mutationFn: () =>
+      fetcher({
+        route: '/user/block',
+        method: 'POST',
+        body: { userIdToBlock: user.id },
+      }),
+    onSuccess: async (res) => {
+      if (res.error) return;
+      await Promise.all([queryClient.invalidateQueries({ queryKey: ['auth_me'] })]);
+      navigation.dispatch(CommonActions.reset({ routes: [{ key: '(tabs)', name: '(tabs)' }] }));
+      router.navigate('/');
+    },
+  });
 
   const { refreshing, handleRefresh } = useRefresh(refetch);
   const { refresh, setUiState } = useInstantSearch();
+
+  const onPressAction = ({ nativeEvent }: NativeActionEvent) => {
+    const menuActions: RFunc = {
+      block: block.mutate,
+    };
+
+    const action = menuActions[nativeEvent.event];
+    action();
+  };
 
   if (error) throw error;
   if (isLoading || refreshing || !user) return null;
@@ -46,13 +89,20 @@ const User = () => {
         options={{
           headerTitle: params.nickname,
           headerRight: () =>
-            user.isOwnAccount && (
+            user.ownUserId !== 0 &&
+            (user.isOwnAccount ? (
               <Link asChild href="/profile/resources">
                 <TouchableOpacity className="pb-1 pl-8">
                   <SimpleLineIcons name="menu" size={22} />
                 </TouchableOpacity>
               </Link>
-            ),
+            ) : (
+              <MenuView onPressAction={onPressAction} actions={menuActionsUi}>
+                <TouchableOpacity className="py-1 pl-2">
+                  <SimpleLineIcons name="options" size={22} />
+                </TouchableOpacity>
+              </MenuView>
+            )),
           headerTitleStyle: { fontWeight: 'bold', fontSize: 19 },
         }}
       />

@@ -28,6 +28,7 @@ export type ListingStatus = 'AVAILABLE' | 'SOLD' | 'ORDER';
 export type TListing<IdType = string> = {
   imageUrls: string[];
   designer: string;
+  sellerId: string;
   size: keyof typeof SHORT_SIZES;
   category: string;
   title: string;

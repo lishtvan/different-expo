@@ -52,6 +52,7 @@ const DeleteAccount = () => {
       await Promise.all([
         destroySession(),
         queryClient.invalidateQueries({ queryKey: ['auth_me'] }),
+        queryClient.invalidateQueries({ queryKey: ['user'] }),
       ]);
       navigation.dispatch(CommonActions.reset({ routes: [{ key: '(tabs)', name: '(tabs)' }] }));
       router.navigate('/');
