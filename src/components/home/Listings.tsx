@@ -9,14 +9,7 @@ import { Spinner, Text, View } from 'tamagui';
 import { TListing } from 'types';
 import { getDynamicEndingForListingsCount } from 'utils/common';
 
-const RenderItem = ({
-  item,
-  segment,
-}: {
-  item: TListing;
-  segment?: string;
-  blockedUsers: any[];
-}) => {
+const RenderItem = ({ item, segment }: { item: TListing; segment?: string }) => {
   return (
     <View className="w-[49.5%]">
       <ListingCard segment={segment} listing={item} />
@@ -87,9 +80,7 @@ const HomeListings: React.FC<Props> = ({ refreshControl, blockedUsers }) => {
         columnWrapperStyle={{ justifyContent: 'space-between' }}
         numColumns={2}
         ItemSeparatorComponent={() => <View className="h-3" />}
-        renderItem={(object) => (
-          <RenderItem item={object.item} blockedUsers={blockedUsers || []} segment={segments[1]} />
-        )}
+        renderItem={(object) => <RenderItem item={object.item} segment={segments[1]} />}
         keyExtractor={(item) => item.id}
         ListFooterComponent={() => !isLastPage && <Spinner className="mb-10 mt-10" size="large" />}
       />
