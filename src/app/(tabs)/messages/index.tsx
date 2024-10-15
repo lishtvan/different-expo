@@ -16,6 +16,9 @@ interface GetChatsResponse {
 }
 
 const RenderChat = ({ item }: { item: Chat }) => {
+  if (item.Messages.length === 0) {
+    return null;
+  }
   return (
     <Link asChild href={{ pathname: '/chatf', params: { chatId: item.id } }}>
       <View pressStyle={{ backgroundColor: '#f1f1f1' }} className="flex-row items-center">
