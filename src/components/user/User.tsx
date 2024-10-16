@@ -34,7 +34,7 @@ const menuActionsUi = [
     id: 'block',
     title: 'Заблокувати',
     imageColor: 'black',
-    image: Platform.select({ ios: 'hand.raised', android: 'ic_menu_block' }),
+    image: Platform.select({ ios: 'hand.raised', android: '' }),
   },
 ];
 

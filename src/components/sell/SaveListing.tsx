@@ -478,7 +478,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
           className="flex-row items-center justify-center gap-x-2">
           <Fontisto name={`checkbox-${terms ? 'active' : 'passive'}`} size={17} />
           <Text>
-            Я погоджуюсь з{' '}
+            Я згоден з{' '}
             <Text
               onPress={() =>
                 WebBrowser.openBrowserAsync(

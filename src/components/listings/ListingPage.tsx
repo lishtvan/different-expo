@@ -16,6 +16,7 @@ import { ListingResponse, RFunc } from 'types';
 import { avatarFb } from 'utils/avatarUrlFallback';
 import { openConfirmationModal } from 'utils/confirmationModal';
 import { fetcher } from 'utils/fetcher';
+import { isAndroid } from 'utils/platform';
 import { shareLink } from 'utils/share';
 
 interface ListingImagesProps {
@@ -27,13 +28,13 @@ const menuActionsUiNonAuthor = [
     id: 'share',
     title: 'Поширити',
     imageColor: 'black',
-    image: Platform.select({ ios: 'square.and.arrow.up', android: 'ic_menu_share' }),
+    image: Platform.select({ ios: 'square.and.arrow.up', android: '' }),
   },
   {
     id: 'report',
     title: 'Поскаржитися',
     imageColor: 'black',
-    image: Platform.select({ ios: 'flag', android: 'ic_menu_report_image' }),
+    image: Platform.select({ ios: 'flag', android: '' }),
   },
 ];
 
@@ -109,7 +110,10 @@ const ListingMenu: FC<Pick<ListingResponse, 'listing' | 'isOwnListing'>> = ({
       delete: () => openConfirmationModal(deleteText, mutation.mutate),
       edit: () => router.navigate({ pathname: '/edit_listing', params: { listingId: listing.id } }),
       share: shareListing,
-      report: reportPrompt,
+      report: () => {
+        if (isAndroid) report.mutate('From android');
+        else reportPrompt();
+      },
     };
 
     const action = menuActions[nativeEvent.event];

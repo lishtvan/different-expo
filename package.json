@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "dev": "EXPO_PUBLIC_ENVIRONMENT='local' expo start --dev-client",
+    "dev:prod": "expo start --dev-client",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
