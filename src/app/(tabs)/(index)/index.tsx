@@ -3,10 +3,11 @@ import { useQuery } from '@tanstack/react-query';
 import HomeListings from 'components/home/Listings';
 import { INITIAL_PRICE } from 'constants/filter';
 import { Link, Stack } from 'expo-router';
+import { useAppState } from 'hooks/useAppState';
 import { useRefresh } from 'hooks/useRefresh';
 import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { useCurrentRefinements, useInstantSearch, useSearchBox } from 'react-instantsearch-core';
-import { RefreshControl, TouchableOpacity } from 'react-native';
+import { AppStateStatus, RefreshControl, TouchableOpacity } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, View, debounce } from 'tamagui';
@@ -36,6 +37,11 @@ const HomeListingsWrapper = () => {
     if (reopen) handleRefreshWithoutSpinner();
     else handleRefresh();
   };
+
+  const onAppStateChange = (status: AppStateStatus) => {
+    if (status === 'background') fullSearchRefresh(true);
+  };
+  useAppState(onAppStateChange);
 
   if (isLoading) return;
 

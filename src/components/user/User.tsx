@@ -28,7 +28,6 @@ import { getDynamicEndingUserListings } from 'utils/common';
 import { fetcher } from 'utils/fetcher';
 import { shareLink } from 'utils/share';
 
-// TODO: test android
 const menuActionsUi = [
   {
     id: 'block',
