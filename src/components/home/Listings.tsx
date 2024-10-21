@@ -1,8 +1,8 @@
 import { useScrollToTop } from '@react-navigation/native';
 import ListingCard from 'components/listings/ListingCard';
 import Delayed from 'components/wrappers/Delayed';
-import { useFocusEffect, useSegments } from 'expo-router';
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSegments } from 'expo-router';
+import React, { useMemo, useRef } from 'react';
 import { useInfiniteHits } from 'react-instantsearch-core';
 import { FlatList, RefreshControlProps } from 'react-native';
 import { Spinner, Text, View } from 'tamagui';
@@ -27,25 +27,10 @@ interface Props {
 
 const HomeListings: React.FC<Props> = ({ refreshControl, blockedUsers }) => {
   const scrollRef = useRef<FlatList>(null);
-  const [shouldScrollToTop, setShouldScrollToTop] = useState(false);
   const segments = useSegments();
-
-  const { hits, isLastPage, showMore, results } = useInfiniteHits<TListing>();
-
   useScrollToTop(scrollRef);
 
-  useEffect(() => {
-    setShouldScrollToTop(true);
-  }, [results?.nbHits]);
-
-  useFocusEffect(
-    useCallback(() => {
-      if (shouldScrollToTop) {
-        scrollRef.current?.scrollToOffset({ offset: 0, animated: true });
-        setShouldScrollToTop(false);
-      }
-    }, [shouldScrollToTop])
-  );
+  const { hits, isLastPage, showMore, results } = useInfiniteHits<TListing>();
 
   const listingsCountString = useMemo(() => {
     if (!results) return '';
