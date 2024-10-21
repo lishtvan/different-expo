@@ -1,12 +1,6 @@
 import { AntDesign } from '@expo/vector-icons';
 import { ThemeProvider } from '@react-navigation/native';
-import {
-  MutationCache,
-  QueryCache,
-  QueryClient,
-  QueryClientProvider,
-  focusManager,
-} from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider, focusManager } from '@tanstack/react-query';
 import { toastConfig } from 'components/ui/toastConfig';
 import { mainColor } from 'constants/colors';
 import { useFonts } from 'expo-font';
@@ -40,9 +34,7 @@ export default function RootLayout() {
   }, [error]);
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
+    if (loaded) SplashScreen.hideAsync();
   }, [loaded]);
 
   if (!loaded) {
@@ -57,9 +49,7 @@ function onAppStateChange(status: AppStateStatus) {
 }
 
 const queryClient = new QueryClient({
-  queryCache: new QueryCache(),
-  mutationCache: new MutationCache(),
-  defaultOptions: { queries: { retry: false } },
+  defaultOptions: { queries: { retry: 2 } },
 });
 
 function RootLayoutNav() {
