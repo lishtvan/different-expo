@@ -31,7 +31,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "./vivid-poet-357619-d0792d1b33d7.json",
+        "serviceAccountKeyPath": "./service-account.json",
         "track": "internal"
       }
     }
