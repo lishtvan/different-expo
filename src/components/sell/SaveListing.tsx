@@ -169,7 +169,7 @@ const SaveListing: FC<SaveListingProps> = ({ listing, user }) => {
     });
     if (!permission.granted) return;
     const imageUrls = selectedImages.filter((i) => !i.isPreview).map((i) => i.imageUrl);
-    if (!terms) {
+    if (!terms && !agreedToTerms) {
       Toast.show({
         props: { height: 70 },
         type: 'error',
