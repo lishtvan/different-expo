@@ -16,36 +16,36 @@ interface GetChatsResponse {
 }
 
 const RenderChat = ({ item }: { item: Chat }) => {
-  if (item.Messages.length === 0) {
-    return null;
-  }
+  const user = item.Users[0];
+  const message = item.Messages[0];
+  const notificationsCount = item._count.ChatNotification;
   return (
     <Link asChild href={{ pathname: '/chatf', params: { chatId: item.id } }}>
       <View pressStyle={{ backgroundColor: '#f1f1f1' }} className="flex-row items-center">
         <View className="px-3 py-2">
           <Avatar circular size={57}>
-            <Avatar.Image src={avatarFb(item.Users[0].avatarUrl)} />
+            <Avatar.Image src={avatarFb(user.avatarUrl)} />
           </Avatar>
         </View>
         <View className="h-20 w-full flex-1 justify-center border-b border-gray-200">
           <View className="mb-1 flex-row items-center justify-between">
-            <Text className="text-base font-medium">{item.Users[0].nickname}</Text>
+            <Text className="text-base font-medium">{user.nickname}</Text>
             <Text className="mr-2 text-xs text-gray-600">
-              {getLastMsgDate(new Date(item.Messages[0].createdAt))}
+              {getLastMsgDate(new Date(message.createdAt))}
             </Text>
           </View>
-          {item._count.ChatNotification > 0 ? (
+          {notificationsCount > 0 ? (
             <View className="flex-row items-center justify-between">
               <Text numberOfLines={2} className="w-[85%]">
-                {item.Messages[0].text}
+                {message.text}
               </Text>
               <View className="mr-1.5 rounded-full bg-main px-2">
-                <Text className="text-base text-white">{item._count.ChatNotification}</Text>
+                <Text className="text-base text-white">{notificationsCount}</Text>
               </View>
             </View>
           ) : (
             <Text numberOfLines={2} className="pr-3">
-              {item.Messages[0].text}
+              {message.text}
             </Text>
           )}
         </View>
