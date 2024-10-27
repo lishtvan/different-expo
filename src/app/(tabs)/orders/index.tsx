@@ -11,10 +11,18 @@ import { RefreshControl, RefreshControlProps, Text, useWindowDimensions } from '
 import { Badge } from 'react-native-elements';
 import { TabView, SceneMap, TabBar } from 'react-native-tab-view';
 import { Separator, View } from 'tamagui';
+import { TListing } from 'types';
 import { fetcher } from 'utils/fetcher';
 
+interface Order {
+  status: 'PAYMENT' | 'HANDLING' | 'SHIPPING' | 'FINISHED' | 'CANCELED';
+  id: string;
+  Listing: TListing;
+  OrderNotification: OrderNotification[];
+}
+
 interface Props {
-  orders: any[];
+  orders: Order[];
   type: 'buy' | 'sell';
   refreshControl: React.ReactElement<
     RefreshControlProps,
@@ -22,8 +30,13 @@ interface Props {
   >;
 }
 
-// LOW_PRIO: add types
-const RenderOrder = ({ item }: { item: any }) => {
+interface OrderNotification {
+  id: string;
+  orderId: string;
+  userId: string;
+}
+
+const RenderOrder = ({ item }: { item: Order }) => {
   const { statusColor, statusText } = STATUS_MAPPER[item.status];
 
   return (
