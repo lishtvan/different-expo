@@ -5,7 +5,7 @@ import { Image } from 'expo-image';
 import * as Linking from 'expo-linking';
 import { Link, Stack, useLocalSearchParams } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Pressable, ScrollView, TouchableOpacity } from 'react-native';
 import ReactNativeModal from 'react-native-modal';
 import { View, Text, Separator } from 'tamagui';
